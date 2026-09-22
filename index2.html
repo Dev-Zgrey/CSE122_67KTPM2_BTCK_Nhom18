@@ -1,0 +1,887 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HealthCare & Study - Quản Lý Sức Khỏe Cá Nhân & Gia Đình</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Alpine.js for reactive UI -->
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <!-- Chart.js for health indicators chart -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body { font-family: 'Inter', sans-serif; }
+        ::-webkit-scrollbar { width: 6px; height: 6px; }
+        ::-webkit-scrollbar-track { background: #f1f1f1; }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 3px; }
+        ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 antialiased" x-data="healthApp()">
+
+    <div class="flex h-screen overflow-hidden">
+
+        <!-- ==================== SIDEBAR (CỘT TRÁI THEO WIREFRAME) ==================== -->
+        <aside class="w-20 bg-slate-200 border-r border-slate-300 flex flex-col items-center py-4 justify-between shrink-0 z-20">
+            <!-- Top: Logo -->
+            <div class="flex flex-col items-center space-y-4">
+                <div class="w-12 h-12 bg-indigo-600 rounded-xl flex items-center justify-center text-white shadow-md cursor-pointer hover:bg-indigo-700 transition" title="HealthCare Hub">
+                    <i class="fa-solid fa-heart-pulse text-xl"></i>
+                </div>
+                <div class="w-8 h-[1px] bg-slate-300"></div>
+
+                <!-- Nav Buttons (Circular/Icon matching wireframe) -->
+                <div class="flex flex-col space-y-3">
+                    <button @click="activeTab = 'dashboard'" :class="activeTab === 'dashboard' ? 'bg-indigo-600 text-white shadow-md' : 'bg-amber-200 text-slate-700 hover:bg-amber-300'" class="w-12 h-12 rounded-full flex items-center justify-center transition text-lg" title="Dashboard">
+                        <i class="fa-solid fa-house"></i>
+                    </button>
+                    <button @click="activeTab = 'metrics'" :class="activeTab === 'metrics' ? 'bg-indigo-600 text-white shadow-md' : 'bg-amber-200 text-slate-700 hover:bg-amber-300'" class="w-12 h-12 rounded-full flex items-center justify-center transition text-lg" title="Chỉ số cơ thể">
+                        <i class="fa-solid fa-stethoscope"></i>
+                    </button>
+                    <button @click="activeTab = 'calendar'" :class="activeTab === 'calendar' ? 'bg-indigo-600 text-white shadow-md' : 'bg-amber-200 text-slate-700 hover:bg-amber-300'" class="w-12 h-12 rounded-full flex items-center justify-center transition text-lg" title="Lịch sức khỏe & Streak">
+                        <i class="fa-solid fa-calendar-days"></i>
+                    </button>
+                    <button @click="activeTab = 'notes'" :class="activeTab === 'notes' ? 'bg-indigo-600 text-white shadow-md' : 'bg-amber-200 text-slate-700 hover:bg-amber-300'" class="w-12 h-12 rounded-full flex items-center justify-center transition text-lg" title="Note học tập">
+                        <i class="fa-solid fa-book-medical"></i>
+                    </button>
+                    <button @click="activeTab = 'family'" :class="activeTab === 'family' ? 'bg-indigo-600 text-white shadow-md' : 'bg-amber-200 text-slate-700 hover:bg-amber-300'" class="w-12 h-12 rounded-full flex items-center justify-center transition text-lg" title="Quản lý gia đình & Parent">
+                        <i class="fa-solid fa-users"></i>
+                    </button>
+                    <button @click="activeTab = 'admin'" :class="activeTab === 'admin' ? 'bg-indigo-600 text-white shadow-md' : 'bg-amber-200 text-slate-700 hover:bg-amber-300'" class="w-12 h-12 rounded-full flex items-center justify-center transition text-lg" title="Quản trị hệ thống (Admin)">
+                        <i class="fa-solid fa-shield-halved"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Bottom: User Avatar / Landscape badge -->
+            <div class="flex flex-col items-center space-y-2">
+                <div class="w-12 h-12 rounded-full overflow-hidden border-2 border-white shadow cursor-pointer relative group">
+                    <img src="https://placehold.co/100x100/cbd5e1/475569?text=Avatar" alt="User" class="w-full h-full object-cover">
+                    <div class="absolute inset-0 bg-black/40 flex items-center justify-center text-white opacity-0 group-hover:opacity-100 transition text-xs">
+                        <i class="fa-solid fa-gear"></i>
+                    </div>
+                </div>
+            </div>
+        </aside>
+
+        <!-- ==================== MAIN CONTAINER ==================== -->
+        <div class="flex-1 flex flex-col overflow-hidden">
+            
+            <!-- HEADER -->
+            <header class="h-16 bg-white border-b border-slate-200 flex items-center justify-between px-6 shrink-0 shadow-sm z-10">
+                <!-- Brand / Logo Title -->
+                <div class="flex items-center space-x-3">
+                    <span class="text-xl font-bold bg-gradient-to-r from-indigo-600 to-teal-500 bg-clip-text text-transparent">HealthHub Nhóm 18</span>
+                    <span class="text-xs px-2.5 py-1 bg-indigo-50 text-indigo-700 font-medium rounded-full border border-indigo-200">
+                        Vai trò: <strong x-text="currentRoleName"></strong>
+                    </span>
+                </div>
+
+                <!-- Search Bar (Mô phỏng "Tìm kiếm" trong ảnh) -->
+                <div class="flex-1 max-w-md mx-8">
+                    <div class="relative">
+                        <span class="absolute inset-y-0 left-0 flex items-center pl-3.5 pointer-events-none text-slate-400">
+                            <i class="fa-solid fa-search"></i>
+                        </span>
+                        <input type="text" x-model="searchQuery" placeholder="Tìm kiếm chỉ số, ghi chú, lịch trình, bài viết..." class="w-full bg-slate-100 border border-slate-300 rounded-full py-2 pl-10 pr-4 text-sm text-slate-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:bg-white transition shadow-inner">
+                    </div>
+                </div>
+
+                <!-- Right Actions: Notifications, Sign In, Sign Up -->
+                <div class="flex items-center space-x-4">
+                    <!-- Notification Button -->
+                    <button @click="showNotifications = !showNotifications" class="w-10 h-10 rounded-full bg-slate-100 border border-slate-300 flex items-center justify-center text-slate-600 hover:bg-slate-200 relative transition">
+                        <i class="fa-regular fa-bell"></i>
+                        <span class="absolute top-1 right-1 w-2.5 h-2.5 bg-rose-500 rounded-full ring-2 ring-white"></span>
+                    </button>
+
+                    <!-- Auth buttons (Sign in / Sign up) -->
+                    <template x-if="!isLoggedIn">
+                        <div class="flex items-center space-x-2">
+                            <button @click="openAuthModal('signin')" class="px-4 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-100 rounded-full transition">Sign in</button>
+                            <button @click="openAuthModal('signup')" class="px-4 py-2 text-sm font-semibold text-white bg-gradient-to-r from-emerald-400 to-teal-500 hover:from-emerald-500 hover:to-teal-600 rounded-full shadow-md transition">Sign up</button>
+                        </div>
+                    </template>
+                    <template x-if="isLoggedIn">
+                        <div class="flex items-center space-x-3">
+                            <div class="text-right hidden sm:block">
+                                <div class="text-xs font-semibold text-slate-700" x-text="userName"></div>
+                                <div class="text-[10px] text-slate-500" x-text="currentRoleName"></div>
+                            </div>
+                            <button @click="logout()" class="px-3 py-1.5 text-xs font-medium bg-rose-50 text-rose-600 hover:bg-rose-100 rounded-full transition border border-rose-200">Đăng xuất</button>
+                        </div>
+                    </template>
+                </div>
+            </header>
+
+            <!-- ==================== BODY CONTENT AREA (WIREFRAME LAYOUT) ==================== -->
+            <main class="flex-1 overflow-y-auto p-6 bg-slate-50">
+                
+                <!-- 1. DASHBOARD VIEW (Bám sát bố cục wireframe ảnh mẫu) -->
+                <div x-show="activeTab === 'dashboard'" class="space-y-6">
+                    
+                    <!-- Top 4 Circular Mini Cards (Mô phỏng 4 hình tròn nhỏ hàng trên) -->
+                    <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
+                        <div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-sm flex items-center space-x-4 hover:shadow-md transition">
+                            <div class="w-12 h-12 rounded-full bg-teal-100 text-teal-600 flex items-center justify-center font-bold text-lg"><i class="fa-solid fa-fire"></i></div>
+                            <div>
+                                <div class="text-xs text-slate-500 font-medium">🔥 Streak Thói Quen</div>
+                                <div class="text-lg font-bold text-slate-800" x-text="streakDays + ' ngày liên tục'"></div>
+                            </div>
+                        </div>
+                        <div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-sm flex items-center space-x-4 hover:shadow-md transition">
+                            <div class="w-12 h-12 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center font-bold text-lg"><i class="fa-solid fa-weight-scale"></i></div>
+                            <div>
+                                <div class="text-xs text-slate-500 font-medium">Chỉ số BMI</div>
+                                <div class="text-lg font-bold text-slate-800" x-text="userMetrics.bmi + ' (' + userMetrics.bmiStatus + ')'"></div>
+                            </div>
+                        </div>
+                        <div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-sm flex items-center space-x-4 hover:shadow-md transition">
+                            <div class="w-12 h-12 rounded-full bg-indigo-100 text-indigo-600 flex items-center justify-center font-bold text-lg"><i class="fa-solid fa-heart-pulse"></i></div>
+                            <div>
+                                <div class="text-xs text-slate-500 font-medium">Nhịp Tim & Huyết Áp</div>
+                                <div class="text-sm font-bold text-slate-800" x-text="userMetrics.heartRate + ' bpm | ' + userMetrics.bp"></div>
+                            </div>
+                        </div>
+                        <div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-sm flex items-center space-x-4 hover:shadow-md transition">
+                            <div class="w-12 h-12 rounded-full bg-amber-100 text-amber-600 flex items-center justify-center font-bold text-lg"><i class="fa-solid fa-glass-water"></i></div>
+                            <div>
+                                <div class="text-xs text-slate-500 font-medium">Lượng Nước / Calo</div>
+                                <div class="text-sm font-bold text-slate-800" x-text="userMetrics.water + 'L / ' + userMetrics.calories + ' kcal'"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Main Grid Layout (3 bên trái, Tròn lớn ở giữa, Khung lớn dọc bên phải) -->
+                    <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+                        
+                        <!-- LEFT COLUMN: 3 Thẻ chữ nhật bo tròn (Như wireframe) -->
+                        <div class="lg:col-span-3 space-y-4">
+                            <!-- Card 1: Nhiệm vụ sức khỏe hằng ngày -->
+                            <div class="bg-white p-5 rounded-3xl border border-slate-200 shadow-sm">
+                                <div class="flex items-center justify-between mb-3">
+                                    <h3 class="font-bold text-sm text-slate-800"><i class="fa-solid fa-list-check text-indigo-600 mr-2"></i>Nhiệm vụ hôm nay</h3>
+                                    <span class="text-xs bg-emerald-100 text-emerald-700 px-2 py-0.5 rounded-full font-medium" x-text="completedTasksCount + '/3 hoàn thành'"></span>
+                                </div>
+                                <div class="space-y-2">
+                                    <template x-for="(task, index) in dailyTasks" :key="index">
+                                        <div @click="toggleTask(index)" class="flex items-center space-x-3 p-2.5 rounded-xl border transition cursor-pointer" :class="task.done ? 'bg-emerald-50 border-emerald-200 text-emerald-800 line-through' : 'bg-slate-50 border-slate-200 text-slate-700 hover:bg-slate-100'">
+                                            <div class="w-5 h-5 rounded-full border flex items-center justify-center text-xs" :class="task.done ? 'bg-emerald-600 border-emerald-600 text-white' : 'border-slate-400'">
+                                                <i x-show="task.done" class="fa-solid fa-check text-[10px]"></i>
+                                            </div>
+                                            <span class="text-xs font-medium" x-text="task.name"></span>
+                                        </div>
+                                    </template>
+                                </div>
+                            </div>
+
+                            <!-- Card 2: Lịch uống thuốc & Khám bệnh nhanh -->
+                            <div class="bg-white p-5 rounded-3xl border border-slate-200 shadow-sm">
+                                <div class="flex items-center justify-between mb-3">
+                                    <h3 class="font-bold text-sm text-slate-800"><i class="fa-solid fa-pills text-teal-600 mr-2"></i>Nhắc nhở y tế</h3>
+                                    <button @click="activeTab = 'calendar'" class="text-xs text-indigo-600 hover:underline font-medium">Xem lịch</button>
+                                </div>
+                                <div class="space-y-2">
+                                    <div class="p-3 bg-teal-50 border border-teal-200 rounded-xl text-xs text-teal-900">
+                                        <div class="font-bold flex items-center justify-between">
+                                            <span>Uống Vitamin C</span>
+                                            <span class="text-[10px] bg-teal-200 text-teal-800 px-1.5 py-0.5 rounded">08:00 Sáng</span>
+                                        </div>
+                                        <div class="text-[11px] text-teal-700 mt-1">Sau khi ăn sáng xong.</div>
+                                    </div>
+                                    <div class="p-3 bg-amber-50 border border-amber-200 rounded-xl text-xs text-amber-900">
+                                        <div class="font-bold flex items-center justify-between">
+                                            <span>Khám định kỳ răng</span>
+                                            <span class="text-[10px] bg-amber-200 text-amber-800 px-1.5 py-0.5 rounded">15/06/2026</span>
+                                        </div>
+                                        <div class="text-[11px] text-amber-700 mt-1">Bệnh viện Đa khoa Quốc tế.</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Card 3: Nhanh chóng cập nhật chỉ số -->
+                            <div class="bg-indigo-600 text-white p-5 rounded-3xl shadow-md">
+                                <h3 class="font-bold text-sm mb-2"><i class="fa-solid fa-plus-circle mr-2"></i>Nhập liệu nhanh</h3>
+                                <p class="text-xs text-indigo-100 mb-3">Ghi lại cân nặng, huyết áp mới nhất ngay hôm nay để hệ thống theo dõi biểu đồ.</p>
+                                <button @click="activeTab = 'metrics'" class="w-full py-2 bg-white text-indigo-700 font-semibold text-xs rounded-xl hover:bg-indigo-50 transition shadow">Mở bảng nhập liệu</button>
+                            </div>
+                        </div>
+
+                        <!-- CENTER COLUMN: Hình tròn lớn ở giữa + Khung chữ nhật ở dưới (Mô phỏng đúng wireframe) -->
+                        <div class="lg:col-span-6 space-y-6 flex flex-col items-center">
+                            
+                            <!-- Large Circular Section (Biểu đồ xu hướng sức khỏe trung tâm) -->
+                            <div class="w-full bg-white p-6 rounded-3xl border border-slate-200 shadow-sm flex flex-col items-center">
+                                <div class="w-full flex items-center justify-between mb-4">
+                                    <h3 class="font-bold text-slate-800 text-base"><i class="fa-solid fa-chart-line text-indigo-600 mr-2"></i>Biểu đồ xu hướng sức khỏe tuần qua</h3>
+                                    <span class="text-xs bg-slate-100 text-slate-600 px-3 py-1 rounded-full">Cập nhật hôm nay</span>
+                                </div>
+                                <div class="w-full h-64 relative">
+                                    <canvas id="healthChart"></canvas>
+                                </div>
+                            </div>
+
+                            <!-- Bottom Rectangle Box under circle (Tổng quan sức khỏe gia đình & Thói quen nhanh) -->
+                            <div class="w-full bg-white p-5 rounded-3xl border border-slate-200 shadow-sm">
+                                <div class="flex items-center justify-between mb-3">
+                                    <h3 class="font-bold text-sm text-slate-800"><i class="fa-solid fa-user-shield text-teal-600 mr-2"></i>Trạng thái kết nối gia đình & Nhắc nhở từ Phụ huynh</h3>
+                                    <button @click="activeTab = 'family'" class="text-xs text-indigo-600 hover:underline font-medium">Quản lý</button>
+                                </div>
+                                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                                    <div class="p-3 bg-slate-50 border border-slate-200 rounded-2xl flex items-center space-x-3">
+                                        <div class="w-10 h-10 rounded-full bg-indigo-100 text-indigo-700 flex items-center justify-center font-bold text-sm">B</div>
+                                        <div>
+                                            <div class="text-xs font-bold text-slate-800">Bé Đào Hồng Tiến Jr.</div>
+                                            <div class="text-[11px] text-emerald-600 font-medium">Sức khỏe ổn định • BMI: 18.5</div>
+                                        </div>
+                                    </div>
+                                    <div class="p-3 bg-slate-50 border border-slate-200 rounded-2xl flex items-center space-x-3">
+                                        <div class="w-10 h-10 rounded-full bg-teal-100 text-teal-700 flex items-center justify-center font-bold text-sm">N</div>
+                                        <div>
+                                            <div class="text-xs font-bold text-slate-800">Ghi chú từ Phụ huynh</div>
+                                            <div class="text-[11px] text-slate-600">"Nhớ uống nước ấm và đi ngủ sớm!"</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <!-- RIGHT COLUMN: Khung lớn dạng dọc bên phải (Note học tập nổi bật & Bài viết y khoa) -->
+                        <div class="lg:col-span-3 space-y-4">
+                            <div class="bg-white p-5 rounded-3xl border border-slate-200 shadow-sm">
+                                <div class="flex items-center justify-between mb-4">
+                                    <h3 class="font-bold text-sm text-slate-800"><i class="fa-solid fa-book-bookmark text-indigo-600 mr-2"></i>Note học tập nhanh</h3>
+                                    <button @click="activeTab = 'notes'" class="text-xs text-indigo-600 hover:underline font-medium">Xem tất cả</button>
+                                </div>
+                                <div class="space-y-3">
+                                    <template x-for="(note, index) in notes.slice(0, 3)" :key="index">
+                                        <div class="p-3 bg-slate-50 border border-slate-200 rounded-2xl hover:border-indigo-300 transition cursor-pointer" @click="activeTab = 'notes'">
+                                            <div class="flex items-center justify-between text-[10px] text-slate-400 mb-1">
+                                                <span class="px-2 py-0.5 bg-indigo-50 text-indigo-700 font-semibold rounded" x-text="note.category"></span>
+                                                <span x-text="note.date"></span>
+                                            </div>
+                                            <div class="text-xs font-bold text-slate-800 line-clamp-1" x-text="note.title"></div>
+                                            <div class="text-[11px] text-slate-600 line-clamp-2 mt-1" x-text="note.content"></div>
+                                        </div>
+                                    </template>
+                                </div>
+                            </div>
+
+                            <!-- Admin / System Announcements -->
+                            <div class="bg-gradient-to-br from-teal-500 to-emerald-600 text-white p-5 rounded-3xl shadow-sm">
+                                <div class="flex items-center space-x-2 mb-2">
+                                    <i class="fa-solid fa-bullhorn text-teal-200"></i>
+                                    <h3 class="font-bold text-sm">Góc Y Khoa Nhóm 18</h3>
+                                </div>
+                                <p class="text-xs text-teal-100 leading-relaxed mb-3">Chăm sóc sức khỏe chủ động tại nhà là chìa khóa vàng cho cuộc sống trường thọ và hạnh phúc.</p>
+                                <div class="text-[11px] bg-white/20 px-3 py-2 rounded-xl backdrop-blur-sm">
+                                    🔒 Hệ thống bảo mật phân quyền đa tầng đã được kích hoạt thành công.
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <!-- 2. PHÂN HỆ: THEO DÕI CHỈ SỐ CƠ THỂ & NHẬP LIỆU -->
+                <div x-show="activeTab === 'metrics'" class="space-y-6" x-cloak>
+                    <div class="bg-white p-6 rounded-3xl border border-slate-200 shadow-sm">
+                        <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-6 pb-4 border-b border-slate-100">
+                            <div>
+                                <h2 class="text-lg font-bold text-slate-800">Quản Lý & Theo Dõi Chỉ Số Sức Khỏe Cơ Thể</h2>
+                                <p class="text-xs text-slate-500 mt-0.5">Nhập và cập nhật các chỉ số sinh tồn để hệ thống tự động tính toán BMI và cảnh báo sớm.</p>
+                            </div>
+                            <button @click="saveMetrics()" class="mt-3 sm:mt-0 px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold text-xs rounded-xl shadow transition flex items-center space-x-2">
+                                <i class="fa-solid fa-floppy-disk"></i>
+                                <span>Lưu Chỉ Số Mới</span>
+                            </button>
+                        </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                            <div class="space-y-4">
+                                <div>
+                                    <label class="block text-xs font-bold text-slate-700 mb-1">Cân nặng (kg)</label>
+                                    <input type="number" step="0.1" x-model.number="userMetrics.weight" class="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-sm focus:bg-white focus:ring-2 focus:ring-indigo-500 outline-none">
+                                </div>
+                                <div>
+                                    <label class="block text-xs font-bold text-slate-700 mb-1">Chiều cao (cm)</label>
+                                    <input type="number" step="1" x-model.number="userMetrics.height" class="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-sm focus:bg-white focus:ring-2 focus:ring-indigo-500 outline-none">
+                                </div>
+                                <div>
+                                    <label class="block text-xs font-bold text-slate-700 mb-1">Nhịp tim (bpm)</label>
+                                    <input type="number" x-model.number="userMetrics.heartRate" class="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-sm focus:bg-white focus:ring-2 focus:ring-indigo-500 outline-none">
+                                </div>
+                            </div>
+
+                            <div class="space-y-4">
+                                <div>
+                                    <label class="block text-xs font-bold text-slate-700 mb-1">Huyết áp (mmHg - Ví dụ: 120/80)</label>
+                                    <input type="text" x-model="userMetrics.bp" class="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-sm focus:bg-white focus:ring-2 focus:ring-indigo-500 outline-none">
+                                </div>
+                                <div>
+                                    <label class="block text-xs font-bold text-slate-700 mb-1">Lượng nước uống (Lít)</label>
+                                    <input type="number" step="0.1" x-model.number="userMetrics.water" class="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-sm focus:bg-white focus:ring-2 focus:ring-indigo-500 outline-none">
+                                </div>
+                                <div>
+                                    <label class="block text-xs font-bold text-slate-700 mb-1">Tiêu thụ Calo (kcal)</label>
+                                    <input type="number" x-model.number="userMetrics.calories" class="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-sm focus:bg-white focus:ring-2 focus:ring-indigo-500 outline-none">
+                                </div>
+                            </div>
+
+                            <div class="bg-slate-50 border border-slate-200 rounded-2xl p-5 flex flex-col justify-between">
+                                <div>
+                                    <h3 class="font-bold text-sm text-slate-800 mb-3"><i class="fa-solid fa-calculator text-indigo-600 mr-2"></i>Chỉ số BMI Tự động</h3>
+                                    <div class="text-3xl font-extrabold text-indigo-600 mb-1" x-text="calculateBMI()"></div>
+                                    <div class="text-xs font-semibold text-slate-600 mb-4" x-text="'Đánh giá: ' + userMetrics.bmiStatus"></div>
+                                    <p class="text-[11px] text-slate-500 leading-relaxed">BMI từ 18.5 đến 24.9 là mức cân nặng lý tưởng cho sức khỏe ổn định.</p>
+                                </div>
+                                <div class="pt-4 border-t border-slate-200 text-[10px] text-slate-400">
+                                    Cập nhật lần cuối: Hôm nay, 08:30 AM
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 3. PHÂN HỆ: LỊCH SỨC KHỎE & STREAK THÓI QUEN -->
+                <div x-show="activeTab === 'calendar'" class="space-y-6" x-cloak>
+                    <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+                        <!-- Calendar View -->
+                        <div class="lg:col-span-8 bg-white p-6 rounded-3xl border border-slate-200 shadow-sm">
+                            <div class="flex items-center justify-between mb-6">
+                                <h2 class="text-lg font-bold text-slate-800"><i class="fa-solid fa-calendar-days text-indigo-600 mr-2"></i>Lịch Sức Khỏe Tháng 6/2026</h2>
+                                <div class="flex space-x-2">
+                                    <button class="px-3 py-1.5 bg-slate-100 text-slate-700 hover:bg-slate-200 text-xs font-semibold rounded-xl">Tháng trước</button>
+                                    <button class="px-3 py-1.5 bg-indigo-600 text-white text-xs font-semibold rounded-xl">Tháng này</button>
+                                </div>
+                            </div>
+
+                            <!-- Calendar Grid Header -->
+                            <div class="grid grid-cols-7 gap-2 text-center text-xs font-bold text-slate-500 mb-3">
+                                <div>T2</div><div>T3</div><div>T4</div><div>T5</div><div>T6</div><div>T7</div><div>CN</div>
+                            </div>
+
+                            <!-- Calendar Days -->
+                            <div class="grid grid-cols-7 gap-2">
+                                <template x-for="day in 30" :key="day">
+                                    <div @click="selectCalendarDay(day)" class="h-20 rounded-2xl border p-2 flex flex-col justify-between transition cursor-pointer" :class="day === 14 ? 'bg-indigo-50 border-indigo-300 ring-2 ring-indigo-400' : 'bg-slate-50 border-slate-200 hover:bg-slate-100'">
+                                        <div class="flex items-center justify-between">
+                                            <span class="text-xs font-bold" :class="day === 14 ? 'text-indigo-700' : 'text-slate-700'" x-text="day"></span>
+                                            <span x-show="day === 14 || day === 10 || day === 5" class="w-2 h-2 rounded-full bg-indigo-500"></span>
+                                        </div>
+                                        <div class="text-[10px] text-slate-500 truncate">
+                                            <span x-show="day === 14">Khám răng</span>
+                                            <span x-show="day === 10">Uống thuốc</span>
+                                            <span x-show="day === 5">Đo huyết áp</span>
+                                        </div>
+                                    </div>
+                                </template>
+                            </div>
+                        </div>
+
+                        <!-- Streak & Daily Tasks Panel -->
+                        <div class="lg:col-span-4 space-y-6">
+                            <div class="bg-gradient-to-br from-amber-500 to-orange-600 text-white p-6 rounded-3xl shadow-sm">
+                                <div class="flex items-center space-x-3 mb-3">
+                                    <div class="text-3xl animate-bounce">🔥</div>
+                                    <div>
+                                        <div class="text-xs text-amber-100 font-medium">Chuỗi ngày hoàn thành thói quen</div>
+                                        <div class="text-2xl font-black" x-text="streakDays + ' Ngày Liên Tiếp'"></div>
+                                    </div>
+                                </div>
+                                <p class="text-xs text-amber-100 leading-relaxed">Tuyệt vời! Bạn đã duy trì thói quen chăm sóc sức khỏe 5 ngày không gián đoạn. Tiếp tục phát huy nhé!</p>
+                            </div>
+
+                            <div class="bg-white p-6 rounded-3xl border border-slate-200 shadow-sm">
+                                <h3 class="font-bold text-sm text-slate-800 mb-4"><i class="fa-solid fa-circle-check text-emerald-600 mr-2"></i>Nhiệm Vụ Hằng Ngày</h3>
+                                <div class="space-y-3">
+                                    <template x-for="(task, index) in dailyTasks" :key="index">
+                                        <div @click="toggleTask(index)" class="flex items-center justify-between p-3 rounded-2xl border transition cursor-pointer" :class="task.done ? 'bg-emerald-50 border-emerald-200' : 'bg-slate-50 border-slate-200 hover:bg-slate-100'">
+                                            <div class="flex items-center space-x-3">
+                                                <div class="w-6 h-6 rounded-full border flex items-center justify-center text-xs" :class="task.done ? 'bg-emerald-600 border-emerald-600 text-white' : 'border-slate-400'">
+                                                    <i x-show="task.done" class="fa-solid fa-check text-xs"></i>
+                                                </div>
+                                                <span class="text-xs font-semibold" :class="task.done ? 'text-emerald-900 line-through' : 'text-slate-700'" x-text="task.name"></span>
+                                            </div>
+                                            <span class="text-[10px] px-2 py-0.5 rounded-full" :class="task.done ? 'bg-emerald-200 text-emerald-800' : 'bg-slate-200 text-slate-700'" x-text="task.done ? 'Đã xong' : 'Chưa'"></span>
+                                        </div>
+                                    </template>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 4. PHÂN HỆ: NOTE HỌC TẬP (GHI CHÚ KIẾN THỨC) -->
+                <div x-show="activeTab === 'notes'" class="space-y-6" x-cloak>
+                    <div class="bg-white p-6 rounded-3xl border border-slate-200 shadow-sm">
+                        <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-6 pb-4 border-b border-slate-100">
+                            <div>
+                                <h2 class="text-lg font-bold text-slate-800"><i class="fa-solid fa-book-medical text-indigo-600 mr-2"></i>Phân Hệ Note Học Tập & Kiến Thức Sức Khỏe</h2>
+                                <p class="text-xs text-slate-500 mt-0.5">Tạo, phân loại, tìm kiếm và chia sẻ ghi chú kiến thức y khoa, thực đơn hoặc mẹo sống khỏe.</p>
+                            </div>
+                            <button @click="openNoteModal()" class="mt-3 sm:mt-0 px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold text-xs rounded-xl shadow transition flex items-center space-x-2">
+                                <i class="fa-solid fa-plus"></i>
+                                <span>Thêm Note Mới</span>
+                            </button>
+                        </div>
+
+                        <!-- Filter categories -->
+                        <div class="flex flex-wrap items-center gap-2 mb-6">
+                            <button @click="selectedCategory = 'Tất cả'" :class="selectedCategory === 'Tất cả' ? 'bg-indigo-600 text-white' : 'bg-slate-100 text-slate-700 hover:bg-slate-200'" class="px-3.5 py-1.5 rounded-xl text-xs font-semibold transition">Tất cả</button>
+                            <button @click="selectedCategory = 'Dinh dưỡng'" :class="selectedCategory === 'Dinh dưỡng' ? 'bg-indigo-600 text-white' : 'bg-slate-100 text-slate-700 hover:bg-slate-200'" class="px-3.5 py-1.5 rounded-xl text-xs font-semibold transition">Dinh dưỡng</button>
+                            <button @click="selectedCategory = 'Bài tập'" :class="selectedCategory === 'Bài tập' ? 'bg-indigo-600 text-white' : 'bg-slate-100 text-slate-700 hover:bg-slate-200'" class="px-3.5 py-1.5 rounded-xl text-xs font-semibold transition">Bài tập</button>
+                            <button @click="selectedCategory = 'Lời dặn bác sĩ'" :class="selectedCategory === 'Lời dặn bác sĩ' ? 'bg-indigo-600 text-white' : 'bg-slate-100 text-slate-700 hover:bg-slate-200'" class="px-3.5 py-1.5 rounded-xl text-xs font-semibold transition">Lời dặn bác sĩ</button>
+                            <button @click="selectedCategory = 'Mẹo sống khỏe'" :class="selectedCategory === 'Mẹo sống khỏe' ? 'bg-indigo-600 text-white' : 'bg-slate-100 text-slate-700 hover:bg-slate-200'" class="px-3.5 py-1.5 rounded-xl text-xs font-semibold transition">Mẹo sống khỏe</button>
+                        </div>
+
+                        <!-- Notes Grid -->
+                        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                            <template x-for="(note, index) in filteredNotes" :key="note.id">
+                                <div class="bg-slate-50 border border-slate-200 p-5 rounded-2xl flex flex-col justify-between hover:border-indigo-300 transition group shadow-sm">
+                                    <div>
+                                        <div class="flex items-center justify-between mb-2">
+                                            <span class="px-2.5 py-0.5 bg-indigo-100 text-indigo-800 text-[10px] font-bold rounded-lg" x-text="note.category"></span>
+                                            <span class="text-[10px] text-slate-400" x-text="note.date"></span>
+                                        </div>
+                                        <h3 class="font-bold text-sm text-slate-800 mb-1" x-text="note.title"></h3>
+                                        <p class="text-xs text-slate-600 line-clamp-3 leading-relaxed" x-text="note.content"></p>
+                                    </div>
+                                    <div class="mt-4 pt-3 border-t border-slate-200 flex items-center justify-between">
+                                        <span class="text-[10px] font-semibold text-teal-600 bg-teal-50 px-2 py-0.5 rounded border border-teal-200" x-text="'Tag: ' + note.tag"></span>
+                                        <div class="flex items-center space-x-2">
+                                            <button @click="editNote(note)" class="p-1.5 text-slate-500 hover:text-indigo-600 transition" title="Sửa"><i class="fa-solid fa-pen text-xs"></i></button>
+                                            <button @click="deleteNote(note.id)" class="p-1.5 text-slate-500 hover:text-rose-600 transition" title="Xóa"><i class="fa-solid fa-trash text-xs"></i></button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </template>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 5. PHÂN HỆ: QUẢN LÝ GIA ĐÌNH & PARENT DASHBOARD -->
+                <div x-show="activeTab === 'family'" class="space-y-6" x-cloak>
+                    <div class="bg-white p-6 rounded-3xl border border-slate-200 shadow-sm">
+                        <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-6 pb-4 border-b border-slate-100">
+                            <div>
+                                <h2 class="text-lg font-bold text-slate-800"><i class="fa-solid fa-users text-teal-600 mr-2"></i>Phân Hệ Quản Lý Gia Đình & Parent Dashboard</h2>
+                                <p class="text-xs text-slate-500 mt-0.5">Phụ huynh theo dõi chỉ số sức khỏe của con cái và chia sẻ ghi chú nhắc nhở tức thì.</p>
+                            </div>
+                            <button @click="openShareModal()" class="mt-3 sm:mt-0 px-4 py-2 bg-teal-600 hover:bg-teal-700 text-white font-semibold text-xs rounded-xl shadow transition flex items-center space-x-2">
+                                <i class="fa-solid fa-paper-plane"></i>
+                                <span>Gửi Ghi Chú Nhắc Nhở Cho Con</span>
+                            </button>
+                        </div>
+
+                        <!-- Children List -->
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div class="bg-slate-50 border border-slate-200 p-5 rounded-2xl">
+                                <div class="flex items-center space-x-4 mb-4">
+                                    <div class="w-14 h-14 rounded-full bg-indigo-100 text-indigo-700 flex items-center justify-center font-bold text-lg shadow-inner">TH</div>
+                                    <div>
+                                        <div class="font-bold text-slate-800 text-base">Đào Hồng Tiến Jr. (Con)</div>
+                                        <div class="text-xs text-emerald-600 font-semibold">Trạng thái: Sức khỏe tốt • Đã đồng bộ</div>
+                                    </div>
+                                </div>
+                                <div class="grid grid-cols-3 gap-3 text-center mb-4">
+                                    <div class="bg-white p-3 rounded-xl border border-slate-200">
+                                        <div class="text-[10px] text-slate-400">BMI</div>
+                                        <div class="text-sm font-bold text-slate-800">18.5</div>
+                                    </div>
+                                    <div class="bg-white p-3 rounded-xl border border-slate-200">
+                                        <div class="text-[10px] text-slate-400">Nhịp tim</div>
+                                        <div class="text-sm font-bold text-slate-800">74 bpm</div>
+                                    </div>
+                                    <div class="bg-white p-3 rounded-xl border border-slate-200">
+                                        <div class="text-[10px] text-slate-400">Uống nước</div>
+                                        <div class="text-sm font-bold text-slate-800">1.8 L</div>
+                                    </div>
+                                </div>
+                                <div class="text-xs bg-teal-50 border border-teal-200 text-teal-800 p-3 rounded-xl">
+                                    <span class="font-bold">Ghi chú gần nhất từ Phụ huynh:</span> "Nhớ uống thuốc đúng giờ và mặc áo ấm khi ra ngoài."
+                                </div>
+                            </div>
+
+                            <div class="bg-slate-50 border border-slate-200 p-5 rounded-2xl flex flex-col justify-between">
+                                <div>
+                                    <h3 class="font-bold text-sm text-slate-800 mb-3"><i class="fa-solid fa-link text-indigo-600 mr-2"></i>Liên Kết Tài Khoản Thành Viên</h3>
+                                    <p class="text-xs text-slate-600 leading-relaxed mb-4">Bạn có thể liên kết thêm tài khoản của thành viên khác trong gia đình để theo dõi lịch uống thuốc và tình trạng sức khỏe từ xa.</p>
+                                </div>
+                                <button class="w-full py-2.5 bg-indigo-50 text-indigo-700 font-bold text-xs rounded-xl hover:bg-indigo-100 transition border border-indigo-200">+ Thêm tài khoản thành viên mới</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 6. PHÂN HỆ: ADMIN DASHBOARD (QUẢN TRỊ VIÊN) -->
+                <div x-show="activeTab === 'admin'" class="space-y-6" x-cloak>
+                    <div class="bg-white p-6 rounded-3xl border border-slate-200 shadow-sm">
+                        <div class="flex items-center justify-between mb-6 pb-4 border-b border-slate-100">
+                            <div>
+                                <h2 class="text-lg font-bold text-slate-800"><i class="fa-solid fa-shield-halved text-rose-600 mr-2"></i>Bảng Điều Khiển Quản Trị Viên (Admin Dashboard)</h2>
+                                <p class="text-xs text-slate-500 mt-0.5">Quản lý toàn bộ hệ thống người dùng, phân quyền bảo mật và kiểm duyệt bài viết kiến thức.</p>
+                            </div>
+                            <span class="px-3 py-1 bg-rose-50 text-rose-700 text-xs font-bold rounded-full border border-rose-200">Quyền hạn: Toàn quyền</span>
+                        </div>
+
+                        <!-- Stats Cards -->
+                        <div class="grid grid-cols-1 sm:grid-cols-4 gap-4 mb-6">
+                            <div class="bg-slate-50 border border-slate-200 p-4 rounded-2xl">
+                                <div class="text-xs text-slate-500 font-medium">Tổng số tài khoản</div>
+                                <div class="text-2xl font-black text-slate-800 mt-1">1,248</div>
+                            </div>
+                            <div class="bg-slate-50 border border-slate-200 p-4 rounded-2xl">
+                                <div class="text-xs text-slate-500 font-medium">Phụ huynh (Parent)</div>
+                                <div class="text-2xl font-black text-teal-600 mt-1">312</div>
+                            </div>
+                            <div class="bg-slate-50 border border-slate-200 p-4 rounded-2xl">
+                                <div class="text-xs text-slate-500 font-medium">Người dùng cá nhân</div>
+                                <div class="text-2xl font-black text-indigo-600 mt-1">930</div>
+                            </div>
+                            <div class="bg-slate-50 border border-slate-200 p-4 rounded-2xl">
+                                <div class="text-xs text-slate-500 font-medium">Bài viết chờ kiểm duyệt</div>
+                                <div class="text-2xl font-black text-amber-600 mt-1">6</div>
+                            </div>
+                        </div>
+
+                        <!-- Users Management Table -->
+                        <h3 class="font-bold text-sm text-slate-800 mb-3">Danh sách tài khoản hệ thống</h3>
+                        <div class="overflow-x-auto">
+                            <table class="w-full text-left text-xs text-slate-700">
+                                <thead class="bg-slate-100 uppercase text-[10px] text-slate-500 font-bold">
+                                    <tr>
+                                        <th class="p-3 rounded-l-xl">Họ tên</th>
+                                        <th class="p-3">Email</th>
+                                        <th class="p-3">Vai trò (Role)</th>
+                                        <th class="p-3">Trạng thái</th>
+                                        <th class="p-3 rounded-r-xl text-right">Thao tác</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="divide-y divide-slate-100">
+                                    <tr>
+                                        <td class="p-3 font-bold">Dương Phúc Thọ</td>
+                                        <td class="p-3 text-slate-500">tho.dp@healthhub.vn</td>
+                                        <td class="p-3"><span class="px-2 py-0.5 bg-indigo-50 text-indigo-700 rounded font-semibold">User Cá Nhân</span></td>
+                                        <td class="p-3"><span class="text-emerald-600 font-semibold">Hoạt động</span></td>
+                                        <td class="p-3 text-right">
+                                            <button @click="showToast('Đã khóa tài khoản thành công!')" class="text-rose-600 hover:underline font-semibold">Khóa</button>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="p-3 font-bold">Đào Hồng Tiến</td>
+                                        <td class="p-3 text-slate-500">tien.dh@healthhub.vn</td>
+                                        <td class="p-3"><span class="px-2 py-0.5 bg-teal-50 text-teal-700 rounded font-semibold">Phụ Huynh (Parent)</span></td>
+                                        <td class="p-3"><span class="text-emerald-600 font-semibold">Hoạt động</span></td>
+                                        <td class="p-3 text-right">
+                                            <button @click="showToast('Đã khóa tài khoản thành công!')" class="text-rose-600 hover:underline font-semibold">Khóa</button>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="p-3 font-bold">Nguyễn Xuân Trường (Admin)</td>
+                                        <td class="p-3 text-slate-500">admin.truong@healthhub.vn</td>
+                                        <td class="p-3"><span class="px-2 py-0.5 bg-rose-50 text-rose-700 rounded font-semibold">Quản Trị Viên</span></td>
+                                        <td class="p-3"><span class="text-emerald-600 font-semibold">Hoạt động</span></td>
+                                        <td class="p-3 text-right">
+                                            <span class="text-slate-400">Không thể khóa</span>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+            </main>
+        </div>
+
+    </div>
+
+    <!-- ==================== MODALS & TOASTS ==================== -->
+    
+    <!-- Auth Modal (Sign in / Sign up) -->
+    <div x-show="authModalOpen" class="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4" x-cloak>
+        <div class="bg-white rounded-3xl p-6 w-full max-w-md shadow-xl border border-slate-200">
+            <div class="flex items-center justify-between mb-4">
+                <h3 class="font-bold text-lg text-slate-800" x-text="authMode === 'signin' ? 'Đăng Nhập Tài Khoản' : 'Đăng Ký Tài Khoản Mới'"></h3>
+                <button @click="authModalOpen = false" class="text-slate-400 hover:text-slate-600"><i class="fa-solid fa-xmark text-lg"></i></button>
+            </div>
+            <div class="space-y-4">
+                <div>
+                    <label class="block text-xs font-bold text-slate-700 mb-1">Email / Tên đăng nhập</label>
+                    <input type="text" x-model="authEmail" placeholder="nhom18@healthhub.vn" class="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-sm focus:bg-white outline-none">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-slate-700 mb-1">Mật khẩu</label>
+                    <input type="password" placeholder="••••••••" class="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-sm focus:bg-white outline-none">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-slate-700 mb-1">Chọn phân quyền (Role) trải nghiệm</label>
+                    <select x-model="currentRole" class="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-sm focus:bg-white outline-none font-semibold">
+                        <option value="user">Người dùng cá nhân (User)</option>
+                        <option value="parent">Phụ huynh quản lý con cái (Parent)</option>
+                        <option value="admin">Quản trị viên hệ thống (Admin)</option>
+                    </select>
+                </div>
+                <button @click="handleAuthSubmit()" class="w-full py-3 bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-sm rounded-xl shadow transition" x-text="authMode === 'signin' ? 'Đăng Nhập Ngay' : 'Đăng Ký Tài Khoản'"></button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Note Add/Edit Modal -->
+    <div x-show="noteModalOpen" class="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4" x-cloak>
+        <div class="bg-white rounded-3xl p-6 w-full max-w-lg shadow-xl border border-slate-200">
+            <div class="flex items-center justify-between mb-4">
+                <h3 class="font-bold text-lg text-slate-800" x-text="currentNote.id ? 'Chỉnh Sửa Note Học Tập' : 'Tạo Ghi Chú Kiến Thức Mới'"></h3>
+                <button @click="noteModalOpen = false" class="text-slate-400 hover:text-slate-600"><i class="fa-solid fa-xmark text-lg"></i></button>
+            </div>
+            <div class="space-y-4">
+                <div>
+                    <label class="block text-xs font-bold text-slate-700 mb-1">Tiêu đề ghi chú</label>
+                    <input type="text" x-model="currentNote.title" placeholder="Ví dụ: Thực đơn dinh dưỡng giảm mỡ..." class="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-sm focus:bg-white outline-none">
+                </div>
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-xs font-bold text-slate-700 mb-1">Danh mục</label>
+                        <select x-model="currentNote.category" class="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-sm focus:bg-white outline-none">
+                            <option value="Dinh dưỡng">Dinh dưỡng</option>
+                            <option value="Bài tập">Bài tập</option>
+                            <option value="Lời dặn bác sĩ">Lời dặn bác sĩ</option>
+                            <option value="Mẹo sống khỏe">Mẹo sống khỏe</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-slate-700 mb-1">Gắn Tag</label>
+                        <input type="text" x-model="currentNote.tag" placeholder="#songkhoe" class="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-sm focus:bg-white outline-none">
+                    </div>
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-slate-700 mb-1">Nội dung chi tiết</label>
+                    <textarea rows="4" x-model="currentNote.content" placeholder="Nhập nội dung ghi chú kiến thức..." class="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-sm focus:bg-white outline-none"></textarea>
+                </div>
+                <button @click="saveNote()" class="w-full py-3 bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-sm rounded-xl shadow transition">Lưu Ghi Chú</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Notification Toast Message Box -->
+    <div x-show="toastMessage" x-transition class="fixed bottom-6 right-6 bg-slate-900 text-white px-5 py-3 rounded-2xl shadow-2xl flex items-center space-x-3 z-50 text-xs font-semibold" x-cloak>
+        <i class="fa-solid fa-circle-check text-emerald-400 text-base"></i>
+        <span x-text="toastMessage"></span>
+    </div>
+
+    <!-- ==================== JAVASCRIPT LOGIC & CONTROLLER ==================== -->
+    <script>
+        function healthApp() {
+            return {
+                activeTab: 'dashboard',
+                isLoggedIn: true,
+                userName: 'Nguyễn Xuân Trường',
+                currentRole: 'user', // user, parent, admin
+                currentRoleName: 'Người dùng cá nhân',
+                searchQuery: '',
+                streakDays: 5,
+                showNotifications: false,
+                authModalOpen: false,
+                authMode: 'signin',
+                authEmail: 'truong.nx@healthhub.vn',
+                noteModalOpen: false,
+                toastMessage: '',
+
+                // User Metrics State
+                userMetrics: {
+                    weight: 65.5,
+                    height: 170,
+                    heartRate: 72,
+                    bp: '120/80',
+                    water: 2.1,
+                    calories: 1850,
+                    bmi: 22.7,
+                    bmiStatus: 'Bình thường (Lý tưởng)'
+                },
+
+                // Daily Tasks & Streak
+                dailyTasks: [
+                    { name: 'Uống đủ 2L nước mỗi ngày', done: true },
+                    { name: 'Đi bộ thể dục 30 phút', done: true },
+                    { name: 'Đo nhịp tim và huyết áp sáng', done: false }
+                ],
+
+                // Notes Database
+                selectedCategory: 'Tất cả',
+                notes: [
+                    { id: 1, title: 'Thực đơn Eat Clean tuần 2', category: 'Dinh dưỡng', tag: '#healthy', content: 'Tăng cường rau xanh, protein từ ức gà, cá hồi và hạn chế tinh bột tinh chế sau 19h tối.', date: '12/06/2026' },
+                    { id: 2, title: 'Bài tập Yoga buổi sáng 15 phút', category: 'Bài tập', tag: '#yoga', content: 'Thực hiện các động tác chào mặt trời giúp dẻo dai cột sống và giảm căng thẳng.', date: '10/06/2026' },
+                    { id: 3, title: 'Lời dặn bác sĩ tim mạch', category: 'Lời dặn bác sĩ', tag: '#khamchuabenh', content: 'Dùng thuốc huyết áp đều đặn vào 8h sáng, tái khám sau mỗi 3 tháng và kiêng ăn mặn.', date: '08/06/2026' },
+                    { id: 4, title: 'Mẹo ngủ sâu giấc ban đêm', category: 'Mẹo sống khỏe', tag: '#ngonngu', content: 'Không sử dụng điện thoại trước khi ngủ 30 phút, ngâm chân nước ấm với gừng.', date: '05/06/2026' }
+                ],
+                currentNote: { id: null, title: '', category: 'Dinh dưỡng', tag: '#suckhoe', content: '' },
+
+                init() {
+                    // Watch role changes to update display name
+                    this.$watch('currentRole', (value) => {
+                        if (value === 'user') this.currentRoleName = 'Người dùng cá nhân';
+                        else if (value === 'parent') this.currentRoleName = 'Phụ huynh quản lý con';
+                        else if (value === 'admin') this.currentRoleName = 'Quản trị viên (Admin)';
+                    });
+
+                    // Initialize Chart after DOM load
+                    setTimeout(() => {
+                        this.renderHealthChart();
+                    }, 200);
+                },
+
+                calculateBMI() {
+                    let hM = this.userMetrics.height / 100;
+                    if (hM > 0) {
+                        let bmiVal = (this.userMetrics.weight / (hM * hM)).toFixed(1);
+                        this.userMetrics.bmi = bmiVal;
+                        if (bmiVal < 18.5) this.userMetrics.bmiStatus = 'Thiếu cân';
+                        else if (bmiVal <= 24.9) this.userMetrics.bmiStatus = 'Bình thường (Lý tưởng)';
+                        else if (bmiVal <= 29.9) this.userMetrics.bmiStatus = 'Thừa cân';
+                        else this.userMetrics.bmiStatus = 'Béo phì';
+                        return bmiVal;
+                    }
+                    return '0';
+                },
+
+                saveMetrics() {
+                    this.calculateBMI();
+                    this.showToast('Đã cập nhật chỉ số cơ thể & biểu đồ thành công!');
+                },
+
+                toggleTask(index) {
+                    this.dailyTasks[index].done = !this.dailyTasks[index].done;
+                    let completed = this.dailyTasks.filter(t => t.done).length;
+                    if (completed === this.dailyTasks.length) {
+                        this.showToast('🎉 Chúc mừng bạn đã hoàn thành tất cả nhiệm vụ hôm nay!');
+                    } else {
+                        this.showToast('Đã cập nhật trạng thái nhiệm vụ.');
+                    }
+                },
+
+                get completedTasksCount() {
+                    return this.dailyTasks.filter(t => t.done).length;
+                },
+
+                get filteredNotes() {
+                    if (this.selectedCategory === 'Tất cả') return this.notes;
+                    return this.notes.filter(n => n.category === this.selectedCategory);
+                },
+
+                openNoteModal() {
+                    this.currentNote = { id: null, title: '', category: 'Dinh dưỡng', tag: '#suckhoe', content: '' };
+                    this.noteModalOpen = true;
+                },
+
+                editNote(note) {
+                    this.currentNote = { ...note };
+                    this.noteModalOpen = true;
+                },
+
+                saveNote() {
+                    if (!this.currentNote.title || !this.currentNote.content) {
+                        this.showToast('Vui lòng nhập đầy đủ tiêu đề và nội dung ghi chú!');
+                        return;
+                    }
+                    if (this.currentNote.id) {
+                        let idx = this.notes.findIndex(n => n.id === this.currentNote.id);
+                        if (idx !== -1) this.notes[idx] = { ...this.currentNote };
+                        this.showToast('Đã cập nhật ghi chú thành công!');
+                    } else {
+                        this.currentNote.id = Date.now();
+                        this.currentNote.date = new Date().toLocaleDateString('vi-VN');
+                        this.notes.unshift({ ...this.currentNote });
+                        this.showToast('Đã tạo ghi chú học tập mới thành công!');
+                    }
+                    this.noteModalOpen = false;
+                },
+
+                deleteNote(id) {
+                    this.notes = this.notes.filter(n => n.id !== id);
+                    this.showToast('Đã xóa ghi chú thành công.');
+                },
+
+                openAuthModal(mode) {
+                    this.authMode = mode;
+                    this.authModalOpen = true;
+                },
+
+                handleAuthSubmit() {
+                    this.isLoggedIn = true;
+                    this.authModalOpen = false;
+                    this.showToast(`Đã đăng nhập thành công với vai trò: ${this.currentRoleName}`);
+                },
+
+                logout() {
+                    this.isLoggedIn = false;
+                    this.showToast('Đã đăng xuất tài khoản.');
+                },
+
+                openShareModal() {
+                    this.showToast('Đã gửi thông báo nhắc nhở y tế sang tài khoản của con thành công!');
+                },
+
+                selectCalendarDay(day) {
+                    this.showToast(`Đã chọn ngày ${day}/06/2026: Hiển thị chi tiết lịch trình sức khỏe.`);
+                },
+
+                showToast(msg) {
+                    this.toastMessage = msg;
+                    setTimeout(() => {
+                        this.toastMessage = '';
+                    }, 3500);
+                },
+
+                renderHealthChart() {
+                    const ctx = document.getElementById('healthChart');
+                    if (!ctx) return;
+                    new Chart(ctx, {
+                        type: 'line',
+                        data: {
+                            labels: ['Thứ 2', 'Thứ 3', 'Thứ 4', 'Thứ 5', 'Thứ 6', 'Thứ 7', 'CN'],
+                            datasets: [{
+                                label: 'Nhịp tim trung bình (bpm)',
+                                data: [72, 75, 71, 74, 73, 76, 72],
+                                borderColor: '#4f46e5',
+                                backgroundColor: 'rgba(79, 70, 229, 0.1)',
+                                borderWidth: 3,
+                                fill: true,
+                                tension: 0.4
+                            }, {
+                                label: 'Lượng nước uống (x0.5L)',
+                                data: [4, 4.5, 4, 5, 4.2, 4.8, 4.4],
+                                borderColor: '#0d9488',
+                                backgroundColor: 'rgba(13, 148, 136, 0.1)',
+                                borderWidth: 3,
+                                fill: true,
+                                tension: 0.4
+                            }]
+                        },
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            plugins: {
+                                legend: {
+                                    position: 'bottom',
+                                    labels: { font: { family: 'Inter', size: 11 } }
+                                }
+                            },
+                            scales: {
+                                y: { beginAtZero: false, grid: { color: '#f1f5f9' } },
+                                x: { grid: { display: false } }
+                            }
+                        }
+                    });
+                }
+            }
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,92 @@
+
+body {
+    background-color: #f2f2f2;
+    font-family: Arial, sans-serif;
+}
+
+
+.container {
+    width: 350px; 
+    background-color: #eef3ca; 
+    border: 3px solid #e9aa6f;  
+    border-radius: 12px;  
+    padding: 25px;   
+    margin: 80px auto;     
+}
+
+.login-form .login.form.head {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.logo img {
+    width: 50px;
+    height: auto;
+}
+
+.login-form h1 {
+    text-align: center;
+    color: #333333;
+    font-size: 22px;
+    margin-top: 10px;
+}
+
+
+.login-form .login.form.main {
+    margin-bottom: 20px;
+}
+
+
+.login-form .login.form.main > div {
+    margin-bottom: 15px; 
+}
+
+.login-form input {
+    width: 100%;     
+    padding: 10px 12px;       
+    border: 1px solid #ccc;   
+    border-radius: 6px;         
+    font-size: 14px;
+    outline: none;              
+}
+
+.btn-submit {
+    width: 100%;
+    padding: 10px;
+    background-color: #e9aa6f;   
+    color: white;      
+    border: none;
+    border-radius: 6px;
+    font-size: 15px;
+    font-weight: bold;
+    cursor: pointer;            
+    margin-bottom: 15px;
+}
+
+.btn-submit:hover {
+    background-color: #d8935b;   
+}
+
+.register {
+    text-align: center;
+    font-size: 13px;
+    color: #555;
+}
+
+.register p {
+    margin-bottom: 8px;
+}
+
+
+.btn-register {
+    background: none;       
+    border: none;
+    color: #0066cc;       
+    font-weight: bold;
+    cursor: pointer;
+    font-size: 13px;
+}
+
+.btn-register:hover {
+    text-decoration: underline;
+}
