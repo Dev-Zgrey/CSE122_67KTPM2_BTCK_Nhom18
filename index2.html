@@ -1,887 +1,1388 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="vi">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HealthCare & Study - Quản Lý Sức Khỏe Cá Nhân & Gia Đình</title>
-    <!-- Tailwind CSS -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Alpine.js for reactive UI -->
-    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
-    <!-- Chart.js for health indicators chart -->
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <!-- Font Awesome for icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- Google Fonts Inter -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <style>
-        body { font-family: 'Inter', sans-serif; }
-        ::-webkit-scrollbar { width: 6px; height: 6px; }
-        ::-webkit-scrollbar-track { background: #f1f1f1; }
-        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 3px; }
-        ::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>SpendWise | Tài chính sáng rõ hơn</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/lucide@0.468.0/dist/umd/lucide.min.js">
+</script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js">
+</script>
+<style>
+:root {
+  --ink:#18201d;
+  --muted:#73807a;
+  --line:#e2e9e5;
+  --paper:#f5f7f4;
+  --green:#1f7a5b;
+  --mint:#d9f4e8;
+  --lime:#c7ef62;
+  --coral:#ff806d;
+  --gold:#f5c86a
+}
+* {
+  box-sizing:border-box
+}
+body {
+  margin:0;
+  background:var(--paper);
+  color:var(--ink);
+  font-family:'DM Sans',sans-serif
+}
+button,input,select {
+  font:inherit
+}
+button {
+  border:0;
+  cursor:pointer
+}
+.app {
+  display:flex;
+  min-height:100vh
+}
+.sidebar {
+  position:fixed;
+  inset:0 auto 0 0;
+  width:244px;
+  height:100vh;
+  background:#17372f;
+  color:#d7e8e1;
+  padding:26px 18px 20px;
+  display:flex;
+  flex-direction:column;
+  flex-shrink:0;
+  overflow-y:auto;
+  z-index:10
+}
+.brand {
+  display:flex;
+  align-items:center;
+  gap:10px;
+  color:#fff;
+  font:700 20px 'Space Grotesk';
+  margin:0 10px 42px
+}
+.brand-mark {
+  width:34px;
+  height:34px;
+  border-radius:10px;
+  background:var(--lime);
+  color:#17372f;
+  display:grid;
+  place-items:center
+}
+.eyebrow {
+  font-size:10px;
+  letter-spacing:.12em;
+  text-transform:uppercase;
+  color:#8eb8a8;
+  margin:0 12px 13px;
+  font-weight:700
+}
+.nav {
+  display:grid;
+  gap:5px
+}
+.nav button {
+  color:#b8d2c9;
+  background:transparent;
+  display:flex;
+  align-items:center;
+  gap:12px;
+  padding:12px;
+  border-radius:10px;
+  text-align:left;
+  font-size:13px
+}
+.nav button:hover,.nav button.active {
+  background:#285649;
+  color:#fff
+}
+.nav button.active {
+  box-shadow:inset 3px 0 var(--lime)
+}
+.sidebar-foot {
+  margin-top:auto
+}
+.upgrade {
+  background:#285649;
+  border:1px solid #396b5b;
+  border-radius:14px;
+  padding:16px;
+  margin-bottom:18px
+}
+.upgrade strong {
+  display:block;
+  color:#fff;
+  font-size:13px;
+  margin-bottom:5px
+}
+.upgrade p {
+  color:#aac9be;
+  font-size:11px;
+  line-height:1.5;
+  margin:0 0 13px
+}
+.upgrade button {
+  width:100%;
+  background:var(--lime);
+  color:#17372f;
+  padding:9px;
+  border-radius:8px;
+  font-size:12px;
+  font-weight:700
+}
+.profile {
+  display:flex;
+  align-items:center;
+  gap:10px;
+  padding:12px 6px 0;
+  border-top:1px solid #2c574c
+}
+.avatar {
+  width:34px;
+  height:34px;
+  display:grid;
+  place-items:center;
+  border-radius:50%;
+  background:#f4b9a9;
+  color:#713e36;
+  font-weight:700;
+  font-size:12px
+}
+.profile small {
+  color:#8eb8a8;
+  font-size:10px;
+  display:block;
+  margin-top:2px
+}
+.main {
+  min-width:0;
+  flex:1;
+  min-height:100vh;
+  margin-left:244px;
+  padding:28px 38px 46px
+}
+.topbar {
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:20px;
+  margin-bottom:30px;
+  flex-wrap:wrap
+}
+.title h1 {
+  font:700 28px 'Space Grotesk';
+  margin:0 0 5px;
+  letter-spacing:-.03em
+}
+.title p {
+  color:var(--muted);
+  font-size:13px;
+  margin:0
+}
+.top-actions {
+  display:flex;
+  align-items:center;
+  gap:10px
+}
+.search {
+  background:#fff;
+  border:1px solid var(--line);
+  padding:10px 14px;
+  width:210px;
+  border-radius:10px;
+  display:flex;
+  gap:8px;
+  color:var(--muted)
+}
+.search input {
+  border:0;
+  outline:0;
+  min-width:0;
+  width:100%;
+  font-size:12px
+}
+.icon-btn {
+  width:38px;
+  height:38px;
+  background:#fff;
+  border:1px solid var(--line);
+  color:var(--muted);
+  border-radius:10px;
+  display:grid;
+  place-items:center
+}
+.primary {
+  background:var(--green);
+  color:#fff;
+  display:inline-flex;
+  align-items:center;
+  gap:7px;
+  padding:11px 15px;
+  border-radius:10px;
+  font-size:12px;
+  font-weight:700
+}
+.primary:hover {
+  background:#176448
+}
+.role-select {
+  background:#fff;
+  border:1px solid var(--line);
+  padding:10px 12px;
+  border-radius:10px;
+  font-size:12px;
+  color:var(--ink)
+}
+.stats {
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:14px;
+  margin-bottom:18px
+}
+.card {
+  background:#fff;
+  border:1px solid var(--line);
+  border-radius:14px
+}
+.stat {
+  padding:18px;
+  min-height:123px
+}
+.stat .icon {
+  width:31px;
+  height:31px;
+  border-radius:8px;
+  display:grid;
+  place-items:center;
+  margin-bottom:15px
+}
+.stat:nth-child(1) .icon {
+  background:var(--mint);
+  color:var(--green)
+}
+.stat:nth-child(2) .icon {
+  background:#fff0cc;
+  color:#ae781d
+}
+.stat:nth-child(3) .icon {
+  background:#ffe3dd;
+  color:#c45b4b
+}
+.stat:nth-child(4) .icon {
+  background:#e5e8f9;
+  color:#5965ae
+}
+.stat label {
+  display:block;
+  color:var(--muted);
+  font-size:11px;
+  margin-bottom:4px
+}
+.stat strong {
+  font:700 21px 'Space Grotesk'
+}
+.stat em {
+  font-style:normal;
+  font-size:10px;
+  color:var(--green);
+  margin-left:5px
+}
+.dashboard-grid,.lower-grid {
+  display:grid;
+  grid-template-columns:minmax(0,1.5fr) minmax(280px,.8fr);
+  gap:18px
+}
+.lower-grid {
+  margin-top:18px
+}
+.panel,.section-card {
+  padding:20px
+}
+.panel-head {
+  display:flex;
+  align-items:flex-start;
+  justify-content:space-between;
+  gap:10px;
+  margin-bottom:17px
+}
+.panel-head h2 {
+  font:600 15px 'Space Grotesk';
+  margin:0 0 5px
+}
+.panel-head p {
+  margin:0;
+  color:var(--muted);
+  font-size:11px
+}
+.link {
+  background:none;
+  color:var(--green);
+  font-size:11px;
+  font-weight:700;
+  padding:3px
+}
+.chart-wrap {
+  height:250px
+}
+.budget-ring {
+  display:flex;
+  align-items:center;
+  gap:24px;
+  margin:22px 0 24px
+}
+.ring {
+  width:142px;
+  height:142px;
+  border-radius:50%;
+  background:conic-gradient(var(--green) 0 73%,#e7efeb 73% 100%);
+  display:grid;
+  place-items:center;
+  position:relative;
+  flex-shrink:0
+}
+.ring:after {
+  content:'';
+  width:105px;
+  height:105px;
+  border-radius:50%;
+  background:#fff;
+  position:absolute
+}
+.ring-content {
+  position:relative;
+  z-index:1;
+  text-align:center
+}
+.ring-content strong {
+  display:block;
+  font:700 24px 'Space Grotesk'
+}
+.ring-content span {
+  color:var(--muted);
+  font-size:10px
+}
+.budget-total strong {
+  font:700 20px 'Space Grotesk';
+  display:block;
+  margin-bottom:5px
+}
+.budget-total span {
+  color:var(--muted);
+  font-size:11px
+}
+.progress {
+  height:7px;
+  background:#e8efeb;
+  border-radius:99px;
+  overflow:hidden
+}
+.progress i {
+  display:block;
+  height:100%;
+  width:73%;
+  background:var(--green);
+  border-radius:inherit
+}
+.budget-meta {
+  display:flex;
+  justify-content:space-between;
+  font-size:11px;
+  color:var(--muted);
+  margin-top:8px
+}
+.transaction {
+  display:flex;
+  align-items:center;
+  gap:12px;
+  padding:13px 0;
+  border-bottom:1px solid #edf1ee
+}
+.transaction:last-child {
+  border:0;
+  padding-bottom:0
+}
+.tx-icon {
+  width:34px;
+  height:34px;
+  border-radius:9px;
+  display:grid;
+  place-items:center;
+  flex-shrink:0
+}
+.tx-icon.green {
+  background:#e0f3e7;
+  color:var(--green)
+}
+.tx-icon.orange {
+  background:#fff0d5;
+  color:#bc7c22
+}
+.tx-icon.red {
+  background:#ffe6e0;
+  color:#c05b4e
+}
+.tx-icon.blue {
+  background:#e9ebfb;
+  color:#5a63a9
+}
+.tx-copy {
+  min-width:0;
+  flex:1
+}
+.tx-copy strong {
+  display:block;
+  font-size:12px
+}
+.tx-copy span {
+  color:var(--muted);
+  font-size:10px
+}
+.tx-amount {
+  text-align:right;
+  font:600 12px 'Space Grotesk'
+}
+.tx-amount small {
+  display:block;
+  font:400 10px 'DM Sans';
+  color:var(--muted);
+  margin-top:3px
+}
+.amount-out {
+  color:#bd5c4f;
+  font-weight:700
+}
+.amount-in {
+  color:var(--green);
+  font-weight:700
+}
+.goal {
+  display:grid;
+  grid-template-columns:44px 1fr auto;
+  gap:12px;
+  align-items:center;
+  padding:13px 0;
+  border-bottom:1px solid #edf1ee
+}
+.goal:last-child {
+  border:0
+}
+.goal-icon {
+  width:40px;
+  height:40px;
+  border-radius:11px;
+  display:grid;
+  place-items:center;
+  background:#e9f5d0;
+  color:#789a26
+}
+.goal strong {
+  font-size:12px;
+  display:block;
+  margin-bottom:5px
+}
+.goal span {
+  font-size:10px;
+  color:var(--muted)
+}
+.goal-value {
+  text-align:right;
+  font-size:11px;
+  color:var(--muted)
+}
+.goal-value b {
+  color:var(--ink);
+  display:block;
+  margin-bottom:3px
+}
+.mini-progress {
+  height:4px;
+  border-radius:9px;
+  background:#edf1e5;
+  margin-top:9px
+}
+.mini-progress i {
+  display:block;
+  height:100%;
+  background:#a9ce48;
+  border-radius:9px
+}
+.view {
+  display:none
+}
+.view.active {
+  display:block
+}
+.table-tools {
+  display:flex;
+  gap:9px;
+  align-items:center;
+  margin-bottom:15px;
+  flex-wrap:wrap
+}
+.filter {
+  border:1px solid var(--line);
+  background:#fff;
+  padding:9px 12px;
+  border-radius:8px;
+  font-size:11px;
+  color:var(--muted)
+}
+table {
+  width:100%;
+  border-collapse:collapse
+}
+th {
+  color:var(--muted);
+  font-size:10px;
+  text-align:left;
+  font-weight:600;
+  padding:11px;
+  border-bottom:1px solid var(--line)
+}
+td {
+  font-size:11px;
+  padding:13px 11px;
+  border-bottom:1px solid #edf1ee
+}
+td:last-child,th:last-child {
+  text-align:right
+}
+.status {
+  border-radius:20px;
+  padding:4px 8px;
+  font-size:10px;
+  background:#e4f5eb;
+  color:var(--green)
+}
+.empty {
+  text-align:center;
+  color:var(--muted);
+  padding:45px 20px;
+  font-size:12px
+}
+.modal-backdrop {
+  position:fixed;
+  inset:0;
+  background:#112a2375;
+  display:none;
+  align-items:center;
+  justify-content:center;
+  padding:20px;
+  z-index:5
+}
+.modal-backdrop.show {
+  display:flex
+}
+.modal {
+  background:#fff;
+  width:100%;
+  max-width:460px;
+  border-radius:16px;
+  padding:23px;
+  box-shadow:0 20px 60px #0b241b33
+}
+.modal-head {
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:20px
+}
+.modal h2 {
+  font:600 18px 'Space Grotesk';
+  margin:0
+}
+.form-grid {
+  display:grid;
+  gap:13px
+}
+.field label {
+  display:block;
+  font-size:11px;
+  font-weight:700;
+  margin-bottom:6px
+}
+.field input,.field select {
+  width:100%;
+  padding:11px 12px;
+  border:1px solid var(--line);
+  border-radius:8px;
+  outline:0;
+  font-size:12px;
+  background:#fbfcfb
+}
+.modal-foot {
+  display:flex;
+  justify-content:flex-end;
+  gap:8px;
+  margin-top:20px
+}
+.secondary {
+  background:#eef3f0;
+  color:#52625b;
+  padding:10px 14px;
+  border-radius:8px;
+  font-size:12px;
+  font-weight:600
+}
+.toast {
+  position:fixed;
+  right:24px;
+  bottom:24px;
+  background:#17372f;
+  color:#fff;
+  padding:13px 16px;
+  border-radius:10px;
+  font-size:12px;
+  display:none;
+  z-index:8
+}
+.toast.show {
+  display:block
+}
+@media(max-width:900px) {
+  .sidebar {
+  width:74px;
+  padding:22px 10px;
+  align-items:center
+}
+.brand {
+  margin:0 0 35px
+}
+.brand span,.eyebrow,.nav button span,.upgrade,.profile>div {
+  display:none
+}
+.nav button {
+  justify-content:center
+}
+.profile {
+  border:0;
+  padding-top:20px
+}
+.main {
+  margin-left:74px;
+  padding:24px
+}
+.stats {
+  grid-template-columns:repeat(2,1fr)
+}
+
+}
+@media(max-width:1100px) {
+  .dashboard-grid,.lower-grid {
+  grid-template-columns:1fr
+}
+}
+@media(max-width:650px) {
+  .main {
+  padding:19px 15px 35px
+}
+.topbar {
+  align-items:flex-start;
+  margin-bottom:22px
+}
+.top-actions .search,.top-actions .role-select {
+  display:none
+}
+.title h1 {
+  font-size:23px
+}
+.top-actions .primary {
+  padding:10px;
+  font-size:0
+}
+.stats,.dashboard-grid,.lower-grid {
+  grid-template-columns:1fr
+}
+.stats {
+  gap:9px
+}
+.stat {
+  min-height:108px;
+  padding:14px
+}
+.chart-wrap {
+  height:220px
+}
+.sidebar {
+  width:60px
+}
+.main {
+  margin-left:60px
+}
+.section-card {
+  padding:14px;
+  overflow:auto
+}
+table {
+  min-width:620px
+}
+
+}
+
+</style>
 </head>
-<body class="bg-slate-50 text-slate-800 antialiased" x-data="healthApp()">
-
-    <div class="flex h-screen overflow-hidden">
-
-        <!-- ==================== SIDEBAR (CỘT TRÁI THEO WIREFRAME) ==================== -->
-        <aside class="w-20 bg-slate-200 border-r border-slate-300 flex flex-col items-center py-4 justify-between shrink-0 z-20">
-            <!-- Top: Logo -->
-            <div class="flex flex-col items-center space-y-4">
-                <div class="w-12 h-12 bg-indigo-600 rounded-xl flex items-center justify-center text-white shadow-md cursor-pointer hover:bg-indigo-700 transition" title="HealthCare Hub">
-                    <i class="fa-solid fa-heart-pulse text-xl"></i>
-                </div>
-                <div class="w-8 h-[1px] bg-slate-300"></div>
-
-                <!-- Nav Buttons (Circular/Icon matching wireframe) -->
-                <div class="flex flex-col space-y-3">
-                    <button @click="activeTab = 'dashboard'" :class="activeTab === 'dashboard' ? 'bg-indigo-600 text-white shadow-md' : 'bg-amber-200 text-slate-700 hover:bg-amber-300'" class="w-12 h-12 rounded-full flex items-center justify-center transition text-lg" title="Dashboard">
-                        <i class="fa-solid fa-house"></i>
-                    </button>
-                    <button @click="activeTab = 'metrics'" :class="activeTab === 'metrics' ? 'bg-indigo-600 text-white shadow-md' : 'bg-amber-200 text-slate-700 hover:bg-amber-300'" class="w-12 h-12 rounded-full flex items-center justify-center transition text-lg" title="Chỉ số cơ thể">
-                        <i class="fa-solid fa-stethoscope"></i>
-                    </button>
-                    <button @click="activeTab = 'calendar'" :class="activeTab === 'calendar' ? 'bg-indigo-600 text-white shadow-md' : 'bg-amber-200 text-slate-700 hover:bg-amber-300'" class="w-12 h-12 rounded-full flex items-center justify-center transition text-lg" title="Lịch sức khỏe & Streak">
-                        <i class="fa-solid fa-calendar-days"></i>
-                    </button>
-                    <button @click="activeTab = 'notes'" :class="activeTab === 'notes' ? 'bg-indigo-600 text-white shadow-md' : 'bg-amber-200 text-slate-700 hover:bg-amber-300'" class="w-12 h-12 rounded-full flex items-center justify-center transition text-lg" title="Note học tập">
-                        <i class="fa-solid fa-book-medical"></i>
-                    </button>
-                    <button @click="activeTab = 'family'" :class="activeTab === 'family' ? 'bg-indigo-600 text-white shadow-md' : 'bg-amber-200 text-slate-700 hover:bg-amber-300'" class="w-12 h-12 rounded-full flex items-center justify-center transition text-lg" title="Quản lý gia đình & Parent">
-                        <i class="fa-solid fa-users"></i>
-                    </button>
-                    <button @click="activeTab = 'admin'" :class="activeTab === 'admin' ? 'bg-indigo-600 text-white shadow-md' : 'bg-amber-200 text-slate-700 hover:bg-amber-300'" class="w-12 h-12 rounded-full flex items-center justify-center transition text-lg" title="Quản trị hệ thống (Admin)">
-                        <i class="fa-solid fa-shield-halved"></i>
-                    </button>
-                </div>
-            </div>
-
-            <!-- Bottom: User Avatar / Landscape badge -->
-            <div class="flex flex-col items-center space-y-2">
-                <div class="w-12 h-12 rounded-full overflow-hidden border-2 border-white shadow cursor-pointer relative group">
-                    <img src="https://placehold.co/100x100/cbd5e1/475569?text=Avatar" alt="User" class="w-full h-full object-cover">
-                    <div class="absolute inset-0 bg-black/40 flex items-center justify-center text-white opacity-0 group-hover:opacity-100 transition text-xs">
-                        <i class="fa-solid fa-gear"></i>
-                    </div>
-                </div>
-            </div>
-        </aside>
-
-        <!-- ==================== MAIN CONTAINER ==================== -->
-        <div class="flex-1 flex flex-col overflow-hidden">
-            
-            <!-- HEADER -->
-            <header class="h-16 bg-white border-b border-slate-200 flex items-center justify-between px-6 shrink-0 shadow-sm z-10">
-                <!-- Brand / Logo Title -->
-                <div class="flex items-center space-x-3">
-                    <span class="text-xl font-bold bg-gradient-to-r from-indigo-600 to-teal-500 bg-clip-text text-transparent">HealthHub Nhóm 18</span>
-                    <span class="text-xs px-2.5 py-1 bg-indigo-50 text-indigo-700 font-medium rounded-full border border-indigo-200">
-                        Vai trò: <strong x-text="currentRoleName"></strong>
-                    </span>
-                </div>
-
-                <!-- Search Bar (Mô phỏng "Tìm kiếm" trong ảnh) -->
-                <div class="flex-1 max-w-md mx-8">
-                    <div class="relative">
-                        <span class="absolute inset-y-0 left-0 flex items-center pl-3.5 pointer-events-none text-slate-400">
-                            <i class="fa-solid fa-search"></i>
-                        </span>
-                        <input type="text" x-model="searchQuery" placeholder="Tìm kiếm chỉ số, ghi chú, lịch trình, bài viết..." class="w-full bg-slate-100 border border-slate-300 rounded-full py-2 pl-10 pr-4 text-sm text-slate-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:bg-white transition shadow-inner">
-                    </div>
-                </div>
-
-                <!-- Right Actions: Notifications, Sign In, Sign Up -->
-                <div class="flex items-center space-x-4">
-                    <!-- Notification Button -->
-                    <button @click="showNotifications = !showNotifications" class="w-10 h-10 rounded-full bg-slate-100 border border-slate-300 flex items-center justify-center text-slate-600 hover:bg-slate-200 relative transition">
-                        <i class="fa-regular fa-bell"></i>
-                        <span class="absolute top-1 right-1 w-2.5 h-2.5 bg-rose-500 rounded-full ring-2 ring-white"></span>
-                    </button>
-
-                    <!-- Auth buttons (Sign in / Sign up) -->
-                    <template x-if="!isLoggedIn">
-                        <div class="flex items-center space-x-2">
-                            <button @click="openAuthModal('signin')" class="px-4 py-2 text-sm font-semibold text-slate-700 hover:bg-slate-100 rounded-full transition">Sign in</button>
-                            <button @click="openAuthModal('signup')" class="px-4 py-2 text-sm font-semibold text-white bg-gradient-to-r from-emerald-400 to-teal-500 hover:from-emerald-500 hover:to-teal-600 rounded-full shadow-md transition">Sign up</button>
-                        </div>
-                    </template>
-                    <template x-if="isLoggedIn">
-                        <div class="flex items-center space-x-3">
-                            <div class="text-right hidden sm:block">
-                                <div class="text-xs font-semibold text-slate-700" x-text="userName"></div>
-                                <div class="text-[10px] text-slate-500" x-text="currentRoleName"></div>
-                            </div>
-                            <button @click="logout()" class="px-3 py-1.5 text-xs font-medium bg-rose-50 text-rose-600 hover:bg-rose-100 rounded-full transition border border-rose-200">Đăng xuất</button>
-                        </div>
-                    </template>
-                </div>
-            </header>
-
-            <!-- ==================== BODY CONTENT AREA (WIREFRAME LAYOUT) ==================== -->
-            <main class="flex-1 overflow-y-auto p-6 bg-slate-50">
-                
-                <!-- 1. DASHBOARD VIEW (Bám sát bố cục wireframe ảnh mẫu) -->
-                <div x-show="activeTab === 'dashboard'" class="space-y-6">
-                    
-                    <!-- Top 4 Circular Mini Cards (Mô phỏng 4 hình tròn nhỏ hàng trên) -->
-                    <div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
-                        <div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-sm flex items-center space-x-4 hover:shadow-md transition">
-                            <div class="w-12 h-12 rounded-full bg-teal-100 text-teal-600 flex items-center justify-center font-bold text-lg"><i class="fa-solid fa-fire"></i></div>
-                            <div>
-                                <div class="text-xs text-slate-500 font-medium">🔥 Streak Thói Quen</div>
-                                <div class="text-lg font-bold text-slate-800" x-text="streakDays + ' ngày liên tục'"></div>
-                            </div>
-                        </div>
-                        <div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-sm flex items-center space-x-4 hover:shadow-md transition">
-                            <div class="w-12 h-12 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center font-bold text-lg"><i class="fa-solid fa-weight-scale"></i></div>
-                            <div>
-                                <div class="text-xs text-slate-500 font-medium">Chỉ số BMI</div>
-                                <div class="text-lg font-bold text-slate-800" x-text="userMetrics.bmi + ' (' + userMetrics.bmiStatus + ')'"></div>
-                            </div>
-                        </div>
-                        <div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-sm flex items-center space-x-4 hover:shadow-md transition">
-                            <div class="w-12 h-12 rounded-full bg-indigo-100 text-indigo-600 flex items-center justify-center font-bold text-lg"><i class="fa-solid fa-heart-pulse"></i></div>
-                            <div>
-                                <div class="text-xs text-slate-500 font-medium">Nhịp Tim & Huyết Áp</div>
-                                <div class="text-sm font-bold text-slate-800" x-text="userMetrics.heartRate + ' bpm | ' + userMetrics.bp"></div>
-                            </div>
-                        </div>
-                        <div class="bg-white p-4 rounded-2xl border border-slate-200 shadow-sm flex items-center space-x-4 hover:shadow-md transition">
-                            <div class="w-12 h-12 rounded-full bg-amber-100 text-amber-600 flex items-center justify-center font-bold text-lg"><i class="fa-solid fa-glass-water"></i></div>
-                            <div>
-                                <div class="text-xs text-slate-500 font-medium">Lượng Nước / Calo</div>
-                                <div class="text-sm font-bold text-slate-800" x-text="userMetrics.water + 'L / ' + userMetrics.calories + ' kcal'"></div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Main Grid Layout (3 bên trái, Tròn lớn ở giữa, Khung lớn dọc bên phải) -->
-                    <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
-                        
-                        <!-- LEFT COLUMN: 3 Thẻ chữ nhật bo tròn (Như wireframe) -->
-                        <div class="lg:col-span-3 space-y-4">
-                            <!-- Card 1: Nhiệm vụ sức khỏe hằng ngày -->
-                            <div class="bg-white p-5 rounded-3xl border border-slate-200 shadow-sm">
-                                <div class="flex items-center justify-between mb-3">
-                                    <h3 class="font-bold text-sm text-slate-800"><i class="fa-solid fa-list-check text-indigo-600 mr-2"></i>Nhiệm vụ hôm nay</h3>
-                                    <span class="text-xs bg-emerald-100 text-emerald-700 px-2 py-0.5 rounded-full font-medium" x-text="completedTasksCount + '/3 hoàn thành'"></span>
-                                </div>
-                                <div class="space-y-2">
-                                    <template x-for="(task, index) in dailyTasks" :key="index">
-                                        <div @click="toggleTask(index)" class="flex items-center space-x-3 p-2.5 rounded-xl border transition cursor-pointer" :class="task.done ? 'bg-emerald-50 border-emerald-200 text-emerald-800 line-through' : 'bg-slate-50 border-slate-200 text-slate-700 hover:bg-slate-100'">
-                                            <div class="w-5 h-5 rounded-full border flex items-center justify-center text-xs" :class="task.done ? 'bg-emerald-600 border-emerald-600 text-white' : 'border-slate-400'">
-                                                <i x-show="task.done" class="fa-solid fa-check text-[10px]"></i>
-                                            </div>
-                                            <span class="text-xs font-medium" x-text="task.name"></span>
-                                        </div>
-                                    </template>
-                                </div>
-                            </div>
-
-                            <!-- Card 2: Lịch uống thuốc & Khám bệnh nhanh -->
-                            <div class="bg-white p-5 rounded-3xl border border-slate-200 shadow-sm">
-                                <div class="flex items-center justify-between mb-3">
-                                    <h3 class="font-bold text-sm text-slate-800"><i class="fa-solid fa-pills text-teal-600 mr-2"></i>Nhắc nhở y tế</h3>
-                                    <button @click="activeTab = 'calendar'" class="text-xs text-indigo-600 hover:underline font-medium">Xem lịch</button>
-                                </div>
-                                <div class="space-y-2">
-                                    <div class="p-3 bg-teal-50 border border-teal-200 rounded-xl text-xs text-teal-900">
-                                        <div class="font-bold flex items-center justify-between">
-                                            <span>Uống Vitamin C</span>
-                                            <span class="text-[10px] bg-teal-200 text-teal-800 px-1.5 py-0.5 rounded">08:00 Sáng</span>
-                                        </div>
-                                        <div class="text-[11px] text-teal-700 mt-1">Sau khi ăn sáng xong.</div>
-                                    </div>
-                                    <div class="p-3 bg-amber-50 border border-amber-200 rounded-xl text-xs text-amber-900">
-                                        <div class="font-bold flex items-center justify-between">
-                                            <span>Khám định kỳ răng</span>
-                                            <span class="text-[10px] bg-amber-200 text-amber-800 px-1.5 py-0.5 rounded">15/06/2026</span>
-                                        </div>
-                                        <div class="text-[11px] text-amber-700 mt-1">Bệnh viện Đa khoa Quốc tế.</div>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- Card 3: Nhanh chóng cập nhật chỉ số -->
-                            <div class="bg-indigo-600 text-white p-5 rounded-3xl shadow-md">
-                                <h3 class="font-bold text-sm mb-2"><i class="fa-solid fa-plus-circle mr-2"></i>Nhập liệu nhanh</h3>
-                                <p class="text-xs text-indigo-100 mb-3">Ghi lại cân nặng, huyết áp mới nhất ngay hôm nay để hệ thống theo dõi biểu đồ.</p>
-                                <button @click="activeTab = 'metrics'" class="w-full py-2 bg-white text-indigo-700 font-semibold text-xs rounded-xl hover:bg-indigo-50 transition shadow">Mở bảng nhập liệu</button>
-                            </div>
-                        </div>
-
-                        <!-- CENTER COLUMN: Hình tròn lớn ở giữa + Khung chữ nhật ở dưới (Mô phỏng đúng wireframe) -->
-                        <div class="lg:col-span-6 space-y-6 flex flex-col items-center">
-                            
-                            <!-- Large Circular Section (Biểu đồ xu hướng sức khỏe trung tâm) -->
-                            <div class="w-full bg-white p-6 rounded-3xl border border-slate-200 shadow-sm flex flex-col items-center">
-                                <div class="w-full flex items-center justify-between mb-4">
-                                    <h3 class="font-bold text-slate-800 text-base"><i class="fa-solid fa-chart-line text-indigo-600 mr-2"></i>Biểu đồ xu hướng sức khỏe tuần qua</h3>
-                                    <span class="text-xs bg-slate-100 text-slate-600 px-3 py-1 rounded-full">Cập nhật hôm nay</span>
-                                </div>
-                                <div class="w-full h-64 relative">
-                                    <canvas id="healthChart"></canvas>
-                                </div>
-                            </div>
-
-                            <!-- Bottom Rectangle Box under circle (Tổng quan sức khỏe gia đình & Thói quen nhanh) -->
-                            <div class="w-full bg-white p-5 rounded-3xl border border-slate-200 shadow-sm">
-                                <div class="flex items-center justify-between mb-3">
-                                    <h3 class="font-bold text-sm text-slate-800"><i class="fa-solid fa-user-shield text-teal-600 mr-2"></i>Trạng thái kết nối gia đình & Nhắc nhở từ Phụ huynh</h3>
-                                    <button @click="activeTab = 'family'" class="text-xs text-indigo-600 hover:underline font-medium">Quản lý</button>
-                                </div>
-                                <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                                    <div class="p-3 bg-slate-50 border border-slate-200 rounded-2xl flex items-center space-x-3">
-                                        <div class="w-10 h-10 rounded-full bg-indigo-100 text-indigo-700 flex items-center justify-center font-bold text-sm">B</div>
-                                        <div>
-                                            <div class="text-xs font-bold text-slate-800">Bé Đào Hồng Tiến Jr.</div>
-                                            <div class="text-[11px] text-emerald-600 font-medium">Sức khỏe ổn định • BMI: 18.5</div>
-                                        </div>
-                                    </div>
-                                    <div class="p-3 bg-slate-50 border border-slate-200 rounded-2xl flex items-center space-x-3">
-                                        <div class="w-10 h-10 rounded-full bg-teal-100 text-teal-700 flex items-center justify-center font-bold text-sm">N</div>
-                                        <div>
-                                            <div class="text-xs font-bold text-slate-800">Ghi chú từ Phụ huynh</div>
-                                            <div class="text-[11px] text-slate-600">"Nhớ uống nước ấm và đi ngủ sớm!"</div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
-                        </div>
-
-                        <!-- RIGHT COLUMN: Khung lớn dạng dọc bên phải (Note học tập nổi bật & Bài viết y khoa) -->
-                        <div class="lg:col-span-3 space-y-4">
-                            <div class="bg-white p-5 rounded-3xl border border-slate-200 shadow-sm">
-                                <div class="flex items-center justify-between mb-4">
-                                    <h3 class="font-bold text-sm text-slate-800"><i class="fa-solid fa-book-bookmark text-indigo-600 mr-2"></i>Note học tập nhanh</h3>
-                                    <button @click="activeTab = 'notes'" class="text-xs text-indigo-600 hover:underline font-medium">Xem tất cả</button>
-                                </div>
-                                <div class="space-y-3">
-                                    <template x-for="(note, index) in notes.slice(0, 3)" :key="index">
-                                        <div class="p-3 bg-slate-50 border border-slate-200 rounded-2xl hover:border-indigo-300 transition cursor-pointer" @click="activeTab = 'notes'">
-                                            <div class="flex items-center justify-between text-[10px] text-slate-400 mb-1">
-                                                <span class="px-2 py-0.5 bg-indigo-50 text-indigo-700 font-semibold rounded" x-text="note.category"></span>
-                                                <span x-text="note.date"></span>
-                                            </div>
-                                            <div class="text-xs font-bold text-slate-800 line-clamp-1" x-text="note.title"></div>
-                                            <div class="text-[11px] text-slate-600 line-clamp-2 mt-1" x-text="note.content"></div>
-                                        </div>
-                                    </template>
-                                </div>
-                            </div>
-
-                            <!-- Admin / System Announcements -->
-                            <div class="bg-gradient-to-br from-teal-500 to-emerald-600 text-white p-5 rounded-3xl shadow-sm">
-                                <div class="flex items-center space-x-2 mb-2">
-                                    <i class="fa-solid fa-bullhorn text-teal-200"></i>
-                                    <h3 class="font-bold text-sm">Góc Y Khoa Nhóm 18</h3>
-                                </div>
-                                <p class="text-xs text-teal-100 leading-relaxed mb-3">Chăm sóc sức khỏe chủ động tại nhà là chìa khóa vàng cho cuộc sống trường thọ và hạnh phúc.</p>
-                                <div class="text-[11px] bg-white/20 px-3 py-2 rounded-xl backdrop-blur-sm">
-                                    🔒 Hệ thống bảo mật phân quyền đa tầng đã được kích hoạt thành công.
-                                </div>
-                            </div>
-                        </div>
-
-                    </div>
-                </div>
-
-                <!-- 2. PHÂN HỆ: THEO DÕI CHỈ SỐ CƠ THỂ & NHẬP LIỆU -->
-                <div x-show="activeTab === 'metrics'" class="space-y-6" x-cloak>
-                    <div class="bg-white p-6 rounded-3xl border border-slate-200 shadow-sm">
-                        <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-6 pb-4 border-b border-slate-100">
-                            <div>
-                                <h2 class="text-lg font-bold text-slate-800">Quản Lý & Theo Dõi Chỉ Số Sức Khỏe Cơ Thể</h2>
-                                <p class="text-xs text-slate-500 mt-0.5">Nhập và cập nhật các chỉ số sinh tồn để hệ thống tự động tính toán BMI và cảnh báo sớm.</p>
-                            </div>
-                            <button @click="saveMetrics()" class="mt-3 sm:mt-0 px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold text-xs rounded-xl shadow transition flex items-center space-x-2">
-                                <i class="fa-solid fa-floppy-disk"></i>
-                                <span>Lưu Chỉ Số Mới</span>
-                            </button>
-                        </div>
-
-                        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                            <div class="space-y-4">
-                                <div>
-                                    <label class="block text-xs font-bold text-slate-700 mb-1">Cân nặng (kg)</label>
-                                    <input type="number" step="0.1" x-model.number="userMetrics.weight" class="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-sm focus:bg-white focus:ring-2 focus:ring-indigo-500 outline-none">
-                                </div>
-                                <div>
-                                    <label class="block text-xs font-bold text-slate-700 mb-1">Chiều cao (cm)</label>
-                                    <input type="number" step="1" x-model.number="userMetrics.height" class="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-sm focus:bg-white focus:ring-2 focus:ring-indigo-500 outline-none">
-                                </div>
-                                <div>
-                                    <label class="block text-xs font-bold text-slate-700 mb-1">Nhịp tim (bpm)</label>
-                                    <input type="number" x-model.number="userMetrics.heartRate" class="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-sm focus:bg-white focus:ring-2 focus:ring-indigo-500 outline-none">
-                                </div>
-                            </div>
-
-                            <div class="space-y-4">
-                                <div>
-                                    <label class="block text-xs font-bold text-slate-700 mb-1">Huyết áp (mmHg - Ví dụ: 120/80)</label>
-                                    <input type="text" x-model="userMetrics.bp" class="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-sm focus:bg-white focus:ring-2 focus:ring-indigo-500 outline-none">
-                                </div>
-                                <div>
-                                    <label class="block text-xs font-bold text-slate-700 mb-1">Lượng nước uống (Lít)</label>
-                                    <input type="number" step="0.1" x-model.number="userMetrics.water" class="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-sm focus:bg-white focus:ring-2 focus:ring-indigo-500 outline-none">
-                                </div>
-                                <div>
-                                    <label class="block text-xs font-bold text-slate-700 mb-1">Tiêu thụ Calo (kcal)</label>
-                                    <input type="number" x-model.number="userMetrics.calories" class="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-sm focus:bg-white focus:ring-2 focus:ring-indigo-500 outline-none">
-                                </div>
-                            </div>
-
-                            <div class="bg-slate-50 border border-slate-200 rounded-2xl p-5 flex flex-col justify-between">
-                                <div>
-                                    <h3 class="font-bold text-sm text-slate-800 mb-3"><i class="fa-solid fa-calculator text-indigo-600 mr-2"></i>Chỉ số BMI Tự động</h3>
-                                    <div class="text-3xl font-extrabold text-indigo-600 mb-1" x-text="calculateBMI()"></div>
-                                    <div class="text-xs font-semibold text-slate-600 mb-4" x-text="'Đánh giá: ' + userMetrics.bmiStatus"></div>
-                                    <p class="text-[11px] text-slate-500 leading-relaxed">BMI từ 18.5 đến 24.9 là mức cân nặng lý tưởng cho sức khỏe ổn định.</p>
-                                </div>
-                                <div class="pt-4 border-t border-slate-200 text-[10px] text-slate-400">
-                                    Cập nhật lần cuối: Hôm nay, 08:30 AM
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- 3. PHÂN HỆ: LỊCH SỨC KHỎE & STREAK THÓI QUEN -->
-                <div x-show="activeTab === 'calendar'" class="space-y-6" x-cloak>
-                    <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
-                        <!-- Calendar View -->
-                        <div class="lg:col-span-8 bg-white p-6 rounded-3xl border border-slate-200 shadow-sm">
-                            <div class="flex items-center justify-between mb-6">
-                                <h2 class="text-lg font-bold text-slate-800"><i class="fa-solid fa-calendar-days text-indigo-600 mr-2"></i>Lịch Sức Khỏe Tháng 6/2026</h2>
-                                <div class="flex space-x-2">
-                                    <button class="px-3 py-1.5 bg-slate-100 text-slate-700 hover:bg-slate-200 text-xs font-semibold rounded-xl">Tháng trước</button>
-                                    <button class="px-3 py-1.5 bg-indigo-600 text-white text-xs font-semibold rounded-xl">Tháng này</button>
-                                </div>
-                            </div>
-
-                            <!-- Calendar Grid Header -->
-                            <div class="grid grid-cols-7 gap-2 text-center text-xs font-bold text-slate-500 mb-3">
-                                <div>T2</div><div>T3</div><div>T4</div><div>T5</div><div>T6</div><div>T7</div><div>CN</div>
-                            </div>
-
-                            <!-- Calendar Days -->
-                            <div class="grid grid-cols-7 gap-2">
-                                <template x-for="day in 30" :key="day">
-                                    <div @click="selectCalendarDay(day)" class="h-20 rounded-2xl border p-2 flex flex-col justify-between transition cursor-pointer" :class="day === 14 ? 'bg-indigo-50 border-indigo-300 ring-2 ring-indigo-400' : 'bg-slate-50 border-slate-200 hover:bg-slate-100'">
-                                        <div class="flex items-center justify-between">
-                                            <span class="text-xs font-bold" :class="day === 14 ? 'text-indigo-700' : 'text-slate-700'" x-text="day"></span>
-                                            <span x-show="day === 14 || day === 10 || day === 5" class="w-2 h-2 rounded-full bg-indigo-500"></span>
-                                        </div>
-                                        <div class="text-[10px] text-slate-500 truncate">
-                                            <span x-show="day === 14">Khám răng</span>
-                                            <span x-show="day === 10">Uống thuốc</span>
-                                            <span x-show="day === 5">Đo huyết áp</span>
-                                        </div>
-                                    </div>
-                                </template>
-                            </div>
-                        </div>
-
-                        <!-- Streak & Daily Tasks Panel -->
-                        <div class="lg:col-span-4 space-y-6">
-                            <div class="bg-gradient-to-br from-amber-500 to-orange-600 text-white p-6 rounded-3xl shadow-sm">
-                                <div class="flex items-center space-x-3 mb-3">
-                                    <div class="text-3xl animate-bounce">🔥</div>
-                                    <div>
-                                        <div class="text-xs text-amber-100 font-medium">Chuỗi ngày hoàn thành thói quen</div>
-                                        <div class="text-2xl font-black" x-text="streakDays + ' Ngày Liên Tiếp'"></div>
-                                    </div>
-                                </div>
-                                <p class="text-xs text-amber-100 leading-relaxed">Tuyệt vời! Bạn đã duy trì thói quen chăm sóc sức khỏe 5 ngày không gián đoạn. Tiếp tục phát huy nhé!</p>
-                            </div>
-
-                            <div class="bg-white p-6 rounded-3xl border border-slate-200 shadow-sm">
-                                <h3 class="font-bold text-sm text-slate-800 mb-4"><i class="fa-solid fa-circle-check text-emerald-600 mr-2"></i>Nhiệm Vụ Hằng Ngày</h3>
-                                <div class="space-y-3">
-                                    <template x-for="(task, index) in dailyTasks" :key="index">
-                                        <div @click="toggleTask(index)" class="flex items-center justify-between p-3 rounded-2xl border transition cursor-pointer" :class="task.done ? 'bg-emerald-50 border-emerald-200' : 'bg-slate-50 border-slate-200 hover:bg-slate-100'">
-                                            <div class="flex items-center space-x-3">
-                                                <div class="w-6 h-6 rounded-full border flex items-center justify-center text-xs" :class="task.done ? 'bg-emerald-600 border-emerald-600 text-white' : 'border-slate-400'">
-                                                    <i x-show="task.done" class="fa-solid fa-check text-xs"></i>
-                                                </div>
-                                                <span class="text-xs font-semibold" :class="task.done ? 'text-emerald-900 line-through' : 'text-slate-700'" x-text="task.name"></span>
-                                            </div>
-                                            <span class="text-[10px] px-2 py-0.5 rounded-full" :class="task.done ? 'bg-emerald-200 text-emerald-800' : 'bg-slate-200 text-slate-700'" x-text="task.done ? 'Đã xong' : 'Chưa'"></span>
-                                        </div>
-                                    </template>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- 4. PHÂN HỆ: NOTE HỌC TẬP (GHI CHÚ KIẾN THỨC) -->
-                <div x-show="activeTab === 'notes'" class="space-y-6" x-cloak>
-                    <div class="bg-white p-6 rounded-3xl border border-slate-200 shadow-sm">
-                        <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-6 pb-4 border-b border-slate-100">
-                            <div>
-                                <h2 class="text-lg font-bold text-slate-800"><i class="fa-solid fa-book-medical text-indigo-600 mr-2"></i>Phân Hệ Note Học Tập & Kiến Thức Sức Khỏe</h2>
-                                <p class="text-xs text-slate-500 mt-0.5">Tạo, phân loại, tìm kiếm và chia sẻ ghi chú kiến thức y khoa, thực đơn hoặc mẹo sống khỏe.</p>
-                            </div>
-                            <button @click="openNoteModal()" class="mt-3 sm:mt-0 px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white font-semibold text-xs rounded-xl shadow transition flex items-center space-x-2">
-                                <i class="fa-solid fa-plus"></i>
-                                <span>Thêm Note Mới</span>
-                            </button>
-                        </div>
-
-                        <!-- Filter categories -->
-                        <div class="flex flex-wrap items-center gap-2 mb-6">
-                            <button @click="selectedCategory = 'Tất cả'" :class="selectedCategory === 'Tất cả' ? 'bg-indigo-600 text-white' : 'bg-slate-100 text-slate-700 hover:bg-slate-200'" class="px-3.5 py-1.5 rounded-xl text-xs font-semibold transition">Tất cả</button>
-                            <button @click="selectedCategory = 'Dinh dưỡng'" :class="selectedCategory === 'Dinh dưỡng' ? 'bg-indigo-600 text-white' : 'bg-slate-100 text-slate-700 hover:bg-slate-200'" class="px-3.5 py-1.5 rounded-xl text-xs font-semibold transition">Dinh dưỡng</button>
-                            <button @click="selectedCategory = 'Bài tập'" :class="selectedCategory === 'Bài tập' ? 'bg-indigo-600 text-white' : 'bg-slate-100 text-slate-700 hover:bg-slate-200'" class="px-3.5 py-1.5 rounded-xl text-xs font-semibold transition">Bài tập</button>
-                            <button @click="selectedCategory = 'Lời dặn bác sĩ'" :class="selectedCategory === 'Lời dặn bác sĩ' ? 'bg-indigo-600 text-white' : 'bg-slate-100 text-slate-700 hover:bg-slate-200'" class="px-3.5 py-1.5 rounded-xl text-xs font-semibold transition">Lời dặn bác sĩ</button>
-                            <button @click="selectedCategory = 'Mẹo sống khỏe'" :class="selectedCategory === 'Mẹo sống khỏe' ? 'bg-indigo-600 text-white' : 'bg-slate-100 text-slate-700 hover:bg-slate-200'" class="px-3.5 py-1.5 rounded-xl text-xs font-semibold transition">Mẹo sống khỏe</button>
-                        </div>
-
-                        <!-- Notes Grid -->
-                        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                            <template x-for="(note, index) in filteredNotes" :key="note.id">
-                                <div class="bg-slate-50 border border-slate-200 p-5 rounded-2xl flex flex-col justify-between hover:border-indigo-300 transition group shadow-sm">
-                                    <div>
-                                        <div class="flex items-center justify-between mb-2">
-                                            <span class="px-2.5 py-0.5 bg-indigo-100 text-indigo-800 text-[10px] font-bold rounded-lg" x-text="note.category"></span>
-                                            <span class="text-[10px] text-slate-400" x-text="note.date"></span>
-                                        </div>
-                                        <h3 class="font-bold text-sm text-slate-800 mb-1" x-text="note.title"></h3>
-                                        <p class="text-xs text-slate-600 line-clamp-3 leading-relaxed" x-text="note.content"></p>
-                                    </div>
-                                    <div class="mt-4 pt-3 border-t border-slate-200 flex items-center justify-between">
-                                        <span class="text-[10px] font-semibold text-teal-600 bg-teal-50 px-2 py-0.5 rounded border border-teal-200" x-text="'Tag: ' + note.tag"></span>
-                                        <div class="flex items-center space-x-2">
-                                            <button @click="editNote(note)" class="p-1.5 text-slate-500 hover:text-indigo-600 transition" title="Sửa"><i class="fa-solid fa-pen text-xs"></i></button>
-                                            <button @click="deleteNote(note.id)" class="p-1.5 text-slate-500 hover:text-rose-600 transition" title="Xóa"><i class="fa-solid fa-trash text-xs"></i></button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </template>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- 5. PHÂN HỆ: QUẢN LÝ GIA ĐÌNH & PARENT DASHBOARD -->
-                <div x-show="activeTab === 'family'" class="space-y-6" x-cloak>
-                    <div class="bg-white p-6 rounded-3xl border border-slate-200 shadow-sm">
-                        <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-6 pb-4 border-b border-slate-100">
-                            <div>
-                                <h2 class="text-lg font-bold text-slate-800"><i class="fa-solid fa-users text-teal-600 mr-2"></i>Phân Hệ Quản Lý Gia Đình & Parent Dashboard</h2>
-                                <p class="text-xs text-slate-500 mt-0.5">Phụ huynh theo dõi chỉ số sức khỏe của con cái và chia sẻ ghi chú nhắc nhở tức thì.</p>
-                            </div>
-                            <button @click="openShareModal()" class="mt-3 sm:mt-0 px-4 py-2 bg-teal-600 hover:bg-teal-700 text-white font-semibold text-xs rounded-xl shadow transition flex items-center space-x-2">
-                                <i class="fa-solid fa-paper-plane"></i>
-                                <span>Gửi Ghi Chú Nhắc Nhở Cho Con</span>
-                            </button>
-                        </div>
-
-                        <!-- Children List -->
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                            <div class="bg-slate-50 border border-slate-200 p-5 rounded-2xl">
-                                <div class="flex items-center space-x-4 mb-4">
-                                    <div class="w-14 h-14 rounded-full bg-indigo-100 text-indigo-700 flex items-center justify-center font-bold text-lg shadow-inner">TH</div>
-                                    <div>
-                                        <div class="font-bold text-slate-800 text-base">Đào Hồng Tiến Jr. (Con)</div>
-                                        <div class="text-xs text-emerald-600 font-semibold">Trạng thái: Sức khỏe tốt • Đã đồng bộ</div>
-                                    </div>
-                                </div>
-                                <div class="grid grid-cols-3 gap-3 text-center mb-4">
-                                    <div class="bg-white p-3 rounded-xl border border-slate-200">
-                                        <div class="text-[10px] text-slate-400">BMI</div>
-                                        <div class="text-sm font-bold text-slate-800">18.5</div>
-                                    </div>
-                                    <div class="bg-white p-3 rounded-xl border border-slate-200">
-                                        <div class="text-[10px] text-slate-400">Nhịp tim</div>
-                                        <div class="text-sm font-bold text-slate-800">74 bpm</div>
-                                    </div>
-                                    <div class="bg-white p-3 rounded-xl border border-slate-200">
-                                        <div class="text-[10px] text-slate-400">Uống nước</div>
-                                        <div class="text-sm font-bold text-slate-800">1.8 L</div>
-                                    </div>
-                                </div>
-                                <div class="text-xs bg-teal-50 border border-teal-200 text-teal-800 p-3 rounded-xl">
-                                    <span class="font-bold">Ghi chú gần nhất từ Phụ huynh:</span> "Nhớ uống thuốc đúng giờ và mặc áo ấm khi ra ngoài."
-                                </div>
-                            </div>
-
-                            <div class="bg-slate-50 border border-slate-200 p-5 rounded-2xl flex flex-col justify-between">
-                                <div>
-                                    <h3 class="font-bold text-sm text-slate-800 mb-3"><i class="fa-solid fa-link text-indigo-600 mr-2"></i>Liên Kết Tài Khoản Thành Viên</h3>
-                                    <p class="text-xs text-slate-600 leading-relaxed mb-4">Bạn có thể liên kết thêm tài khoản của thành viên khác trong gia đình để theo dõi lịch uống thuốc và tình trạng sức khỏe từ xa.</p>
-                                </div>
-                                <button class="w-full py-2.5 bg-indigo-50 text-indigo-700 font-bold text-xs rounded-xl hover:bg-indigo-100 transition border border-indigo-200">+ Thêm tài khoản thành viên mới</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- 6. PHÂN HỆ: ADMIN DASHBOARD (QUẢN TRỊ VIÊN) -->
-                <div x-show="activeTab === 'admin'" class="space-y-6" x-cloak>
-                    <div class="bg-white p-6 rounded-3xl border border-slate-200 shadow-sm">
-                        <div class="flex items-center justify-between mb-6 pb-4 border-b border-slate-100">
-                            <div>
-                                <h2 class="text-lg font-bold text-slate-800"><i class="fa-solid fa-shield-halved text-rose-600 mr-2"></i>Bảng Điều Khiển Quản Trị Viên (Admin Dashboard)</h2>
-                                <p class="text-xs text-slate-500 mt-0.5">Quản lý toàn bộ hệ thống người dùng, phân quyền bảo mật và kiểm duyệt bài viết kiến thức.</p>
-                            </div>
-                            <span class="px-3 py-1 bg-rose-50 text-rose-700 text-xs font-bold rounded-full border border-rose-200">Quyền hạn: Toàn quyền</span>
-                        </div>
-
-                        <!-- Stats Cards -->
-                        <div class="grid grid-cols-1 sm:grid-cols-4 gap-4 mb-6">
-                            <div class="bg-slate-50 border border-slate-200 p-4 rounded-2xl">
-                                <div class="text-xs text-slate-500 font-medium">Tổng số tài khoản</div>
-                                <div class="text-2xl font-black text-slate-800 mt-1">1,248</div>
-                            </div>
-                            <div class="bg-slate-50 border border-slate-200 p-4 rounded-2xl">
-                                <div class="text-xs text-slate-500 font-medium">Phụ huynh (Parent)</div>
-                                <div class="text-2xl font-black text-teal-600 mt-1">312</div>
-                            </div>
-                            <div class="bg-slate-50 border border-slate-200 p-4 rounded-2xl">
-                                <div class="text-xs text-slate-500 font-medium">Người dùng cá nhân</div>
-                                <div class="text-2xl font-black text-indigo-600 mt-1">930</div>
-                            </div>
-                            <div class="bg-slate-50 border border-slate-200 p-4 rounded-2xl">
-                                <div class="text-xs text-slate-500 font-medium">Bài viết chờ kiểm duyệt</div>
-                                <div class="text-2xl font-black text-amber-600 mt-1">6</div>
-                            </div>
-                        </div>
-
-                        <!-- Users Management Table -->
-                        <h3 class="font-bold text-sm text-slate-800 mb-3">Danh sách tài khoản hệ thống</h3>
-                        <div class="overflow-x-auto">
-                            <table class="w-full text-left text-xs text-slate-700">
-                                <thead class="bg-slate-100 uppercase text-[10px] text-slate-500 font-bold">
-                                    <tr>
-                                        <th class="p-3 rounded-l-xl">Họ tên</th>
-                                        <th class="p-3">Email</th>
-                                        <th class="p-3">Vai trò (Role)</th>
-                                        <th class="p-3">Trạng thái</th>
-                                        <th class="p-3 rounded-r-xl text-right">Thao tác</th>
-                                    </tr>
-                                </thead>
-                                <tbody class="divide-y divide-slate-100">
-                                    <tr>
-                                        <td class="p-3 font-bold">Dương Phúc Thọ</td>
-                                        <td class="p-3 text-slate-500">tho.dp@healthhub.vn</td>
-                                        <td class="p-3"><span class="px-2 py-0.5 bg-indigo-50 text-indigo-700 rounded font-semibold">User Cá Nhân</span></td>
-                                        <td class="p-3"><span class="text-emerald-600 font-semibold">Hoạt động</span></td>
-                                        <td class="p-3 text-right">
-                                            <button @click="showToast('Đã khóa tài khoản thành công!')" class="text-rose-600 hover:underline font-semibold">Khóa</button>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td class="p-3 font-bold">Đào Hồng Tiến</td>
-                                        <td class="p-3 text-slate-500">tien.dh@healthhub.vn</td>
-                                        <td class="p-3"><span class="px-2 py-0.5 bg-teal-50 text-teal-700 rounded font-semibold">Phụ Huynh (Parent)</span></td>
-                                        <td class="p-3"><span class="text-emerald-600 font-semibold">Hoạt động</span></td>
-                                        <td class="p-3 text-right">
-                                            <button @click="showToast('Đã khóa tài khoản thành công!')" class="text-rose-600 hover:underline font-semibold">Khóa</button>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td class="p-3 font-bold">Nguyễn Xuân Trường (Admin)</td>
-                                        <td class="p-3 text-slate-500">admin.truong@healthhub.vn</td>
-                                        <td class="p-3"><span class="px-2 py-0.5 bg-rose-50 text-rose-700 rounded font-semibold">Quản Trị Viên</span></td>
-                                        <td class="p-3"><span class="text-emerald-600 font-semibold">Hoạt động</span></td>
-                                        <td class="p-3 text-right">
-                                            <span class="text-slate-400">Không thể khóa</span>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-
-            </main>
-        </div>
-
-    </div>
-
-    <!-- ==================== MODALS & TOASTS ==================== -->
-    
-    <!-- Auth Modal (Sign in / Sign up) -->
-    <div x-show="authModalOpen" class="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4" x-cloak>
-        <div class="bg-white rounded-3xl p-6 w-full max-w-md shadow-xl border border-slate-200">
-            <div class="flex items-center justify-between mb-4">
-                <h3 class="font-bold text-lg text-slate-800" x-text="authMode === 'signin' ? 'Đăng Nhập Tài Khoản' : 'Đăng Ký Tài Khoản Mới'"></h3>
-                <button @click="authModalOpen = false" class="text-slate-400 hover:text-slate-600"><i class="fa-solid fa-xmark text-lg"></i></button>
-            </div>
-            <div class="space-y-4">
-                <div>
-                    <label class="block text-xs font-bold text-slate-700 mb-1">Email / Tên đăng nhập</label>
-                    <input type="text" x-model="authEmail" placeholder="nhom18@healthhub.vn" class="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-sm focus:bg-white outline-none">
-                </div>
-                <div>
-                    <label class="block text-xs font-bold text-slate-700 mb-1">Mật khẩu</label>
-                    <input type="password" placeholder="••••••••" class="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-sm focus:bg-white outline-none">
-                </div>
-                <div>
-                    <label class="block text-xs font-bold text-slate-700 mb-1">Chọn phân quyền (Role) trải nghiệm</label>
-                    <select x-model="currentRole" class="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-sm focus:bg-white outline-none font-semibold">
-                        <option value="user">Người dùng cá nhân (User)</option>
-                        <option value="parent">Phụ huynh quản lý con cái (Parent)</option>
-                        <option value="admin">Quản trị viên hệ thống (Admin)</option>
-                    </select>
-                </div>
-                <button @click="handleAuthSubmit()" class="w-full py-3 bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-sm rounded-xl shadow transition" x-text="authMode === 'signin' ? 'Đăng Nhập Ngay' : 'Đăng Ký Tài Khoản'"></button>
-            </div>
-        </div>
-    </div>
-
-    <!-- Note Add/Edit Modal -->
-    <div x-show="noteModalOpen" class="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4" x-cloak>
-        <div class="bg-white rounded-3xl p-6 w-full max-w-lg shadow-xl border border-slate-200">
-            <div class="flex items-center justify-between mb-4">
-                <h3 class="font-bold text-lg text-slate-800" x-text="currentNote.id ? 'Chỉnh Sửa Note Học Tập' : 'Tạo Ghi Chú Kiến Thức Mới'"></h3>
-                <button @click="noteModalOpen = false" class="text-slate-400 hover:text-slate-600"><i class="fa-solid fa-xmark text-lg"></i></button>
-            </div>
-            <div class="space-y-4">
-                <div>
-                    <label class="block text-xs font-bold text-slate-700 mb-1">Tiêu đề ghi chú</label>
-                    <input type="text" x-model="currentNote.title" placeholder="Ví dụ: Thực đơn dinh dưỡng giảm mỡ..." class="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-sm focus:bg-white outline-none">
-                </div>
-                <div class="grid grid-cols-2 gap-4">
-                    <div>
-                        <label class="block text-xs font-bold text-slate-700 mb-1">Danh mục</label>
-                        <select x-model="currentNote.category" class="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-sm focus:bg-white outline-none">
-                            <option value="Dinh dưỡng">Dinh dưỡng</option>
-                            <option value="Bài tập">Bài tập</option>
-                            <option value="Lời dặn bác sĩ">Lời dặn bác sĩ</option>
-                            <option value="Mẹo sống khỏe">Mẹo sống khỏe</option>
-                        </select>
-                    </div>
-                    <div>
-                        <label class="block text-xs font-bold text-slate-700 mb-1">Gắn Tag</label>
-                        <input type="text" x-model="currentNote.tag" placeholder="#songkhoe" class="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-sm focus:bg-white outline-none">
-                    </div>
-                </div>
-                <div>
-                    <label class="block text-xs font-bold text-slate-700 mb-1">Nội dung chi tiết</label>
-                    <textarea rows="4" x-model="currentNote.content" placeholder="Nhập nội dung ghi chú kiến thức..." class="w-full px-3.5 py-2.5 bg-slate-50 border border-slate-300 rounded-xl text-sm focus:bg-white outline-none"></textarea>
-                </div>
-                <button @click="saveNote()" class="w-full py-3 bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-sm rounded-xl shadow transition">Lưu Ghi Chú</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- Notification Toast Message Box -->
-    <div x-show="toastMessage" x-transition class="fixed bottom-6 right-6 bg-slate-900 text-white px-5 py-3 rounded-2xl shadow-2xl flex items-center space-x-3 z-50 text-xs font-semibold" x-cloak>
-        <i class="fa-solid fa-circle-check text-emerald-400 text-base"></i>
-        <span x-text="toastMessage"></span>
-    </div>
-
-    <!-- ==================== JAVASCRIPT LOGIC & CONTROLLER ==================== -->
-    <script>
-        function healthApp() {
-            return {
-                activeTab: 'dashboard',
-                isLoggedIn: true,
-                userName: 'Nguyễn Xuân Trường',
-                currentRole: 'user', // user, parent, admin
-                currentRoleName: 'Người dùng cá nhân',
-                searchQuery: '',
-                streakDays: 5,
-                showNotifications: false,
-                authModalOpen: false,
-                authMode: 'signin',
-                authEmail: 'truong.nx@healthhub.vn',
-                noteModalOpen: false,
-                toastMessage: '',
-
-                // User Metrics State
-                userMetrics: {
-                    weight: 65.5,
-                    height: 170,
-                    heartRate: 72,
-                    bp: '120/80',
-                    water: 2.1,
-                    calories: 1850,
-                    bmi: 22.7,
-                    bmiStatus: 'Bình thường (Lý tưởng)'
-                },
-
-                // Daily Tasks & Streak
-                dailyTasks: [
-                    { name: 'Uống đủ 2L nước mỗi ngày', done: true },
-                    { name: 'Đi bộ thể dục 30 phút', done: true },
-                    { name: 'Đo nhịp tim và huyết áp sáng', done: false }
-                ],
-
-                // Notes Database
-                selectedCategory: 'Tất cả',
-                notes: [
-                    { id: 1, title: 'Thực đơn Eat Clean tuần 2', category: 'Dinh dưỡng', tag: '#healthy', content: 'Tăng cường rau xanh, protein từ ức gà, cá hồi và hạn chế tinh bột tinh chế sau 19h tối.', date: '12/06/2026' },
-                    { id: 2, title: 'Bài tập Yoga buổi sáng 15 phút', category: 'Bài tập', tag: '#yoga', content: 'Thực hiện các động tác chào mặt trời giúp dẻo dai cột sống và giảm căng thẳng.', date: '10/06/2026' },
-                    { id: 3, title: 'Lời dặn bác sĩ tim mạch', category: 'Lời dặn bác sĩ', tag: '#khamchuabenh', content: 'Dùng thuốc huyết áp đều đặn vào 8h sáng, tái khám sau mỗi 3 tháng và kiêng ăn mặn.', date: '08/06/2026' },
-                    { id: 4, title: 'Mẹo ngủ sâu giấc ban đêm', category: 'Mẹo sống khỏe', tag: '#ngonngu', content: 'Không sử dụng điện thoại trước khi ngủ 30 phút, ngâm chân nước ấm với gừng.', date: '05/06/2026' }
-                ],
-                currentNote: { id: null, title: '', category: 'Dinh dưỡng', tag: '#suckhoe', content: '' },
-
-                init() {
-                    // Watch role changes to update display name
-                    this.$watch('currentRole', (value) => {
-                        if (value === 'user') this.currentRoleName = 'Người dùng cá nhân';
-                        else if (value === 'parent') this.currentRoleName = 'Phụ huynh quản lý con';
-                        else if (value === 'admin') this.currentRoleName = 'Quản trị viên (Admin)';
-                    });
-
-                    // Initialize Chart after DOM load
-                    setTimeout(() => {
-                        this.renderHealthChart();
-                    }, 200);
-                },
-
-                calculateBMI() {
-                    let hM = this.userMetrics.height / 100;
-                    if (hM > 0) {
-                        let bmiVal = (this.userMetrics.weight / (hM * hM)).toFixed(1);
-                        this.userMetrics.bmi = bmiVal;
-                        if (bmiVal < 18.5) this.userMetrics.bmiStatus = 'Thiếu cân';
-                        else if (bmiVal <= 24.9) this.userMetrics.bmiStatus = 'Bình thường (Lý tưởng)';
-                        else if (bmiVal <= 29.9) this.userMetrics.bmiStatus = 'Thừa cân';
-                        else this.userMetrics.bmiStatus = 'Béo phì';
-                        return bmiVal;
-                    }
-                    return '0';
-                },
-
-                saveMetrics() {
-                    this.calculateBMI();
-                    this.showToast('Đã cập nhật chỉ số cơ thể & biểu đồ thành công!');
-                },
-
-                toggleTask(index) {
-                    this.dailyTasks[index].done = !this.dailyTasks[index].done;
-                    let completed = this.dailyTasks.filter(t => t.done).length;
-                    if (completed === this.dailyTasks.length) {
-                        this.showToast('🎉 Chúc mừng bạn đã hoàn thành tất cả nhiệm vụ hôm nay!');
-                    } else {
-                        this.showToast('Đã cập nhật trạng thái nhiệm vụ.');
-                    }
-                },
-
-                get completedTasksCount() {
-                    return this.dailyTasks.filter(t => t.done).length;
-                },
-
-                get filteredNotes() {
-                    if (this.selectedCategory === 'Tất cả') return this.notes;
-                    return this.notes.filter(n => n.category === this.selectedCategory);
-                },
-
-                openNoteModal() {
-                    this.currentNote = { id: null, title: '', category: 'Dinh dưỡng', tag: '#suckhoe', content: '' };
-                    this.noteModalOpen = true;
-                },
-
-                editNote(note) {
-                    this.currentNote = { ...note };
-                    this.noteModalOpen = true;
-                },
-
-                saveNote() {
-                    if (!this.currentNote.title || !this.currentNote.content) {
-                        this.showToast('Vui lòng nhập đầy đủ tiêu đề và nội dung ghi chú!');
-                        return;
-                    }
-                    if (this.currentNote.id) {
-                        let idx = this.notes.findIndex(n => n.id === this.currentNote.id);
-                        if (idx !== -1) this.notes[idx] = { ...this.currentNote };
-                        this.showToast('Đã cập nhật ghi chú thành công!');
-                    } else {
-                        this.currentNote.id = Date.now();
-                        this.currentNote.date = new Date().toLocaleDateString('vi-VN');
-                        this.notes.unshift({ ...this.currentNote });
-                        this.showToast('Đã tạo ghi chú học tập mới thành công!');
-                    }
-                    this.noteModalOpen = false;
-                },
-
-                deleteNote(id) {
-                    this.notes = this.notes.filter(n => n.id !== id);
-                    this.showToast('Đã xóa ghi chú thành công.');
-                },
-
-                openAuthModal(mode) {
-                    this.authMode = mode;
-                    this.authModalOpen = true;
-                },
-
-                handleAuthSubmit() {
-                    this.isLoggedIn = true;
-                    this.authModalOpen = false;
-                    this.showToast(`Đã đăng nhập thành công với vai trò: ${this.currentRoleName}`);
-                },
-
-                logout() {
-                    this.isLoggedIn = false;
-                    this.showToast('Đã đăng xuất tài khoản.');
-                },
-
-                openShareModal() {
-                    this.showToast('Đã gửi thông báo nhắc nhở y tế sang tài khoản của con thành công!');
-                },
-
-                selectCalendarDay(day) {
-                    this.showToast(`Đã chọn ngày ${day}/06/2026: Hiển thị chi tiết lịch trình sức khỏe.`);
-                },
-
-                showToast(msg) {
-                    this.toastMessage = msg;
-                    setTimeout(() => {
-                        this.toastMessage = '';
-                    }, 3500);
-                },
-
-                renderHealthChart() {
-                    const ctx = document.getElementById('healthChart');
-                    if (!ctx) return;
-                    new Chart(ctx, {
-                        type: 'line',
-                        data: {
-                            labels: ['Thứ 2', 'Thứ 3', 'Thứ 4', 'Thứ 5', 'Thứ 6', 'Thứ 7', 'CN'],
-                            datasets: [{
-                                label: 'Nhịp tim trung bình (bpm)',
-                                data: [72, 75, 71, 74, 73, 76, 72],
-                                borderColor: '#4f46e5',
-                                backgroundColor: 'rgba(79, 70, 229, 0.1)',
-                                borderWidth: 3,
-                                fill: true,
-                                tension: 0.4
-                            }, {
-                                label: 'Lượng nước uống (x0.5L)',
-                                data: [4, 4.5, 4, 5, 4.2, 4.8, 4.4],
-                                borderColor: '#0d9488',
-                                backgroundColor: 'rgba(13, 148, 136, 0.1)',
-                                borderWidth: 3,
-                                fill: true,
-                                tension: 0.4
-                            }]
-                        },
-                        options: {
-                            responsive: true,
-                            maintainAspectRatio: false,
-                            plugins: {
-                                legend: {
-                                    position: 'bottom',
-                                    labels: { font: { family: 'Inter', size: 11 } }
-                                }
-                            },
-                            scales: {
-                                y: { beginAtZero: false, grid: { color: '#f1f5f9' } },
-                                x: { grid: { display: false } }
-                            }
-                        }
-                    });
-                }
-            }
+<body>
+<div class="app">
+<aside class="sidebar">
+<div class="brand">
+<div class="brand-mark">
+<i data-lucide="pie-chart" width="19">
+</i>
+</div>
+<span>SpendWise</span>
+</div>
+<p class="eyebrow">Workspace</p>
+<nav class="nav">
+<button class="active" data-view="overview">
+<i data-lucide="layout-dashboard" width="17">
+</i>
+<span>Tổng quan</span>
+</button>
+<button data-view="transactions">
+<i data-lucide="arrow-left-right" width="17">
+</i>
+<span>Giao dịch</span>
+</button>
+<button data-view="budgets">
+<i data-lucide="wallet-cards" width="17">
+</i>
+<span>Ngân sách</span>
+</button>
+<button data-view="goals">
+<i data-lucide="target" width="17">
+</i>
+<span>Mục tiêu</span>
+</button>
+<button data-view="insights">
+<i data-lucide="sparkles" width="17">
+</i>
+<span>AI Insights</span>
+</button>
+</nav>
+<div class="sidebar-foot">
+<div class="upgrade">
+<strong>Mở khóa báo cáo nâng cao</strong>
+<p>Nhìn rõ thói quen chi tiêu và tiến gần hơn tới mục tiêu.</p>
+<button onclick="showToast('Tính năng Premium đang được mở trong bản demo')">Khám phá Premium</button>
+</div>
+<div class="profile">
+<div class="avatar">AT</div>
+<div>
+<strong style="font-size:12px;color:#fff">An Trần</strong>
+<small>Gói miễn phí</small>
+</div>
+<i data-lucide="more-horizontal" width="16" style="margin-left:auto">
+</i>
+</div>
+</div>
+</aside>
+<main class="main">
+<header class="topbar">
+<div class="title">
+<h1 id="page-title">Tổng quan tài chính</h1>
+<p id="page-subtitle">Thứ Hai, 24 tháng 6, 2026 · Chào buổi sáng, An</p>
+</div>
+<div class="top-actions">
+<label class="search">
+<i data-lucide="search" width="15">
+</i>
+<input id="global-search" type="search" placeholder="Tìm kiếm giao dịch...">
+</label>
+<button class="icon-btn" onclick="showToast('Bạn không có thông báo mới')">
+<i data-lucide="bell" width="16">
+</i>
+</button>
+<select class="role-select" id="role-switcher">
+<option value="user">User</option>
+<option value="coach">Coach</option>
+<option value="admin">Admin</option>
+</select>
+<button class="primary" id="add-button">
+<i data-lucide="plus" width="15">
+</i>
+<span>Thêm giao dịch</span>
+</button>
+</div>
+</header>
+<section class="view active" id="view-overview">
+<div class="stats">
+<article class="card stat">
+<div class="icon">
+<i data-lucide="banknote" width="17">
+</i>
+</div>
+<label>Số dư khả dụng</label>
+<strong>18.450.000đ</strong>
+<em>+8.2%</em>
+</article>
+<article class="card stat">
+<div class="icon">
+<i data-lucide="trending-down" width="17">
+</i>
+</div>
+<label>Chi tiêu tháng này</label>
+<strong>6.850.000đ</strong>
+<em>-12.4%</em>
+</article>
+<article class="card stat">
+<div class="icon">
+<i data-lucide="piggy-bank" width="17">
+</i>
+</div>
+<label>Đã tiết kiệm</label>
+<strong>4.200.000đ</strong>
+<em>+18.7%</em>
+</article>
+<article class="card stat">
+<div class="icon">
+<i data-lucide="calendar-clock" width="17">
+</i>
+</div>
+<label>Còn lại đến ngày lĩnh lương</label>
+<strong>12 ngày</strong>
+<em>Ổn định</em>
+</article>
+</div>
+<div class="dashboard-grid">
+<article class="card panel">
+<div class="panel-head">
+<div>
+<h2>Dòng tiền của bạn</h2>
+<p>Thu nhập và chi tiêu trong 6 tháng gần nhất</p>
+</div>
+<select class="filter">
+<option>6 tháng qua</option>
+<option>Năm 2026</option>
+</select>
+</div>
+<div class="chart-wrap">
+<canvas id="cashflow-chart">
+</canvas>
+</div>
+</article>
+<article class="card panel">
+<div class="panel-head">
+<div>
+<h2>Ngân sách tháng 6</h2>
+<p>Đang sử dụng hợp lý</p>
+</div>
+<button class="link" data-view-link="budgets">Chi tiết</button>
+</div>
+<div class="budget-ring">
+<div class="ring">
+<div class="ring-content">
+<strong>73%</strong>
+<span>đã dùng</span>
+</div>
+</div>
+<div class="budget-total">
+<strong>6.850.000đ</strong>
+<span>trên 9.400.000đ</span>
+</div>
+</div>
+<div class="progress">
+<i>
+</i>
+</div>
+<div class="budget-meta">
+<span>Đã sử dụng</span>
+<b>2.550.000đ còn lại</b>
+</div>
+</article>
+</div>
+<div class="lower-grid">
+<article class="card panel">
+<div class="panel-head">
+<div>
+<h2>Giao dịch gần đây</h2>
+<p>Những khoản thu chi mới nhất của bạn</p>
+</div>
+<button class="link" data-view-link="transactions">Xem tất cả →</button>
+</div>
+<div id="recent-transactions">
+</div>
+</article>
+<article class="card panel">
+<div class="panel-head">
+<div>
+<h2>Mục tiêu tiết kiệm</h2>
+<p>Bạn đang tiến rất tốt</p>
+</div>
+<button class="link" data-view-link="goals">Quản lý</button>
+</div>
+<div class="goal">
+<div class="goal-icon">
+<i data-lucide="plane" width="18">
+</i>
+</div>
+<div>
+<strong>Du lịch Đà Lạt</strong>
+<span>12.500.000đ mục tiêu</span>
+<div class="mini-progress">
+<i style="width:68%">
+</i>
+</div>
+</div>
+<div class="goal-value">
+<b>68%</b>8.500.000đ</div>
+</div>
+<div class="goal">
+<div class="goal-icon">
+<i data-lucide="laptop" width="18">
+</i>
+</div>
+<div>
+<strong>Mua laptop mới</strong>
+<span>25.000.000đ mục tiêu</span>
+<div class="mini-progress">
+<i style="width:34%">
+</i>
+</div>
+</div>
+<div class="goal-value">
+<b>34%</b>8.500.000đ</div>
+</div>
+</article>
+</div>
+</section>
+<section class="view" id="view-transactions">
+<div class="card section-card">
+<div class="panel-head">
+<div>
+<h2>Tất cả giao dịch</h2>
+<p>Quản lý và phân loại các khoản thu chi</p>
+</div>
+<button class="primary" id="add-button-2">
+<i data-lucide="plus" width="15">
+</i>Thêm giao dịch</button>
+</div>
+<div class="table-tools">
+<input class="filter" id="transaction-search" placeholder="Tìm theo tên giao dịch...">
+<select class="filter" id="category-filter">
+<option value="all">Tất cả danh mục</option>
+<option>Ăn uống</option>
+<option>Di chuyển</option>
+<option>Mua sắm</option>
+<option>Thu nhập</option>
+</select>
+<select class="filter">
+<option>Tháng 6, 2026</option>
+<option>Tháng 5, 2026</option>
+</select>
+</div>
+<div style="overflow:auto">
+<table>
+<thead>
+<tr>
+<th>Giao dịch</th>
+<th>Danh mục</th>
+<th>Ngày</th>
+<th>Số tiền</th>
+<th>Trạng thái</th>
+</tr>
+</thead>
+<tbody id="transaction-table">
+</tbody>
+</table>
+</div>
+</div>
+</section>
+<section class="view" id="view-budgets">
+<div class="card section-card">
+<div class="panel-head">
+<div>
+<h2>Ngân sách của tôi</h2>
+<p>Phân bổ tiền thông minh cho tháng 6</p>
+</div>
+<button class="primary" id="create-budget-button">
+<i data-lucide="plus" width="15">
+</i>Tạo ngân sách</button>
+</div>
+<div class="stats" style="margin-top:20px">
+<article class="card stat">
+<div class="icon">
+<i data-lucide="wallet" width="17">
+</i>
+</div>
+<label>Tổng ngân sách</label>
+<strong>9.400.000đ</strong>
+<em>Tháng này</em>
+</article>
+<article class="card stat">
+<div class="icon">
+<i data-lucide="circle-dollar-sign" width="17">
+</i>
+</div>
+<label>Đã chi tiêu</label>
+<strong>6.850.000đ</strong>
+<em>-12.4%</em>
+</article>
+<article class="card stat">
+<div class="icon">
+<i data-lucide="shield-check" width="17">
+</i>
+</div>
+<label>Ngân sách an toàn</label>
+<strong>2.550.000đ</strong>
+<em>27% còn lại</em>
+</article>
+</div>
+<div class="goal">
+<div class="goal-icon">
+<i data-lucide="utensils" width="18">
+</i>
+</div>
+<div>
+<strong>Ăn uống</strong>
+<span>2.800.000đ trên 3.500.000đ</span>
+<div class="mini-progress">
+<i style="width:80%">
+</i>
+</div>
+</div>
+<div class="goal-value">
+<b>80%</b>700.000đ còn</div>
+</div>
+<div class="goal">
+<div class="goal-icon">
+<i data-lucide="car-front" width="18">
+</i>
+</div>
+<div>
+<strong>Di chuyển</strong>
+<span>1.120.000đ trên 1.500.000đ</span>
+<div class="mini-progress">
+<i style="width:75%">
+</i>
+</div>
+</div>
+<div class="goal-value">
+<b>75%</b>380.000đ còn</div>
+</div>
+<div class="goal">
+<div class="goal-icon">
+<i data-lucide="shopping-bag" width="18">
+</i>
+</div>
+<div>
+<strong>Mua sắm</strong>
+<span>1.430.000đ trên 2.000.000đ</span>
+<div class="mini-progress">
+<i style="width:72%">
+</i>
+</div>
+</div>
+<div class="goal-value">
+<b>72%</b>570.000đ còn</div>
+</div>
+</div>
+</section>
+<section class="view" id="view-goals">
+<div class="card section-card">
+<div class="panel-head">
+<div>
+<h2>Mục tiêu tài chính</h2>
+<p>Biến điều bạn muốn thành kế hoạch có thể làm được</p>
+</div>
+<button class="primary" id="create-goal-button">
+<i data-lucide="plus" width="15">
+</i>Thêm mục tiêu</button>
+</div>
+<div class="goal" style="padding:20px 0">
+<div class="goal-icon">
+<i data-lucide="plane" width="20">
+</i>
+</div>
+<div>
+<strong>Du lịch Đà Lạt</strong>
+<span>Hạn hoàn thành: 15/12/2026 · Còn 6 tháng</span>
+<div class="mini-progress">
+<i style="width:68%">
+</i>
+</div>
+</div>
+<div class="goal-value">
+<b>8.500.000đ</b>/ 12.500.000đ</div>
+</div>
+<div class="goal" style="padding:20px 0">
+<div class="goal-icon">
+<i data-lucide="laptop" width="20">
+</i>
+</div>
+<div>
+<strong>Mua laptop mới</strong>
+<span>Hạn hoàn thành: 30/01/2027 · Còn 7 tháng</span>
+<div class="mini-progress">
+<i style="width:34%">
+</i>
+</div>
+</div>
+<div class="goal-value">
+<b>8.500.000đ</b>/ 25.000.000đ</div>
+</div>
+<div class="goal" style="padding:20px 0">
+<div class="goal-icon">
+<i data-lucide="home" width="20">
+</i>
+</div>
+<div>
+<strong>Quỹ khẩn cấp</strong>
+<span>Hạn hoàn thành: 30/06/2027 · Còn 12 tháng</span>
+<div class="mini-progress">
+<i style="width:22%">
+</i>
+</div>
+</div>
+<div class="goal-value">
+<b>11.000.000đ</b>/ 50.000.000đ</div>
+</div>
+</div>
+</section>
+<section class="view" id="view-insights">
+<div class="card section-card">
+<div class="panel-head">
+<div>
+<h2>
+<span style="color:#7d9b34">✦</span> AI Insights</h2>
+<p>Gợi ý cá nhân hóa dựa trên thói quen chi tiêu của bạn</p>
+</div>
+<span class="status">Đã phân tích hôm nay</span>
+</div>
+<div style="background:#f2f8df;border:1px solid #dcecb5;border-radius:12px;padding:18px;margin:16px 0">
+<h3 style="font:600 14px 'Space Grotesk';margin:0 0 8px">Bạn có thể tiết kiệm thêm 850.000đ mỗi tháng</h3>
+<p style="font-size:12px;color:#607044;line-height:1.6;margin:0">Chi tiêu cho đồ uống bên ngoài đang cao hơn 32% so với tháng trước. Nếu giảm còn 2 lần/tuần, bạn sẽ đạt mục tiêu Du lịch Đà Lạt sớm hơn 3 tuần.</p>
+<div style="display:flex;gap:8px;margin-top:14px">
+<button class="primary" onclick="showToast('Đã lưu gợi ý vào kế hoạch tháng 7')">Lưu gợi ý</button>
+<button class="secondary" onclick="showToast('Đã bỏ qua gợi ý này')">Bỏ qua</button>
+</div>
+</div>
+<div class="goal">
+<div class="goal-icon">
+<i data-lucide="coffee" width="18">
+</i>
+</div>
+<div>
+<strong>Khoản chi bất thường</strong>
+<span>Ăn uống · 4 giao dịch trong 3 ngày qua</span>
+</div>
+<button class="link" id="show-related-transactions">Xem giao dịch</button>
+</div>
+<div class="goal">
+<div class="goal-icon">
+<i data-lucide="badge-check" width="18">
+</i>
+</div>
+<div>
+<strong>Thói quen tốt đang duy trì</strong>
+<span>Bạn đã tiết kiệm đều đặn 4 tuần liên tiếp</span>
+</div>
+<span class="status">Tuyệt vời</span>
+</div>
+</div>
+</section>
+</main>
+</div>
+<div class="modal-backdrop" id="transaction-modal">
+<div class="modal">
+<div class="modal-head">
+<h2>Thêm giao dịch mới</h2>
+<button class="icon-btn" id="close-modal">
+<i data-lucide="x" width="17">
+</i>
+</button>
+</div>
+<form id="transaction-form">
+<div class="form-grid">
+<div class="field">
+<label for="tx-name">Tên giao dịch</label>
+<input id="tx-name" required placeholder="Ví dụ: Ăn trưa văn phòng">
+</div>
+<div class="field">
+<label for="tx-amount">Số tiền (VNĐ)</label>
+<input id="tx-amount" required type="number" min="1000" placeholder="0">
+</div>
+<div class="field">
+<label for="tx-category">Danh mục</label>
+<select id="tx-category">
+<option>Ăn uống</option>
+<option>Di chuyển</option>
+<option>Mua sắm</option>
+<option>Giải trí</option>
+<option>Thu nhập</option>
+</select>
+</div>
+<div class="field">
+<label for="tx-type">Loại giao dịch</label>
+<select id="tx-type">
+<option value="out">Khoản chi</option>
+<option value="in">Khoản thu</option>
+</select>
+</div>
+</div>
+<div class="modal-foot">
+<button type="button" class="secondary" id="cancel-modal">Hủy</button>
+<button class="primary" type="submit">Lưu giao dịch</button>
+</div>
+</form>
+</div>
+</div>
+<div class="toast" id="toast">
+</div>
+<script>
+const requestedRole=new URLSearchParams(location.search).get('role');
+if(requestedRole&&['user','coach','admin'].includes(requestedRole)){document.getElementById('role-switcher').value=requestedRole;
+}
+const transactions = [
+  { name: 'Lương tháng 6', category: 'Thu nhập', date: '24/06/2026', amount: 18500000, type: 'in', icon: 'briefcase', color: 'green' },
+  { name: 'Winmart+', category: 'Ăn uống', date: '23/06/2026', amount: 248000, type: 'out', icon: 'shopping-basket', color: 'orange' },
+  { name: 'Grab đi làm', category: 'Di chuyển', date: '23/06/2026', amount: 85000, type: 'out', icon: 'car-front', color: 'blue' },
+  { name: 'Netflix', category: 'Giải trí', date: '22/06/2026', amount: 180000, type: 'out', icon: 'play-square', color: 'red' },
+  { name: 'Cà phê cuối tuần', category: 'Ăn uống', date: '21/06/2026', amount: 95000, type: 'out', icon: 'coffee', color: 'orange' }
+];
+const money=value=>new Intl.NumberFormat('vi-VN').format(value)+'đ';
+function renderTransactions(list = transactions) {
+  const recentTransactions = list.slice(0, 5).map(tx => `
+    <div class="transaction">
+      <div class="tx-icon ${tx.color}"><i data-lucide="${tx.icon}" width="16"></i></div>
+      <div class="tx-copy"><strong>${tx.name}</strong><span>${tx.category} · ${tx.date}</span></div>
+      <div class="tx-amount ${tx.type === 'in' ? 'amount-in' : 'amount-out'}">
+        ${tx.type === 'in' ? '+' : '-'}${money(tx.amount)}
+        <small>${tx.type === 'in' ? 'Khoản thu' : 'Khoản chi'}</small>
+      </div>
+    </div>`).join('');
+  document.getElementById('recent-transactions').innerHTML = recentTransactions;
+  const transactionRows = list.map(tx => `
+    <tr>
+      <td><strong>${tx.name}</strong></td><td>${tx.category}</td><td>${tx.date}</td>
+      <td class="${tx.type === 'in' ? 'amount-in' : 'amount-out'}">${tx.type === 'in' ? '+' : '-'}${money(tx.amount)}</td>
+      <td><span class="status">Đã ghi nhận</span></td>
+    </tr>`).join('');
+  document.getElementById('transaction-table').innerHTML = transactionRows || '<tr><td colspan="5"><div class="empty">Không tìm thấy giao dịch phù hợp.</div></td></tr>';
+  lucide.createIcons();
+}
+function showToast(message){const toast=document.getElementById('toast');
+toast.textContent=message;
+toast.classList.add('show');
+setTimeout(()=>toast.classList.remove('show'),2800)}
+const titles = {
+  overview: ['Tổng quan tài chính', 'Thứ Hai, 24 tháng 6, 2026 · Chào buổi sáng, An'],
+  transactions: ['Giao dịch', 'Theo dõi từng khoản thu chi của bạn'],
+  budgets: ['Ngân sách', 'Kiểm soát dòng tiền theo từng danh mục'],
+  goals: ['Mục tiêu tài chính', 'Từng bước nhỏ, tiến gần hơn tới điều bạn muốn'],
+  insights: ['AI Insights', 'Những gợi ý giúp bạn chi tiêu chủ động hơn']
+};
+function switchView(view){document.querySelectorAll('.nav button').forEach(button=>button.classList.toggle('active',button.dataset.view===view));
+document.querySelectorAll('.view').forEach(section=>section.classList.toggle('active',section.id==='view-'+view));
+document.getElementById('page-title').textContent=titles[view][0];
+document.getElementById('page-subtitle').textContent=titles[view][1]}
+document.querySelectorAll('[data-view]').forEach(button=>button.addEventListener('click',()=>switchView(button.dataset.view)));
+document.querySelectorAll('[data-view-link]').forEach(button=>button.addEventListener('click',()=>switchView(button.dataset.viewLink)));
+const modal=document.getElementById('transaction-modal');
+const openModal=()=>modal.classList.add('show');
+const closeModal=()=>modal.classList.remove('show');
+document.getElementById('add-button').onclick=openModal;
+document.getElementById('add-button-2').onclick=openModal;
+document.getElementById('close-modal').onclick=closeModal;
+document.getElementById('cancel-modal').onclick=closeModal;
+modal.addEventListener('click',event=>{if(event.target===modal)closeModal()});
+document.addEventListener('keydown',event=>{if(event.key==='Escape')closeModal()});
+document.getElementById('transaction-form').addEventListener('submit',event=>{event.preventDefault();
+const type=document.getElementById('tx-type').value;
+transactions.unshift({name:document.getElementById('tx-name').value,category:document.getElementById('tx-category').value,date:'24/06/2026',amount:Number(document.getElementById('tx-amount').value),type,icon:type==='in'?'briefcase':'receipt',color:type==='in'?'green':'orange'});
+renderTransactions();
+closeModal();
+event.target.reset();
+showToast('Đã thêm giao dịch thành công')});
+function filterTransactions(){const query=document.getElementById('transaction-search').value.toLowerCase();
+const category=document.getElementById('category-filter').value;
+renderTransactions(transactions.filter(tx=>tx.name.toLowerCase().includes(query)&&(category==='all'||tx.category===category)))}
+document.getElementById('transaction-search').addEventListener('input',filterTransactions);
+document.getElementById('category-filter').addEventListener('change',filterTransactions);
+document.getElementById('global-search').addEventListener('input',event=>{
+  document.getElementById('transaction-search').value=event.target.value;
+  switchView('transactions');
+  filterTransactions();
+});
+document.getElementById('show-related-transactions').addEventListener('click',()=>{
+  switchView('transactions');
+  document.getElementById('category-filter').value='Ăn uống';
+  filterTransactions();
+});
+document.getElementById('create-budget-button').addEventListener('click',()=>{
+  switchView('budgets');
+  showToast('Bạn đang ở trang quản lý ngân sách');
+});
+document.getElementById('create-goal-button').addEventListener('click',()=>{
+  switchView('goals');
+  showToast('Bạn đang ở trang quản lý mục tiêu');
+});
+document.getElementById('role-switcher').addEventListener('change',event=>showToast('Đã chuyển sang không gian '+event.target.value));
+renderTransactions();
+lucide.createIcons();
+new Chart(document.getElementById('cashflow-chart'), {
+  type: 'line',
+  data: {
+    labels: ['Tháng 1', 'Tháng 2', 'Tháng 3', 'Tháng 4', 'Tháng 5', 'Tháng 6'],
+    datasets: [
+      {
+        label: 'Thu nhập',
+        data: [14, 15.5, 15.5, 17, 16.5, 18.5],
+        borderColor: '#1f7a5b',
+        backgroundColor: '#d9f4e8',
+        fill: true,
+        tension: 0.4,
+        pointRadius: 3
+      },
+      {
+        label: 'Chi tiêu',
+        data: [8.2, 7.4, 9.1, 7.8, 7.8, 6.85],
+        borderColor: '#ff806d',
+        backgroundColor: 'transparent',
+        tension: 0.4,
+        pointRadius: 3
+      }
+    ]
+  },
+  options: {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+      legend: {
+        position: 'bottom',
+        align: 'start',
+        labels: {
+          boxWidth: 8,
+          usePointStyle: true,
+          font: { family: 'DM Sans', size: 10 },
+          color: '#73807a'
         }
-    </script>
+      }
+    },
+    scales: {
+      x: {
+        grid: { display: false },
+        ticks: { color: '#9aa59f', font: { size: 10 } }
+      },
+      y: {
+        border: { display: false },
+        grid: { color: '#edf1ee' },
+        ticks: {
+          color: '#9aa59f',
+          font: { size: 10 },
+          callback: value => value + 'tr'
+        }
+      }
+    }
+  }
+});
+
+</script>
 </body>
 </html>
+
+

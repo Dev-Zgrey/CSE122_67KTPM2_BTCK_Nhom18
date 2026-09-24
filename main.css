@@ -1,92 +1,213 @@
+* {
+    box-sizing: border-box;
+}
+
+:root {
+    --green: #17372f;
+    --green-light: #285649;
+    --lime: #c7ef62;
+    --ink: #19241f;
+    --muted: #75837c;
+    --line: #dfe8e2;
+    --paper: #f3f7f3;
+    --white: #ffffff;
+}
+
+html,
+body {
+    min-height: 100%;
+}
 
 body {
-    background-color: #f2f2f2;
-    font-family: Arial, sans-serif;
+    margin: 0;
+    min-height: 100vh;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: "DM Sans", "Segoe UI", sans-serif;
 }
 
+button,
+input,
+select {
+    font: inherit;
+}
+
+button {
+    cursor: pointer;
+}
 
 .container {
-    width: 350px; 
-    background-color: #eef3ca; 
-    border: 3px solid #e9aa6f;  
-    border-radius: 12px;  
-    padding: 25px;   
-    margin: 80px auto;     
+    width: min(980px, calc(100% - 40px));
+    min-height: 600px;
+    margin: 20px auto;
+    padding: 0;
+    overflow: hidden;
+    background: var(--white);
+    border: 1px solid var(--line);
+    border-radius: 20px;
+    box-shadow: 0 20px 70px rgba(23, 55, 47, 0.08);
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
 }
 
-.login-form .login.form.head {
-    text-align: center;
+.login-form {
+    min-width: 0;
+    padding: 52px 58px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.login-head {
+    text-align: left;
+    margin-bottom: 30px;
+}
+
+.login-head .logo {
+    width: 38px;
+    height: 38px;
     margin-bottom: 20px;
-}
-
-.logo img {
-    width: 50px;
-    height: auto;
+    border-radius: 11px;
+    background: var(--lime);
+    color: var(--green);
+    display: grid;
+    place-items: center;
+    font-size: 25px;
+    font-weight: 700;
 }
 
 .login-form h1 {
-    text-align: center;
-    color: #333333;
-    font-size: 22px;
-    margin-top: 10px;
+    margin: 0 0 8px;
+    color: var(--ink);
+    font-family: "Space Grotesk", "Segoe UI", sans-serif;
+    font-size: 28px;
+    line-height: 1.1;
 }
 
-
-.login-form .login.form.main {
-    margin-bottom: 20px;
+.login-head::after {
+    content: "Đăng nhập để tiếp tục hành trình tài chính của bạn.";
+    display: block;
+    color: var(--muted);
+    font-size: 13px;
 }
 
+.login-main {
+    display: grid;
+    gap: 16px;
+}
 
-.login-form .login.form.main > div {
-    margin-bottom: 15px; 
+.input-group {
+    display: grid;
+    gap: 7px;
+}
+
+.input-group::before {
+    color: var(--ink);
+    font-size: 11px;
+    font-weight: 700;
+}
+
+.input-group:first-child::before {
+    content: "Email";
+}
+
+.input-group:last-child::before {
+    content: "Mật khẩu";
 }
 
 .login-form input {
-    width: 100%;     
-    padding: 10px 12px;       
-    border: 1px solid #ccc;   
-    border-radius: 6px;         
-    font-size: 14px;
-    outline: none;              
+    width: 100%;
+    min-height: 44px;
+    padding: 11px 12px;
+    border: 1px solid var(--line);
+    border-radius: 9px;
+    outline: none;
+    background: #fbfdfb;
+    color: var(--ink);
+    font-size: 13px;
+}
+
+.login-form input:focus {
+    border-color: #4b9170;
+    box-shadow: 0 0 0 3px rgba(217, 244, 232, 0.95);
+}
+
+.login-footer {
+    margin-top: 22px;
 }
 
 .btn-submit {
     width: 100%;
-    padding: 10px;
-    background-color: #e9aa6f;   
-    color: white;      
-    border: none;
-    border-radius: 6px;
-    font-size: 15px;
-    font-weight: bold;
-    cursor: pointer;            
-    margin-bottom: 15px;
+    min-height: 45px;
+    padding: 12px 16px;
+    border: 0;
+    border-radius: 9px;
+    background: var(--green);
+    color: var(--white);
+    font-size: 13px;
+    font-weight: 700;
+    transition: background 160ms ease, transform 160ms ease;
 }
 
 .btn-submit:hover {
-    background-color: #d8935b;   
+    background: var(--green-light);
+    transform: translateY(-1px);
 }
 
 .register {
+    margin-top: 24px;
+    color: var(--muted);
+    font-size: 12px;
     text-align: center;
-    font-size: 13px;
-    color: #555;
 }
 
 .register p {
-    margin-bottom: 8px;
+    margin: 0 0 7px;
 }
 
-
 .btn-register {
-    background: none;       
-    border: none;
-    color: #0066cc;       
-    font-weight: bold;
-    cursor: pointer;
-    font-size: 13px;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    color: var(--green);
+    font-size: 12px;
+    font-weight: 700;
 }
 
 .btn-register:hover {
     text-decoration: underline;
+}
+
+.container::before {
+    content: "Tiền của bạn.\A Rõ ràng hơn.\A\A Một không gian đơn giản để hiểu dòng tiền, xây dựng thói quen và biến mục tiêu thành kế hoạch.";
+    white-space: pre-wrap;
+    grid-column: 1;
+    grid-row: 1;
+    padding: 330px 42px 40px;
+    background: var(--green);
+    color: #c1d9cd;
+    font-family: "Space Grotesk", "Segoe UI", sans-serif;
+    font-size: 14px;
+    line-height: 1.65;
+}
+
+@media (max-width: 700px) {
+    .container {
+        width: min(460px, calc(100% - 30px));
+        min-height: auto;
+        margin: 15px auto;
+        display: block;
+    }
+
+    .container::before {
+        min-height: 220px;
+        padding: 38px 25px;
+        font-size: 27px;
+        font-weight: 700;
+        line-height: 1.1;
+    }
+
+    .login-form {
+        padding: 35px 25px;
+    }
 }
