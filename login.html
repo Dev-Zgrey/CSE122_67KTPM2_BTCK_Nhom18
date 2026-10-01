@@ -17,14 +17,22 @@
             </div>
             <div class="login-main">
                 <div class="input-group">
-                    <input type="text" placeholder="Tài khoản" required>
+                    <input id="login-email" type="email" placeholder="Tài khoản" value="an.tran@spendwise.demo" required>
                 </div>
                 <div class="input-group">
-                    <input type="password" placeholder="Mật khẩu" required>
+                    <input type="password" placeholder="Mật khẩu" value="spendwise" required>
+                </div>
+                <div class="input-group">
+                    <select id="login-role" aria-label="Vai trò demo">
+                        <option value="user">Người dùng</option>
+                        <option value="coach">Huấn luyện viên</option>
+                        <option value="moderator">Kiểm duyệt viên</option>
+                        <option value="admin">Quản trị viên</option>
+                    </select>
                 </div>
             </div>
             <div class="login-footer">
-                <button type="button" class="btn-submit" onclick="window.location.href='index2.html'">Đăng nhập vào SpendWise</button>
+                <button type="button" class="btn-submit" onclick="window.location.href='demo.html?role=' + document.getElementById('login-role').value">Đăng nhập vào SpendWise</button>
                 <div class="register">
                     <p>Chưa có tài khoản?</p>
                     <button type="button" class="btn-register" onclick="alert('Form đăng ký sẽ được mở trong bản tiếp theo.')">Đăng ký ngay</button>

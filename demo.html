@@ -517,6 +517,23 @@ button {
 .view.active {
   display:block
 }
+.role-only { display:none }
+.role-only.visible { display:block }
+.role-banner { display:flex; align-items:center; justify-content:space-between; gap:16px; padding:16px 18px; margin-bottom:18px; background:#eef8f1; border:1px solid #d7ebdc; border-radius:12px }
+.role-banner strong { display:block; font:600 15px 'Space Grotesk'; margin-bottom:4px }
+.role-banner p { margin:0; color:var(--muted); font-size:11px }
+.action-row { display:flex; gap:8px; flex-wrap:wrap }
+.wide-table td:last-child,.wide-table th:last-child { text-align:left }
+.danger { color:#c45b4b }
+.check-list { display:grid; gap:10px; margin:0; padding:0; list-style:none }
+.check-list li { display:flex; align-items:center; gap:9px; font-size:12px; padding:10px 0; border-bottom:1px solid #edf1ee }
+.check-list li:last-child { border:0 }
+.check-list i { color:var(--green) }
+.metric-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:12px; margin:0 0 18px }
+.metric { padding:16px; background:#fbfdfb; border:1px solid var(--line); border-radius:10px }
+.metric span { display:block; color:var(--muted); font-size:10px; margin-bottom:7px }
+.metric strong { font:700 20px 'Space Grotesk' }
+@media(max-width:650px) { .role-banner { align-items:flex-start; flex-direction:column } .metric-grid { grid-template-columns:1fr } }
 .table-tools {
   display:flex;
   gap:9px;
@@ -763,6 +780,15 @@ table {
 </i>
 <span>AI Insights</span>
 </button>
+<button data-view="clients" data-role="coach"><i data-lucide="users" width="17"></i><span>Học viên</span></button>
+<button data-view="reviews" data-role="coach"><i data-lucide="clipboard-check" width="17"></i><span>Review ngân sách</span></button>
+<button data-view="resources" data-role="coach"><i data-lucide="book-open" width="17"></i><span>Tài nguyên</span></button>
+<button data-view="moderation" data-role="moderator"><i data-lucide="shield-check" width="17"></i><span>Kiểm duyệt</span></button>
+<button data-view="ai-templates" data-role="moderator"><i data-lucide="bot" width="17"></i><span>Mẫu AI</span></button>
+<button data-view="reports" data-role="moderator"><i data-lucide="flag" width="17"></i><span>Báo cáo</span></button>
+<button data-view="system" data-role="admin"><i data-lucide="gauge" width="17"></i><span>Hệ thống</span></button>
+<button data-view="accounts" data-role="admin"><i data-lucide="contact-round" width="17"></i><span>Tài khoản</span></button>
+<button data-view="categories" data-role="admin"><i data-lucide="tags" width="17"></i><span>Danh mục</span></button>
 </nav>
 <div class="sidebar-foot">
 <div class="upgrade">
@@ -800,6 +826,7 @@ table {
 <select class="role-select" id="role-switcher">
 <option value="user">User</option>
 <option value="coach">Coach</option>
+<option value="moderator">Moderator</option>
 <option value="admin">Admin</option>
 </select>
 <button class="primary" id="add-button">
@@ -1185,6 +1212,35 @@ table {
 </div>
 </div>
 </section>
+<section class="view" id="view-clients">
+<div class="role-banner"><div><strong>Không gian huấn luyện viên</strong><p>Theo dõi tiến độ và hỗ trợ học viên bằng dữ liệu được chia sẻ.</p></div><button class="primary" data-action="invite">Mời học viên</button></div>
+<div class="card section-card"><div class="panel-head"><div><h2>Học viên của tôi</h2><p>3 hồ sơ đang được theo dõi</p></div><input class="filter" placeholder="Tìm học viên..." data-action="search-client"></div>
+<div style="overflow:auto"><table class="wide-table"><thead><tr><th>Học viên</th><th>Mục tiêu</th><th>Ngân sách</th><th>Hoạt động</th><th>Thao tác</th></tr></thead><tbody><tr><td><strong>Nguyễn Minh Anh</strong><br><small>anh.nguyen@demo.vn</small></td><td>Mua laptop mới</td><td><span class="status">Trong ngưỡng</span></td><td>Hôm nay</td><td><button class="link" data-action="review-client">Mở hồ sơ</button></td></tr><tr><td><strong>Lê Hoàng Nam</strong><br><small>nam.le@demo.vn</small></td><td>Quỹ khẩn cấp</td><td><span class="status" style="background:#fff0d5;color:#ae781d">Sắp vượt</span></td><td>2 giờ trước</td><td><button class="link" data-action="review-client">Mở hồ sơ</button></td></tr><tr><td><strong>Trần Hà My</strong><br><small>my.tran@demo.vn</small></td><td>Du lịch Đà Lạt</td><td><span class="status">Ổn định</span></td><td>Hôm qua</td><td><button class="link" data-action="review-client">Mở hồ sơ</button></td></tr></tbody></table></div></div>
+</section>
+<section class="view" id="view-reviews">
+<div class="card section-card"><div class="panel-head"><div><h2>Review ngân sách</h2><p>Nguyễn Minh Anh · kỳ tháng 6/2026</p></div><span class="status">Chờ phản hồi</span></div><div class="metric-grid"><div class="metric"><span>Tổng ngân sách</span><strong>12.000.000đ</strong></div><div class="metric"><span>Đã sử dụng</span><strong>8.420.000đ</strong></div><div class="metric"><span>Tỷ lệ tiết kiệm</span><strong>22%</strong></div></div><div style="background:#f2f8df;border:1px solid #dcecb5;border-radius:10px;padding:15px;margin-bottom:18px"><strong style="font-size:12px">AI gợi ý insight</strong><p style="font-size:12px;color:#607044;line-height:1.6;margin:7px 0 0">Chi phí ăn uống tăng 18% so với tháng trước. Hãy xác nhận trước khi gửi đề xuất cho học viên.</p></div><div class="field"><label for="coach-note">Nhận xét của bạn</label><input id="coach-note" placeholder="Ví dụ: Bạn có thể điều chỉnh ngân sách ăn uống..."></div><div class="action-row" style="margin-top:16px"><button class="primary" data-action="send-review">Gửi nhận xét</button><button class="secondary" data-action="request-data">Yêu cầu bổ sung dữ liệu</button></div></div>
+</section>
+<section class="view" id="view-resources">
+<div class="card section-card"><div class="panel-head"><div><h2>Thư viện tài nguyên</h2><p>Tạo nội dung giáo dục tài chính cho học viên</p></div><button class="primary" data-action="new-resource"><i data-lucide="plus" width="15"></i>Tạo tài nguyên</button></div><div class="table-tools"><select class="filter"><option>Tất cả trạng thái</option><option>Bản nháp</option><option>Chờ duyệt</option><option>Đã xuất bản</option></select><select class="filter"><option>Tất cả chủ đề</option><option>Ngân sách</option><option>Tiết kiệm</option></select></div><div style="overflow:auto"><table class="wide-table"><thead><tr><th>Tài nguyên</th><th>Chủ đề</th><th>Cập nhật</th><th>Trạng thái</th><th></th></tr></thead><tbody><tr><td><strong>7 bước lập ngân sách đầu tháng</strong></td><td>Ngân sách</td><td>Hôm nay</td><td><span class="status">Đã xuất bản</span></td><td><button class="link" data-action="edit-resource">Chỉnh sửa</button></td></tr><tr><td><strong>Quy tắc 50/30/20 dễ hiểu</strong></td><td>Tiết kiệm</td><td>20/06/2026</td><td><span class="status" style="background:#fff0d5;color:#ae781d">Chờ duyệt</span></td><td><button class="link" data-action="edit-resource">Xem bản nháp</button></td></tr></tbody></table></div></div>
+</section>
+<section class="view" id="view-moderation">
+<div class="role-banner"><div><strong>Hàng chờ kiểm duyệt</strong><p>Kiểm tra chất lượng nội dung trước khi xuất bản.</p></div><span class="status">4 mục cần xử lý</span></div><div class="card section-card"><div class="panel-head"><div><h2>Review nội dung</h2><p>Luôn giữ quyết định cuối cùng ở người kiểm duyệt</p></div><button class="filter" data-action="refresh">Làm mới</button></div><div style="overflow:auto"><table class="wide-table"><thead><tr><th>Nội dung</th><th>Người tạo</th><th>Ngày gửi</th><th>Kiểm tra</th><th>Thao tác</th></tr></thead><tbody><tr><td><strong>Quy tắc 50/30/20 dễ hiểu</strong><br><small>Tài nguyên giáo dục</small></td><td>Coach An</td><td>24/06/2026</td><td><span class="status" style="background:#fff0d5;color:#ae781d">Gợi ý xem xét</span></td><td><button class="primary" data-action="approve">Duyệt</button> <button class="link danger" data-action="reject">Yêu cầu sửa</button></td></tr><tr><td><strong>Cách nhận diện chi tiêu bất thường</strong><br><small>Tài nguyên giáo dục</small></td><td>Coach Minh</td><td>23/06/2026</td><td><span class="status">Đạt kiểm tra</span></td><td><button class="primary" data-action="approve">Duyệt</button></td></tr></tbody></table></div></div>
+</section>
+<section class="view" id="view-ai-templates">
+<div class="card section-card"><div class="panel-head"><div><h2>Mẫu phản hồi AI</h2><p>Quản lý phiên bản, thử nghiệm và fallback cho AI</p></div><button class="primary" data-action="new-template">Tạo mẫu mới</button></div><ul class="check-list"><li><i data-lucide="check-circle" width="16"></i><span style="flex:1"><strong>Expense Categorizer v2</strong><br><small>Đang hoạt động · Độ chắc chắn tối thiểu 75%</small></span><button class="link" data-action="test-ai">Chạy thử</button></li><li><i data-lucide="flask-conical" width="16"></i><span style="flex:1"><strong>Goal Coach v1.4</strong><br><small>Đang thử nghiệm · 12 lượt đánh giá</small></span><button class="link" data-action="test-ai">Xem log</button></li><li><i data-lucide="pause-circle" width="16"></i><span style="flex:1"><strong>Pattern Insight v1.1</strong><br><small>Đã vô hiệu hóa · fallback thủ công đang bật</small></span><button class="link" data-action="enable-ai">Bật lại</button></li></ul></div>
+</section>
+<section class="view" id="view-reports">
+<div class="card section-card"><div class="panel-head"><div><h2>Trung tâm báo cáo</h2><p>Tiếp nhận và phân loại phản hồi từ cộng đồng</p></div><span class="status" style="background:#ffe6e0;color:#c05b4e">2 ưu tiên cao</span></div><div class="metric-grid"><div class="metric"><span>Mới</span><strong>08</strong></div><div class="metric"><span>Đang xử lý</span><strong>05</strong></div><div class="metric"><span>Đã đóng tuần này</span><strong>24</strong></div></div><div style="overflow:auto"><table class="wide-table"><thead><tr><th>Báo cáo</th><th>Mức độ</th><th>Người gửi</th><th>Trạng thái</th><th></th></tr></thead><tbody><tr><td><strong>Insight hiển thị sai danh mục</strong></td><td><span class="status" style="background:#ffe6e0;color:#c05b4e">Cao</span></td><td>An Trần</td><td>Chưa xử lý</td><td><button class="link" data-action="handle-report">Xử lý</button></td></tr><tr><td><strong>Muốn bổ sung bài học về nợ</strong></td><td><span class="status">Thấp</span></td><td>Hà My</td><td>Đang xử lý</td><td><button class="link" data-action="handle-report">Mở</button></td></tr></tbody></table></div></div>
+</section>
+<section class="view" id="view-system">
+<div class="role-banner"><div><strong>Điều hành hệ thống</strong><p>Thứ Hai, 24 tháng 6, 2026 · Dữ liệu mô phỏng cho buổi trình diễn</p></div><button class="secondary" data-action="export">Xuất báo cáo</button></div><div class="metric-grid"><div class="metric"><span>Tài khoản hoạt động</span><strong>1.248</strong></div><div class="metric"><span>Giao dịch hôm nay</span><strong>3.842</strong></div><div class="metric"><span>Nội dung chờ duyệt</span><strong>14</strong></div></div><div class="card section-card"><div class="panel-head"><div><h2>Sức khỏe nền tảng</h2><p>Giám sát các chỉ số quan trọng</p></div><span class="status">Tất cả ổn định</span></div><ul class="check-list"><li><i data-lucide="check-circle" width="16"></i><span style="flex:1">API mô phỏng</span><strong>99.9%</strong></li><li><i data-lucide="check-circle" width="16"></i><span style="flex:1">Expense Categorizer</span><strong>Hoạt động</strong></li><li><i data-lucide="alert-triangle" width="16" style="color:#ae781d"></i><span style="flex:1">Email notification</span><strong style="color:#ae781d">Đang kiểm tra</strong></li></ul></div>
+</section>
+<section class="view" id="view-accounts">
+<div class="card section-card"><div class="panel-head"><div><h2>Quản lý tài khoản</h2><p>Gán role, khóa/mở khóa và theo dõi quyền truy cập</p></div><button class="primary" data-action="new-account">Tạo tài khoản</button></div><div class="table-tools"><input class="filter" placeholder="Tìm theo tên hoặc email..." data-action="search-account"><select class="filter"><option>Tất cả role</option><option>User</option><option>Coach</option><option>Moderator</option></select></div><div style="overflow:auto"><table class="wide-table"><thead><tr><th>Tài khoản</th><th>Role</th><th>Hoạt động gần nhất</th><th>Trạng thái</th><th></th></tr></thead><tbody><tr><td><strong>An Trần</strong><br><small>an.tran@spendwise.demo</small></td><td>User</td><td>5 phút trước</td><td><span class="status">Hoạt động</span></td><td><button class="link" data-action="lock-account">Khóa</button></td></tr><tr><td><strong>Coach Minh</strong><br><small>minh.coach@spendwise.demo</small></td><td>Coach</td><td>1 giờ trước</td><td><span class="status">Hoạt động</span></td><td><button class="link" data-action="change-role">Phân quyền</button></td></tr></tbody></table></div></div>
+</section>
+<section class="view" id="view-categories">
+<div class="card section-card"><div class="panel-head"><div><h2>Danh mục chi tiêu</h2><p>Taxonomy dùng chung cho giao dịch và AI phân loại</p></div><button class="primary" data-action="new-category">Thêm danh mục</button></div><ul class="check-list"><li><i data-lucide="grip-vertical" width="16"></i><span style="flex:1"><strong>Ăn uống</strong><br><small>184 giao dịch · Đang hoạt động</small></span><button class="link" data-action="edit-category">Sửa</button></li><li><i data-lucide="grip-vertical" width="16"></i><span style="flex:1"><strong>Di chuyển</strong><br><small>96 giao dịch · Đang hoạt động</small></span><button class="link" data-action="edit-category">Sửa</button></li><li><i data-lucide="grip-vertical" width="16"></i><span style="flex:1"><strong>Giải trí</strong><br><small>54 giao dịch · Đang hoạt động</small></span><button class="link" data-action="edit-category">Sửa</button></li></ul></div>
+</section>
 </main>
 </div>
 <div class="modal-backdrop" id="transaction-modal">
@@ -1235,8 +1291,6 @@ table {
 </div>
 <script>
 const requestedRole=new URLSearchParams(location.search).get('role');
-if(requestedRole&&['user','coach','admin'].includes(requestedRole)){document.getElementById('role-switcher').value=requestedRole;
-}
 const transactions = [
   { name: 'Lương tháng 6', category: 'Thu nhập', date: '24/06/2026', amount: 18500000, type: 'in', icon: 'briefcase', color: 'green' },
   { name: 'Winmart+', category: 'Ăn uống', date: '23/06/2026', amount: 248000, type: 'out', icon: 'shopping-basket', color: 'orange' },
@@ -1274,7 +1328,16 @@ const titles = {
   transactions: ['Giao dịch', 'Theo dõi từng khoản thu chi của bạn'],
   budgets: ['Ngân sách', 'Kiểm soát dòng tiền theo từng danh mục'],
   goals: ['Mục tiêu tài chính', 'Từng bước nhỏ, tiến gần hơn tới điều bạn muốn'],
-  insights: ['AI Insights', 'Những gợi ý giúp bạn chi tiêu chủ động hơn']
+  insights: ['AI Insights', 'Những gợi ý giúp bạn chi tiêu chủ động hơn'],
+  clients: ['Học viên', 'Theo dõi tiến độ và hỗ trợ tài chính cá nhân'],
+  reviews: ['Review ngân sách', 'Đưa ra phản hồi có căn cứ cho học viên'],
+  resources: ['Tài nguyên', 'Tạo và quản lý nội dung giáo dục tài chính'],
+  moderation: ['Kiểm duyệt nội dung', 'Đảm bảo chất lượng trước khi xuất bản'],
+  'ai-templates': ['Mẫu AI', 'Kiểm soát phiên bản và chất lượng phản hồi'],
+  reports: ['Trung tâm báo cáo', 'Xử lý phản hồi và vấn đề cần chú ý'],
+  system: ['Điều hành hệ thống', 'Theo dõi sức khỏe và hoạt động nền tảng'],
+  accounts: ['Quản lý tài khoản', 'Kiểm soát người dùng và phân quyền'],
+  categories: ['Danh mục chi tiêu', 'Quản lý dữ liệu nền cho toàn hệ thống']
 };
 function switchView(view){document.querySelectorAll('.nav button').forEach(button=>button.classList.toggle('active',button.dataset.view===view));
 document.querySelectorAll('.view').forEach(section=>section.classList.toggle('active',section.id==='view-'+view));
@@ -1321,7 +1384,41 @@ document.getElementById('create-goal-button').addEventListener('click',()=>{
   switchView('goals');
   showToast('Bạn đang ở trang quản lý mục tiêu');
 });
-document.getElementById('role-switcher').addEventListener('change',event=>showToast('Đã chuyển sang không gian '+event.target.value));
+const roleLabels={user:'Người dùng',coach:'Huấn luyện viên',moderator:'Kiểm duyệt viên',admin:'Quản trị viên'};
+const roleStart={user:'overview',coach:'clients',moderator:'moderation',admin:'system'};
+function setRole(role, notify=false){
+  document.getElementById('role-switcher').value=role;
+  document.querySelectorAll('[data-role]').forEach(item=>item.style.display=item.dataset.role===role?'flex':'none');
+  document.querySelectorAll('.profile small').forEach(item=>item.textContent=roleLabels[role]+' · Demo');
+  switchView(roleStart[role] || 'overview');
+  if(notify) showToast('Đã chuyển sang không gian '+roleLabels[role]);
+}
+document.getElementById('role-switcher').addEventListener('change',event=>setRole(event.target.value,true));
+document.querySelectorAll('[data-action]').forEach(button=>button.addEventListener('click',()=>{
+  const messages={
+    invite:'Đã mở lời mời học viên mới',
+    'review-client':'Đã mở hồ sơ học viên để review',
+    'send-review':'Đã gửi nhận xét cho học viên',
+    'request-data':'Đã gửi yêu cầu bổ sung dữ liệu',
+    'new-resource':'Đã mở trình soạn tài nguyên',
+    'edit-resource':'Đã mở bản nháp tài nguyên',
+    approve:'Đã duyệt nội dung thành công',
+    reject:'Đã gửi yêu cầu chỉnh sửa cho Coach',
+    refresh:'Danh sách đã được làm mới',
+    'new-template':'Đã tạo bản nháp mẫu AI',
+    'test-ai':'Đang chạy thử với dữ liệu mô phỏng',
+    'enable-ai':'Đã bật lại mẫu AI và fallback',
+    'handle-report':'Đã nhận báo cáo để xử lý',
+    export:'Báo cáo hệ thống đã sẵn sàng để tải',
+    'new-account':'Đã mở form tạo tài khoản',
+    'lock-account':'Tài khoản đã được khóa trong bản demo',
+    'change-role':'Đã mở bảng phân quyền',
+    'new-category':'Đã mở form thêm danh mục',
+    'edit-category':'Đã mở chỉnh sửa danh mục'
+  };
+  showToast(messages[button.dataset.action] || 'Thao tác đã được thực hiện');
+}));
+if(requestedRole&&Object.keys(roleLabels).includes(requestedRole)){setRole(requestedRole);}
 renderTransactions();
 lucide.createIcons();
 new Chart(document.getElementById('cashflow-chart'), {
