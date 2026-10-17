@@ -1,0 +1,4 @@
+@import url("workspace.css");
+
+:root { --accent: #205c47; --accent-soft: #e8f3ec; }
+.ws-page-head h1 { color: #192820; }

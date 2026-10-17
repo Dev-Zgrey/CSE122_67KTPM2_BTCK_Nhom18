@@ -1,0 +1,5 @@
+@import url("./user-pages.css");
+
+.user-page--finance-dashboard .user-summary-card--balance { box-shadow: 0 8px 22px rgba(23, 73, 54, .13); }
+.user-page--finance-dashboard .user-chart-bar { transition: height .25s ease; }
+.user-page--finance-dashboard .user-recent-item:hover { background: #fcfdfb; }

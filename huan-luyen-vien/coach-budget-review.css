@@ -1,0 +1,4 @@
+@import url("../dung-chung/workspace.css");
+
+:root { --accent: #4b658f; --accent-soft: #edf1f8; }
+.ws-page-head h1 { color: #192820; }

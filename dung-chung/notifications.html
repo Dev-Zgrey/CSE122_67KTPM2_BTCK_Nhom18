@@ -3,23 +3,12 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f6f8f5">
+  <meta name="description" content="Xem thông báo, lọc trạng thái và đánh dấu đã đọc.">
   <title>SpendWise | Thông báo</title>
+  <link rel="stylesheet" href="notifications.css">
+  <script src="workspace.js" defer></script>
+  <script src="notifications.js" defer></script>
 </head>
-<body>
-  <div class="page page--shared page--notifications">
-    <div class="shared-layout">
-      <div class="shared-header"></div>
-      <div class="shared-content">
-        <div class="notification-heading"></div>
-        <div class="notification-filters"></div>
-        <div class="notification-list">
-          <div class="notification-item"></div>
-          <div class="notification-item"></div>
-          <div class="notification-item"></div>
-        </div>
-        <div class="notification-empty-state"></div>
-      </div>
-    </div>
-  </div>
-</body>
+<body data-role="user"><div data-workspace-root></div></body>
 </html>

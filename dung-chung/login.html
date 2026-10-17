@@ -1,44 +1,14 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="vi">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SpendWise - Đăng nhập</title>
-    <link rel="stylesheet" href="main.css">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f5f8f4">
+  <meta name="description" content="Đăng nhập vào bản demo SpendWise.">
+  <title>SpendWise | Đăng nhập</title>
+  <link rel="stylesheet" href="login.css">
+  <script src="account.js" defer></script>
+  <script src="login.js" defer></script>
 </head>
-<body>
-    <main class="container">
-        <div class="login-form">
-            <div class="login-head">
-                <div class="logo">
-                    <span aria-hidden="true">◔</span>
-                </div>
-                <h1>SpendWise</h1>
-            </div>
-            <div class="login-main">
-                <div class="input-group">
-                    <input id="login-email" type="email" placeholder="Tài khoản" value="an.tran@spendwise.demo" required>
-                </div>
-                <div class="input-group">
-                    <input type="password" placeholder="Mật khẩu" value="spendwise" required>
-                </div>
-                <div class="input-group">
-                    <select id="login-role" aria-label="Vai trò demo">
-                        <option value="user">Người dùng</option>
-                        <option value="coach">Huấn luyện viên</option>
-                        <option value="moderator">Kiểm duyệt viên</option>
-                        <option value="admin">Quản trị viên</option>
-                    </select>
-                </div>
-            </div>
-            <div class="login-footer">
-                <button type="button" class="btn-submit" onclick="window.location.href='../demo.html?role=' + document.getElementById('login-role').value">Đăng nhập vào SpendWise</button>
-                <div class="register">
-                    <p>Chưa có tài khoản?</p>
-                    <button type="button" class="btn-register" onclick="window.location.href='register.html'">Đăng ký ngay</button>
-                </div>
-            </div>
-        </div>
-    </main>
-</body>
+<body><div data-account-root></div></body>
 </html>

@@ -4,58 +4,76 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#f4f7f3">
+  <meta name="description" content="Tổng quan thu chi, ngân sách và tình hình tài chính cá nhân trên SpendWise.">
   <title>SpendWise | Tổng quan tài chính</title>
+  <link rel="stylesheet" href="../dung-chung/user-finance-dashboard.css">
+  <script src="../dung-chung/user-data.js" defer></script>
+  <script src="../dung-chung/user-finance-dashboard.js" defer></script>
 </head>
 <body>
-  <div class="page page--user page--user-finance-dashboard">
-    <div class="page-layout">
-      <div class="page-sidebar">
-        <div class="sidebar-brand"></div>
-        <div class="sidebar-navigation">
-          <div class="navigation-group navigation-group--user">
-            <div class="navigation-item navigation-item--user-ai-recommendations"></div>
-            <div class="navigation-item navigation-item--user-budget-management"></div>
-            <div class="navigation-item navigation-item--user-finance-dashboard is-current"></div>
-            <div class="navigation-item navigation-item--user-saving-goals"></div>
-            <div class="navigation-item navigation-item--user-spending-insights"></div>
-            <div class="navigation-item navigation-item--user-transaction-management"></div>
-          </div>
+  <div class="user-page user-page--finance-dashboard" data-page="dashboard">
+    <div class="user-page-layout">
+      <aside class="user-page-sidebar">
+        <a class="user-sidebar-brand" href="user-finance-dashboard.html"><span class="user-brand-mark">S</span><span>SpendWise</span></a>
+        <div class="user-sidebar-label">Không gian của bạn</div>
+        <nav class="user-sidebar-navigation" aria-label="Điều hướng chính">
+          <a class="user-navigation-item is-current" aria-current="page" href="user-finance-dashboard.html"><span class="user-nav-icon">◫</span>Tổng quan</a>
+          <a class="user-navigation-item" href="user-transaction-management.html"><span class="user-nav-icon">↔</span>Giao dịch</a>
+          <a class="user-navigation-item" href="user-budget-management.html"><span class="user-nav-icon">▤</span>Ngân sách</a>
+          <a class="user-navigation-item" href="user-saving-goals.html"><span class="user-nav-icon">◎</span>Mục tiêu tiết kiệm</a>
+          <a class="user-navigation-item" href="user-spending-insights.html"><span class="user-nav-icon">⌁</span>Phân tích chi tiêu</a>
+          <a class="user-navigation-item" href="user-ai-recommendations.html"><span class="user-nav-icon">✦</span>Gợi ý thông minh</a>
+        </nav>
+        <div class="user-sidebar-help"><div class="user-help-icon">?</div><div><strong>Cần hỗ trợ?</strong><span>Quản lý tài chính dễ dàng</span></div></div>
+        <div class="user-sidebar-account-area">
+          <div class="user-account-avatar">AN</div>
+          <div class="user-account-profile"><strong>Nguyễn An</strong><span>Tài khoản cá nhân</span></div>
+          <a class="user-account-settings" href="../dung-chung/settings.html" aria-label="Cài đặt">⚙</a>
         </div>
-        <div class="sidebar-account-area">
-          <div class="account-profile"></div>
-          <div class="account-settings"></div>
+      </aside>
+      <main class="user-page-main">
+        <div class="user-page-topbar">
+          <div class="user-breadcrumb-area"><span>Không gian của bạn</span><span class="user-breadcrumb-separator">/</span><strong>Tổng quan</strong></div>
+          <div class="user-account-area"><span class="user-today-label" data-today></span><a class="user-icon-button" href="../dung-chung/notifications.html" aria-label="Thông báo" title="Thông báo">♧</a><div class="user-account-avatar user-account-avatar--small">AN</div></div>
         </div>
-      </div>
-      <div class="page-main">
-        <div class="page-topbar">
-          <div class="breadcrumb-area"></div>
-          <div class="account-area"></div>
-        </div>
-        <div class="page-header">
-          <div class="page-heading"></div>
-          <div class="page-actions">
-            <div class="page-action page-action--primary"></div>
-            <div class="page-action page-action--secondary"></div>
-          </div>
-        </div>
-        <div class="summary-grid">
-          <div class="summary-card summary-card--1"></div>
-          <div class="summary-card summary-card--2"></div>
-          <div class="summary-card summary-card--3"></div>
-          <div class="summary-card summary-card--4"></div>
-        </div>
-        <div class="page-content page-content--dashboard">
-          <div class="dashboard-main">
-            <div class="overview-panel"></div>
-            <div class="activity-panel"></div>
-          </div>
-          <div class="dashboard-aside">
-            <div class="alerts-panel"></div>
-            <div class="recent-items-panel"></div>
-          </div>
-        </div>
-      </div>
+        <section class="user-page-header">
+          <div class="user-page-heading"><div class="user-eyebrow">THỨC TỈNH TÀI CHÍNH CỦA BẠN</div><h1>Chào buổi sáng, An <span class="user-wave">✦</span></h1><p>Đây là bức tranh tài chính của bạn trong tháng này.</p></div>
+          <div class="user-page-actions"><a class="user-button user-button--secondary" href="user-budget-management.html">Xem ngân sách</a><a class="user-button user-button--primary" href="user-transaction-management.html?new=1">＋ Thêm giao dịch</a></div>
+        </section>
+        <section class="user-summary-grid" aria-label="Tóm tắt tài chính">
+          <article class="user-summary-card user-summary-card--balance"><div class="user-summary-card-top"><span>Tổng số dư</span><span class="user-summary-icon">◈</span></div><strong class="user-summary-value" data-metric="balance">—</strong><div class="user-summary-foot"><span class="user-trend user-trend--positive" data-metric="balance-note">Tổng thu trừ chi tháng này</span></div></article>
+          <article class="user-summary-card"><div class="user-summary-card-top"><span>Tổng thu tháng này</span><span class="user-summary-icon user-summary-icon--green">↙</span></div><strong class="user-summary-value" data-metric="income">—</strong><div class="user-summary-foot"><span class="user-metric-caption">Các khoản thu đã ghi nhận</span></div></article>
+          <article class="user-summary-card"><div class="user-summary-card-top"><span>Tổng chi tháng này</span><span class="user-summary-icon user-summary-icon--coral">↗</span></div><strong class="user-summary-value" data-metric="expense">—</strong><div class="user-summary-foot"><span class="user-metric-caption" data-metric="expense-note">Các khoản chi đã ghi nhận</span></div></article>
+          <article class="user-summary-card"><div class="user-summary-card-top"><span>Ngân sách còn lại</span><span class="user-summary-icon user-summary-icon--blue">▤</span></div><strong class="user-summary-value" data-metric="remaining">—</strong><div class="user-summary-foot"><span class="user-metric-caption" data-metric="budget-note">So với tổng ngân sách tháng</span></div></article>
+        </section>
+        <section class="user-dashboard-grid">
+          <article class="user-panel user-spending-panel">
+            <div class="user-panel-heading"><div><h2>Dòng tiền của bạn</h2><p>Thu nhập và chi tiêu trong 6 tháng gần đây</p></div><span class="user-period-pill">6 tháng</span></div>
+            <div class="user-chart-legend"><span><i class="user-legend-dot user-legend-dot--income"></i>Thu nhập</span><span><i class="user-legend-dot user-legend-dot--expense"></i>Chi tiêu</span></div>
+            <div class="user-chart-area" data-chart aria-label="Biểu đồ thu nhập và chi tiêu 6 tháng"></div>
+          </article>
+          <article class="user-panel user-budget-panel">
+            <div class="user-panel-heading"><div><h2>Ngân sách tháng</h2><p>Theo dõi mức chi tiêu của bạn</p></div><a class="user-text-link" href="user-budget-management.html">Chi tiết <span>→</span></a></div>
+            <div class="user-budget-total"><strong data-metric="budget-spent">—</strong><span> / <span data-metric="budget-total">—</span></span></div>
+            <div class="user-progress-track"><div class="user-progress-fill" data-budget-progress></div></div>
+            <div class="user-budget-remaining"><span>Còn lại</span><strong data-metric="remaining-inline">—</strong></div>
+            <div class="user-budget-category-list" data-budget-preview></div>
+          </article>
+          <article class="user-panel user-recent-panel">
+            <div class="user-panel-heading"><div><h2>Giao dịch gần đây</h2><p>Các hoạt động tài chính mới nhất</p></div><a class="user-text-link" href="user-transaction-management.html">Tất cả <span>→</span></a></div>
+            <div class="user-recent-list" data-recent-transactions></div>
+          </article>
+          <article class="user-panel user-insight-panel">
+            <div class="user-insight-decoration">✦</div><div class="user-eyebrow">INSIGHT CỦA THÁNG</div>
+            <h2>Mỗi khoản nhỏ đều tạo nên thay đổi lớn.</h2>
+            <p data-insight-text>Ghi lại giao dịch để SpendWise giúp bạn nhìn rõ hơn thói quen chi tiêu.</p>
+            <a class="user-insight-link" href="user-spending-insights.html">Khám phá phân tích <span>→</span></a>
+          </article>
+        </section>
+        <footer class="user-page-footer"><span>© 2025 SpendWise</span><span>Quản lý tài chính theo cách của bạn.</span></footer>
+      </main>
     </div>
+    <div class="user-toast-region" aria-live="polite" data-toast-region></div>
   </div>
 </body>
 </html>
