@@ -91,12 +91,12 @@
     return amount.toLocaleString("vi-VN");
   }
   function progress(percent) { return `${Math.min(100, Math.max(0, percent))}%`; }
-  function progressClass(percent) { return percent >= 100 ? "is-over" : percent >= 80 ? "is-warning" : ""; }
+  function progressClass(percent) { return percent >= 100 ? "is-over-limit" : percent >= 80 ? "is-warning" : ""; }
   function notify(message, isError = false) {
     const region = document.querySelector("[data-toast-region]");
     if (!region) return;
     const toast = document.createElement("div");
-    toast.className = `user-toast${isError ? " user-toast--error" : ""}`;
+    toast.className = `toast${isError ? " toast-error" : ""}`;
     toast.textContent = message;
     region.append(toast);
     window.setTimeout(() => toast.remove(), 3600);

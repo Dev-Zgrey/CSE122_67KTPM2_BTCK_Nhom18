@@ -42,8 +42,8 @@
         .sort((a, b) => b.date.localeCompare(a.date));
       root.querySelector("[data-filtered-count]").textContent = filtered.length;
       root.querySelector("[data-transaction-empty]").hidden = !!filtered.length;
-      root.querySelector(".user-table-scroll").hidden = !filtered.length;
-      rows.innerHTML = filtered.map((item) => `<tr><td><div class="user-table-transaction"><div class="user-category-icon ${item.type === "income" ? "user-category-icon--income" : ""}">${D.escape(D.categoryIcons[item.category] || "◌")}</div><div><strong>${D.escape(item.title)}</strong><span>${D.escape(item.note || typeLabels[item.type])}</span></div></div></td><td><span class="user-category-tag">${D.escape(item.category)}</span></td><td>${D.formatDate(item.date)}</td><td>${D.escape(item.method || "Tiền mặt")}</td><td class="user-amount-cell ${item.type === "income" ? "user-amount-cell--income" : ""}">${item.type === "income" ? "+" : "−"}${D.money(item.amount)}</td><td><div class="user-row-actions"><button class="user-row-action" type="button" aria-label="Sửa ${D.escape(item.title)}" data-edit-transaction="${D.escape(item.id)}">✎</button><button class="user-row-action user-row-action--delete" type="button" aria-label="Xóa ${D.escape(item.title)}" data-delete-transaction="${D.escape(item.id)}">×</button></div></td></tr>`).join("");
+      root.querySelector(".table-scroll").hidden = !filtered.length;
+      rows.innerHTML = filtered.map((item) => `<tr><td><div class="transaction-table"><div class="category-icon ${item.type === "income" ? "category-icon-income" : ""}">${D.escape(D.categoryIcons[item.category] || "◌")}</div><div><strong>${D.escape(item.title)}</strong><span>${D.escape(item.note || typeLabels[item.type])}</span></div></div></td><td><span class="category-tag">${D.escape(item.category)}</span></td><td>${D.formatDate(item.date)}</td><td>${D.escape(item.method || "Tiền mặt")}</td><td class="amount-cell ${item.type === "income" ? "amount-cell-income" : ""}">${item.type === "income" ? "+" : "−"}${D.money(item.amount)}</td><td><div class="row-action-icon"><button class="row-action" type="button" aria-label="Sửa ${D.escape(item.title)}" data-edit-transaction="${D.escape(item.id)}">✎</button><button class="row-action row-action-delete" type="button" aria-label="Xóa ${D.escape(item.title)}" data-delete-transaction="${D.escape(item.id)}">×</button></div></td></tr>`).join("");
       const monthly = D.totals(D.currentTransactions(transactions));
       root.querySelectorAll('[data-metric="income"]').forEach((el) => { el.textContent = D.money(monthly.income); });
       root.querySelectorAll('[data-metric="expense"]').forEach((el) => { el.textContent = D.money(monthly.expense); });
@@ -65,10 +65,10 @@
     form.querySelector('[type="submit"]').textContent = item ? "Lưu thay đổi" : "Lưu giao dịch";
     error.textContent = "";
     modal.hidden = false;
-    document.body.classList.add("user-modal-open");
+    document.body.classList.add("modal-open");
     form.elements.title.focus();
   }
-  function close() { modal.hidden = true; document.body.classList.remove("user-modal-open"); }
+  function close() { modal.hidden = true; document.body.classList.remove("modal-open"); }
   root.querySelectorAll("[data-open-transaction]").forEach((button) => button.addEventListener("click", () => open()));
   root.querySelectorAll("[data-close-transaction]").forEach((button) => button.addEventListener("click", close));
   modal.addEventListener("click", (event) => { if (event.target === modal) close(); });

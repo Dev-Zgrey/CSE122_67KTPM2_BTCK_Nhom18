@@ -44,13 +44,13 @@
             : "Tiến độ chi tiêu đang được cập nhật từ các giao dịch của bạn.";
       const progress = root.querySelector("[data-budget-overview-progress]");
       progress.style.width = D.progress(percent);
-      progress.className = `user-progress-fill ${D.progressClass(percent)}`;
+      progress.className = `progress-fill ${D.progressClass(percent)}`;
       root.querySelector("[data-budget-empty]").hidden = monthBudgets.length > 0;
       root.querySelector("[data-budget-list]").innerHTML = monthBudgets.map((budget) => {
         const spent = spending[budget.category] || 0;
         const ratio = Number(budget.limit) ? spent / Number(budget.limit) * 100 : 0;
         const balance = Number(budget.limit) - spent;
-        return `<article class="user-panel user-budget-category-card"><div class="user-budget-card-top"><div class="user-category-icon">${D.escape(D.categoryIcons[budget.category] || "◌")}</div><div class="user-budget-card-heading"><strong>${D.escape(budget.category)}</strong><span>Ngân sách theo tháng</span></div><div class="user-budget-menu"><button class="user-row-action" type="button" aria-label="Sửa ngân sách ${D.escape(budget.category)}" data-edit-budget="${D.escape(budget.id)}">✎</button><button class="user-row-action user-row-action--delete" type="button" aria-label="Xóa ngân sách ${D.escape(budget.category)}" data-delete-budget="${D.escape(budget.id)}">×</button></div></div><div class="user-budget-card-amounts"><strong>${D.money(spent)}</strong><span>trên ${D.money(budget.limit)}</span></div><div class="user-progress-track user-budget-card-progress"><div class="user-progress-fill ${D.progressClass(ratio)}" style="width:${D.progress(ratio)}"></div></div><div class="user-budget-card-foot"><span>${Math.round(ratio)}% đã sử dụng</span><strong class="${balance < 0 ? "user-over-limit" : ""}">${balance < 0 ? `Vượt ${D.money(Math.abs(balance))}` : `Còn ${D.money(balance)}`}</strong></div><div class="user-budget-card-note">${ratio >= 100 ? "Bạn đã vượt hạn mức danh mục này." : ratio >= 80 ? "Sắp đạt hạn mức, hãy theo dõi chi tiêu." : "Bạn đang trong giới hạn ngân sách."}</div></article>`;
+        return `<article class="panel budget-category-card"><div class="budget-card-header"><div class="category-icon">${D.escape(D.categoryIcons[budget.category] || "◌")}</div><div class="budget-card-heading"><strong>${D.escape(budget.category)}</strong><span>Ngân sách theo tháng</span></div><div class="budget-month-select"><button class="row-action" type="button" aria-label="Sửa ngân sách ${D.escape(budget.category)}" data-edit-budget="${D.escape(budget.id)}">✎</button><button class="row-action row-action-delete" type="button" aria-label="Xóa ngân sách ${D.escape(budget.category)}" data-delete-budget="${D.escape(budget.id)}">×</button></div></div><div class="budget-card-amount"><strong>${D.money(spent)}</strong><span>trên ${D.money(budget.limit)}</span></div><div class="progress-track budget-card-progress"><div class="progress-fill ${D.progressClass(ratio)}" style="width:${D.progress(ratio)}"></div></div><div class="budget-card-note"><span>${Math.round(ratio)}% đã sử dụng</span><strong class="${balance < 0 ? "overview-limit" : ""}">${balance < 0 ? `Vượt ${D.money(Math.abs(balance))}` : `Còn ${D.money(balance)}`}</strong></div><div class="budget-card-warning">${ratio >= 100 ? "Bạn đã vượt hạn mức danh mục này." : ratio >= 80 ? "Sắp đạt hạn mức, hãy theo dõi chi tiêu." : "Bạn đang trong giới hạn ngân sách."}</div></article>`;
       }).join("");
     } catch (exception) { D.notify(exception.message, true); }
   }
@@ -68,10 +68,10 @@
     form.querySelector('[type="submit"]').textContent = budget ? "Lưu thay đổi" : "Lưu ngân sách";
     error.textContent = "";
     modal.hidden = false;
-    document.body.classList.add("user-modal-open");
+    document.body.classList.add("modal-open");
     categoryField.focus();
   }
-  function close() { modal.hidden = true; document.body.classList.remove("user-modal-open"); }
+  function close() { modal.hidden = true; document.body.classList.remove("modal-open"); }
   root.querySelectorAll("[data-open-budget]").forEach((button) => button.addEventListener("click", () => open()));
   root.querySelectorAll("[data-close-budget]").forEach((button) => button.addEventListener("click", close));
   modal.addEventListener("click", (event) => { if (event.target === modal) close(); });

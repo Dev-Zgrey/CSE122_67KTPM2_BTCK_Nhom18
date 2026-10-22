@@ -46,19 +46,19 @@
   } catch (error) {
     root.dataset.storageError = `Dữ liệu demo chưa khởi tạo được: ${error.message}`;
   }
-  const nav = `<header class="account-top"><a class="account-brand" href="index.html"><span class="account-mark">S</span>SpendWise</a><nav class="account-top-links"><a href="index.html">Trang chủ</a><a href="login.html">Đăng nhập</a></nav></header>`;
-  const shell = (content) => `<div class="account-wrap">${nav}<main class="account-main">${content}</main><footer class="account-footer">SpendWise · Bản demo frontend · Dữ liệu chỉ lưu trên trình duyệt</footer></div>`;
-  const field = (label, name, type = "text", value = "", required = true, placeholder = "") => `<div class="account-field"><label for="${name}">${label}${required ? " *" : ""}</label><input id="${name}" name="${name}" type="${type}" value="${esc(value)}" placeholder="${esc(placeholder)}" ${required ? "required" : ""} ${type === "email" ? 'autocomplete="email"' : ""}></div>`;
-  const formShell = (title, description, body, button) => `<section class="account-card"><h1>${title}</h1><p>${description}</p><form class="account-form" data-form>${body}<div class="account-error" data-error role="alert"></div><button class="account-button" type="submit">${button}</button><div class="account-success" data-success hidden></div></form></section>`;
+  const nav = `<header class="header"><a class="brand" href="index.html"><span class="brand-mark">S</span>SpendWise</a><nav class="header-links"><a href="index.html">Trang chủ</a><a href="login.html">Đăng nhập</a></nav></header>`;
+  const shell = (content) => `<div class="container">${nav}<main class="main">${content}</main><footer class="footer">SpendWise · Bản demo frontend · Dữ liệu chỉ lưu trên trình duyệt</footer></div>`;
+  const field = (label, name, type = "text", value = "", required = true, placeholder = "") => `<div class="field"><label for="${name}">${label}${required ? " *" : ""}</label><input id="${name}" name="${name}" type="${type}" value="${esc(value)}" placeholder="${esc(placeholder)}" ${required ? "required" : ""} ${type === "email" ? 'autocomplete="email"' : ""}></div>`;
+  const formShell = (title, description, body, button) => `<section class="card"><h1>${title}</h1><p>${description}</p><form class="form" data-form>${body}<div class="error" data-error role="alert"></div><button class="button" type="submit">${button}</button><div class="success" data-success hidden></div></form></section>`;
 
   if (config.type === "landing") {
-    root.innerHTML = shell(`<section class="account-hero"><div class="account-kicker">Tiền của bạn, rõ ràng hơn</div><h1>Hiểu dòng tiền.<br>Xây thói quen tốt.</h1><p>SpendWise giúp bạn ghi nhận giao dịch, lập kế hoạch ngân sách và theo dõi mục tiêu tài chính trong một không gian dễ sử dụng.</p><div class="account-hero-actions"><a class="account-button" href="login.html">Bắt đầu sử dụng</a><a class="account-button account-button--secondary" href="register.html">Tạo tài khoản</a></div><div class="account-role-grid">${Object.entries(roles).map(([key, label]) => `<a class="account-role" href="${roleHome[key]}"><strong>${esc(label)}</strong><span>Mở bản demo theo vai trò →</span></a>`).join("")}</div></section><div class="account-directory">${pageLinks.map(([title, links]) => `<section class="account-group"><h2>${esc(title)}</h2>${links.map(([label, href]) => `<a href="${href}">${esc(label)}<span>→</span></a>`).join("")}</section>`).join("")}</div>`);
+    root.innerHTML = shell(`<section class="hero"><div class="kicker">Tiền của bạn, rõ ràng hơn</div><h1>Hiểu dòng tiền.<br>Xây thói quen tốt.</h1><p>SpendWise giúp bạn ghi nhận giao dịch, lập kế hoạch ngân sách và theo dõi mục tiêu tài chính trong một không gian dễ sử dụng.</p><div class="hero-actions"><a class="button" href="login.html">Bắt đầu sử dụng</a><a class="button button-secondary" href="register.html">Tạo tài khoản</a></div><div class="role-grid">${Object.entries(roles).map(([key, label]) => `<a class="role-card" href="${roleHome[key]}"><strong>${esc(label)}</strong><span>Mở bản demo theo vai trò →</span></a>`).join("")}</div></section><div class="directory">${pageLinks.map(([title, links]) => `<section class="group"><h2>${esc(title)}</h2>${links.map(([label, href]) => `<a href="${href}">${esc(label)}<span>→</span></a>`).join("")}</section>`).join("")}</div>`);
     return;
   }
 
   if (config.type === "login") {
-    const body = `${field("Email", "email", "email", "an.tran@spendwise.demo", true)}${field("Mật khẩu", "password", "password", "spendwise", true)}<div class="account-field"><label for="role">Vai trò demo</label><select id="role" name="role"><option value="user">Người dùng</option><option value="coach">Huấn luyện viên</option><option value="moderator">Kiểm duyệt viên</option><option value="admin">Quản trị viên</option></select></div><label class="account-check"><input name="remember" type="checkbox" checked><span>Ghi nhớ phiên đăng nhập trên thiết bị này</span></label>`;
-    root.innerHTML = shell(formShell("Đăng nhập", "Đăng nhập để tiếp tục hành trình tài chính của bạn.", body, "Đăng nhập vào SpendWise") + `<div class="account-divider"><a href="forgot-password.html">Quên mật khẩu?</a><a href="register.html">Tạo tài khoản</a></div><div class="account-success" style="margin-top:14px">Tài khoản demo: <b>an.tran@spendwise.demo</b> · Mật khẩu: <b>spendwise</b>. Chọn vai trò để mở các màn hình tương ứng.</div>`);
+    const body = `${field("Email", "email", "email", "an.tran@spendwise.demo", true)}${field("Mật khẩu", "password", "password", "spendwise", true)}<div class="field"><label for="role">Vai trò demo</label><select id="role" name="role"><option value="user">Người dùng</option><option value="coach">Huấn luyện viên</option><option value="moderator">Kiểm duyệt viên</option><option value="admin">Quản trị viên</option></select></div><label class="checkbox"><input name="remember" type="checkbox" checked><span>Ghi nhớ phiên đăng nhập trên thiết bị này</span></label>`;
+    root.innerHTML = shell(formShell("Đăng nhập", "Đăng nhập để tiếp tục hành trình tài chính của bạn.", body, "Đăng nhập vào SpendWise") + `<div class="divider"><a href="forgot-password.html">Quên mật khẩu?</a><a href="register.html">Tạo tài khoản</a></div><div class="success" style="margin-top:14px">Tài khoản demo: <b>an.tran@spendwise.demo</b> · Mật khẩu: <b>spendwise</b>. Chọn vai trò để mở các màn hình tương ứng.</div>`);
     root.querySelector("[data-form]").addEventListener("submit", (event) => {
       event.preventDefault();
       const data = Object.fromEntries(new FormData(event.currentTarget));
@@ -85,8 +85,8 @@
   }
 
   if (config.type === "register") {
-    const body = `${field("Họ và tên", "name", "text", "", true, "Tên hiển thị")}${field("Email", "email", "email", "", true, "ban@example.com")}${field("Mật khẩu", "password", "password", "", true, "Ít nhất 8 ký tự")}${field("Xác nhận mật khẩu", "confirm", "password", "")}<label class="account-check"><input name="terms" type="checkbox" required><span>Tôi đồng ý với điều khoản sử dụng và chính sách quyền riêng tư.</span></label>`;
-    root.innerHTML = shell(formShell("Tạo tài khoản", "Bắt đầu xây dựng thói quen tài chính lành mạnh.", body, "Tạo tài khoản") + `<div class="account-divider"><span>Đã có tài khoản?</span><a href="login.html">Đăng nhập</a></div>`);
+    const body = `${field("Họ và tên", "name", "text", "", true, "Tên hiển thị")}${field("Email", "email", "email", "", true, "ban@example.com")}${field("Mật khẩu", "password", "password", "", true, "Ít nhất 8 ký tự")}${field("Xác nhận mật khẩu", "confirm", "password", "")}<label class="checkbox"><input name="terms" type="checkbox" required><span>Tôi đồng ý với điều khoản sử dụng và chính sách quyền riêng tư.</span></label>`;
+    root.innerHTML = shell(formShell("Tạo tài khoản", "Bắt đầu xây dựng thói quen tài chính lành mạnh.", body, "Tạo tài khoản") + `<div class="divider"><span>Đã có tài khoản?</span><a href="login.html">Đăng nhập</a></div>`);
     root.querySelector("[data-form]").addEventListener("submit", (event) => {
       event.preventDefault();
       const data = Object.fromEntries(new FormData(event.currentTarget));
@@ -115,7 +115,7 @@
 
   if (config.type === "forgot") {
     const body = `${field("Email tài khoản", "email", "email", "", true, "ban@example.com")}${field("Mật khẩu mới", "password", "password")}${field("Xác nhận mật khẩu mới", "confirm", "password")}`;
-    root.innerHTML = shell(formShell("Đặt lại mật khẩu", "Bản demo đổi mật khẩu cục bộ, không gửi email hoặc mã xác nhận.", body, "Cập nhật mật khẩu") + `<div class="account-divider"><a href="login.html">Quay lại đăng nhập</a></div>`);
+    root.innerHTML = shell(formShell("Đặt lại mật khẩu", "Bản demo đổi mật khẩu cục bộ, không gửi email hoặc mã xác nhận.", body, "Cập nhật mật khẩu") + `<div class="divider"><a href="login.html">Quay lại đăng nhập</a></div>`);
     root.querySelector("[data-form]").addEventListener("submit", (event) => {
       event.preventDefault();
       const data = Object.fromEntries(new FormData(event.currentTarget));
@@ -154,7 +154,7 @@
 
   if (config.type === "settings") {
     const settings = read("settings", { currency: "VND", timezone: "Asia/Ho_Chi_Minh", notifications: true });
-    const body = `<div class="account-field"><label for="currency">Đơn vị tiền tệ</label><select name="currency" id="currency"><option value="VND" ${settings.currency === "VND" ? "selected" : ""}>VND — Đồng Việt Nam</option><option value="USD" ${settings.currency === "USD" ? "selected" : ""}>USD — Đô la Mỹ</option></select></div><div class="account-field"><label for="timezone">Múi giờ</label><select name="timezone" id="timezone"><option value="Asia/Ho_Chi_Minh">Việt Nam (UTC+7)</option><option value="UTC">UTC</option></select></div><label class="account-check"><input name="notifications" type="checkbox" ${settings.notifications ? "checked" : ""}><span>Cho phép thông báo trong bản demo</span></label><div class="account-field">${field("Mật khẩu mới (tùy chọn)", "password", "password", "", false)}${field("Xác nhận mật khẩu", "confirm", "password", "", false)}</div><button class="account-button account-button--secondary" type="button" data-signout>Đăng xuất trên thiết bị này</button><button class="account-button account-button--secondary" type="button" data-reset>Đặt lại dữ liệu demo</button>`;
+    const body = `<div class="field"><label for="currency">Đơn vị tiền tệ</label><select name="currency" id="currency"><option value="VND" ${settings.currency === "VND" ? "selected" : ""}>VND — Đồng Việt Nam</option><option value="USD" ${settings.currency === "USD" ? "selected" : ""}>USD — Đô la Mỹ</option></select></div><div class="field"><label for="timezone">Múi giờ</label><select name="timezone" id="timezone"><option value="Asia/Ho_Chi_Minh">Việt Nam (UTC+7)</option><option value="UTC">UTC</option></select></div><label class="checkbox"><input name="notifications" type="checkbox" ${settings.notifications ? "checked" : ""}><span>Cho phép thông báo trong bản demo</span></label><div class="field">${field("Mật khẩu mới (tùy chọn)", "password", "password", "", false)}${field("Xác nhận mật khẩu", "confirm", "password", "", false)}</div><button class="button button-secondary" type="button" data-signout>Đăng xuất trên thiết bị này</button><button class="button button-secondary" type="button" data-reset>Đặt lại dữ liệu demo</button>`;
     root.innerHTML = shell(formShell("Cài đặt", "Tùy chỉnh trải nghiệm demo SpendWise trên thiết bị này.", body, "Lưu cài đặt"));
     root.querySelector("[data-form]").addEventListener("submit", (event) => {
       event.preventDefault();
@@ -174,7 +174,7 @@
     root.querySelector("[data-signout]").addEventListener("click", () => { localStorage.removeItem("spendwise.session"); location.href = "login.html"; });
     root.querySelector("[data-reset]").addEventListener("click", () => {
       if (!confirm("Đặt lại toàn bộ dữ liệu demo trên thiết bị này? Hành động này không thể hoàn tác.")) return;
-      const keep = ["spendwise.session", "spendwise.profile"];
+      const keep = ["spendwise.session", "spendwise.pro"];
       Object.keys(localStorage).filter((key) => key.startsWith("spendwise.") && !keep.includes(key)).forEach((key) => localStorage.removeItem(key));
       root.querySelector("[data-success]").hidden = false; root.querySelector("[data-success]").textContent = "Dữ liệu demo đã được xóa. Tải lại các trang để tạo dữ liệu mẫu mới.";
     });
@@ -182,7 +182,7 @@
   }
 
   if (config.type === "error") {
-    root.innerHTML = shell(`<section class="account-error-view"><div class="account-error-code">${esc(config.code)}</div><h1>${esc(config.title)}</h1><p>${esc(config.description)}</p><div class="account-hero-actions"><a class="account-button" href="../nguoi-dung/user-finance-dashboard.html">Về tổng quan</a><a class="account-button account-button--secondary" href="index.html">Trang chủ</a></div></section>`);
+    root.innerHTML = shell(`<section class="error-view"><div class="error-code">${esc(config.code)}</div><h1>${esc(config.title)}</h1><p>${esc(config.description)}</p><div class="hero-actions"><a class="button" href="../nguoi-dung/user-finance-dashboard.html">Về tổng quan</a><a class="button button-secondary" href="index.html">Trang chủ</a></div></section>`);
   }
   }
   if (document.readyState !== "complete") document.addEventListener("DOMContentLoaded", init, { once: true });

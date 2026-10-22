@@ -1,5 +1,5 @@
 @import url("./user-pages.css");
 
-.user-page--transaction-management .user-data-table tbody tr { transition: background .15s ease; }
-.user-page--transaction-management .user-search-field:focus-within { border-color: #78a487; box-shadow: 0 0 0 3px rgba(91, 150, 111, .1); }
-.user-page--transaction-management .user-transaction-panel { overflow: hidden; }
+.transaction-page .data-table tbody tr { transition: background .15s ease; }
+.transaction-page .search-field:focus-within { border-color: #78a487; box-shadow: 0 0 0 3px rgba(91, 150, 111, .1); }
+.transaction-page .transaction-panel { overflow: hidden; }

@@ -36,7 +36,7 @@
       : field.type === "select"
         ? `<select name="${escapeHtml(field.key)}" ${attributes}>${options.map((option) => `<option>${escapeHtml(option)}</option>`).join("")}</select>`
         : `<input name="${escapeHtml(field.key)}" type="${escapeHtml(field.type || "text")}" placeholder="${escapeHtml(field.placeholder || "")}" value="${escapeHtml(field.default || "")}" ${attributes}>`;
-    return `<div class="ws-field ${field.full ? "ws-field--full" : ""}"><label>${escapeHtml(field.label)}${field.required ? " *" : ""}</label>${control}</div>`;
+    return `<div class="field ${field.full ? "field-full" : ""}"><label>${escapeHtml(field.label)}${field.required ? " *" : ""}</label>${control}</div>`;
   }
 
   const icons = { dashboard: "◫", transactions: "↔", budgets: "▤", goals: "◎", insights: "⌁", ai: "✦", clients: "♙", reviews: "◷", resources: "▧", editor: "✎", feedback: "✉", moderation: "✓", templates: "✧", reports: "⚑", audit: "≡", categories: "◈", users: "♙", permissions: "⚿", settings: "⚙", profile: "◉", notifications: "♧" };
@@ -75,7 +75,7 @@
 
   function identity() {
     try {
-      const saved = JSON.parse(localStorage.getItem("spendwise.profile") || "{}");
+      const saved = JSON.parse(localStorage.getItem("spendwise.pro") || "{}");
       const session = JSON.parse(localStorage.getItem("spendwise.session") || "{}");
       return { name: saved.name || session.name || "Nguyễn An", role: session.role || document.body.dataset.role || "user" };
     } catch {
@@ -91,30 +91,31 @@
     const links = nav[role] || nav.user;
     const initials = user.name.split(/\s+/).slice(-2).map((part) => part[0]).join("").toUpperCase();
     root.innerHTML = `
-      <div class="ws-shell">
-        <aside class="ws-sidebar">
-          <a class="ws-brand" href="../dung-chung/index.html"><span class="ws-brand-mark">S</span><span>SpendWise</span></a>
-          <div class="ws-role-label">${escapeHtml(roleLabels[role] || "Không gian của bạn")}</div>
-          <nav class="ws-nav" aria-label="Điều hướng chính">${links.map(([text, href, icon]) => `<a class="ws-nav-link ${config.active === icon ? "is-current" : ""}" ${config.active === icon ? 'aria-current="page"' : ""} href="${href}"><span class="ws-nav-icon">${icons[icon] || "◦"}</span>${escapeHtml(text)}</a>`).join("")}</nav>
-          <div class="ws-sidebar-bottom"><div class="ws-identity"><div class="ws-avatar">${escapeHtml(initials)}</div><div class="ws-identity-text"><strong>${escapeHtml(user.name)}</strong><span>${escapeHtml(roleLabels[role] || role)}</span></div></div><div class="ws-sidebar-links"><a href="../dung-chung/profile.html">Hồ sơ</a><a href="../dung-chung/settings.html">Cài đặt</a><a href="../dung-chung/notifications.html">Thông báo</a></div></div>
+      <div class="container">
+        <aside class="sidebar">
+          <a class="brand" href="../dung-chung/index.html"><span class="brand-mark">S</span><span>SpendWise</span></a>
+          <div class="role-label">${escapeHtml(roleLabels[role] || "Không gian của bạn")}</div>
+          <nav class="nav" aria-label="Điều hướng chính">${links.map(([text, href, icon]) => `<a class="nav-link ${config.active === icon ? "is-active" : ""}" ${config.active === icon ? 'aria-current="page"' : ""} href="${href}"><span class="nav-icon">${icons[icon] || "◦"}</span>${escapeHtml(text)}</a>`).join("")}</nav>
+          <div class="sidebar-bottom"><div class="identity"><div class="avatar">${escapeHtml(initials)}</div><div class="identity-text"><strong>${escapeHtml(user.name)}</strong><span>${escapeHtml(roleLabels[role] || role)}</span></div></div><div class="sidebar-links"><a href="../dung-chung/profile.html">Hồ sơ</a><a href="../dung-chung/settings.html">Cài đặt</a><a href="../dung-chung/notifications.html">Thông báo</a></div></div>
         </aside>
-        <main class="ws-main">
-          <div class="ws-topbar"><div class="ws-breadcrumb"><span>${escapeHtml(roleLabels[role] || "SpendWise")}</span><span>/</span><strong>${escapeHtml(config.title)}</strong></div><div class="ws-top-actions"><span>${escapeHtml(user.name)}</span><button type="button" class="ws-button ws-button--quiet" data-signout>Đăng xuất</button></div></div>
-          <section class="ws-page-head"><div><div class="ws-eyebrow">${escapeHtml(config.kicker || roleLabels[role] || "SPENDWISE")}</div><h1>${escapeHtml(config.title)}</h1><p>${escapeHtml(config.description || "")}</p></div><div class="ws-actions">${config.readOnly || config.hideCreate ? "" : `<button class="ws-button" type="button" data-create>＋ ${escapeHtml(config.createLabel || "Thêm mới")}</button>`}${config.exportable ? '<button class="ws-button ws-button--secondary" type="button" data-export>↓ Xuất dữ liệu</button>' : ""}</div></section>
-          <section class="ws-stats" data-stats></section>
-          <section class="ws-panel"><div class="ws-panel-head"><div><h2>${escapeHtml(config.listTitle || config.title)}</h2><p data-count></p></div>${config.secondaryAction ? `<button class="ws-button ws-button--secondary" data-secondary type="button">${escapeHtml(config.secondaryAction.label)}</button>` : ""}</div>
-            <div class="ws-filter-bar"><input type="search" data-search placeholder="${escapeHtml(config.searchPlaceholder || "Tìm kiếm...")}" aria-label="Tìm kiếm">${config.filters?.length ? `<select data-status-filter aria-label="Lọc danh sách"><option value="">Tất cả trạng thái</option>${config.filters.map((item) => `<option value="${escapeHtml(item)}">${escapeHtml(item)}</option>`).join("")}</select>` : ""}<button class="ws-button ws-button--quiet" type="button" data-clear>Làm mới bộ lọc</button></div>
-            <div class="ws-table-scroll"><table class="ws-table"><thead><tr>${config.columns.map((column) => `<th>${escapeHtml(column.label)}</th>`).join("")}<th><span class="visually-hidden">Thao tác</span></th></tr></thead><tbody data-rows></tbody></table></div>
-            <div class="ws-empty" data-empty hidden><span aria-hidden="true">${icons[config.active] || "◦"}</span><strong>${escapeHtml(config.emptyTitle || "Chưa có dữ liệu phù hợp")}</strong><p>${escapeHtml(config.emptyMessage || "Thử đổi bộ lọc hoặc thêm một mục mới.")}</p>${config.readOnly || config.hideCreate ? "" : `<button class="ws-button" type="button" data-create>${escapeHtml(config.createLabel || "Thêm mới")}</button>`}</div>
-          </section><footer class="ws-footer">SpendWise · Bản demo frontend · Dữ liệu lưu trên thiết bị này</footer>
+        <header class="header"><div class="breadcrumb"><span>${escapeHtml(roleLabels[role] || "SpendWise")}</span><span>/</span><strong>${escapeHtml(config.title)}</strong></div><div class="header-actions"><span>${escapeHtml(user.name)}</span><button type="button" class="button button-quiet" data-signout>Đăng xuất</button></div></header>
+        <main class="main">
+          <section class="page-header"><div><div class="eyebrow">${escapeHtml(config.kicker || roleLabels[role] || "SPENDWISE")}</div><h1>${escapeHtml(config.title)}</h1><p>${escapeHtml(config.description || "")}</p></div><div class="action">${config.readOnly || config.hideCreate ? "" : `<button class="button" type="button" data-create>＋ ${escapeHtml(config.createLabel || "Thêm mới")}</button>`}${config.exportable ? '<button class="button button-secondary" type="button" data-export>↓ Xuất dữ liệu</button>' : ""}</div></section>
+          <section class="stats-grid" data-stats></section>
+          <section class="panel"><div class="panel-header"><div><h2>${escapeHtml(config.listTitle || config.title)}</h2><p data-count></p></div>${config.secondaryAction ? `<button class="button button-secondary" data-secondary type="button">${escapeHtml(config.secondaryAction.label)}</button>` : ""}</div>
+            <div class="filter-bar"><input type="search" data-search placeholder="${escapeHtml(config.searchPlaceholder || "Tìm kiếm...")}" aria-label="Tìm kiếm">${config.filters?.length ? `<select data-status-filter aria-label="Lọc danh sách"><option value="">Tất cả trạng thái</option>${config.filters.map((item) => `<option value="${escapeHtml(item)}">${escapeHtml(item)}</option>`).join("")}</select>` : ""}<button class="button button-quiet" type="button" data-clear>Làm mới bộ lọc</button></div>
+            <div class="table-scroll"><table class="table"><thead><tr>${config.columns.map((column) => `<th>${escapeHtml(column.label)}</th>`).join("")}<th><span class="visually-hidden">Thao tác</span></th></tr></thead><tbody data-rows></tbody></table></div>
+            <div class="empty" data-empty hidden><span aria-hidden="true">${icons[config.active] || "◦"}</span><strong>${escapeHtml(config.emptyTitle || "Chưa có dữ liệu phù hợp")}</strong><p>${escapeHtml(config.emptyMessage || "Thử đổi bộ lọc hoặc thêm một mục mới.")}</p>${config.readOnly || config.hideCreate ? "" : `<button class="button" type="button" data-create>${escapeHtml(config.createLabel || "Thêm mới")}</button>`}</div>
+          </section>
         </main>
-        <div class="ws-modal-backdrop" data-modal hidden><section class="ws-modal" role="dialog" aria-modal="true" aria-labelledby="modal-title"><div class="ws-modal-head"><h2 id="modal-title">${escapeHtml(config.createLabel || "Thêm mới")}</h2><button type="button" class="ws-icon-button" aria-label="Đóng" data-close>×</button></div><form class="ws-form-grid" data-form><input type="hidden" name="id">${config.fields.map((field) => fieldMarkup(field)).join("")}<div class="ws-field ws-field--full" data-error role="alert"></div><div class="ws-modal-actions ws-field--full"><button class="ws-button ws-button--secondary" type="button" data-close>Hủy</button><button class="ws-button" type="submit">Lưu thay đổi</button></div></form></section></div>
-        <div class="ws-toast-region" data-toasts aria-live="polite"></div>
+        <footer class="footer">SpendWise · Bản demo frontend · Dữ liệu lưu trên thiết bị này</footer>
+        <div class="modal-backdrop" data-modal hidden><section class="modal" role="dialog" aria-modal="true" aria-labelledby="modal-title"><div class="modal-header"><h2 id="modal-title">${escapeHtml(config.createLabel || "Thêm mới")}</h2><button type="button" class="icon-button" aria-label="Đóng" data-close>×</button></div><form class="form-grid" data-form><input type="hidden" name="id">${config.fields.map((field) => fieldMarkup(field)).join("")}<div class="field field-full" data-error role="alert"></div><div class="modal-action field-full"><button class="button button-secondary" type="button" data-close>Hủy</button><button class="button" type="submit">Lưu thay đổi</button></div></form></section></div>
+        <div class="toast-region" data-toasts aria-live="polite"></div>
       </div>`;
 
     const notify = (message, isError = false) => {
       const toast = document.createElement("div");
-      toast.className = `ws-toast${isError ? " is-danger" : ""}`;
+      toast.className = `toast${isError ? " is-danger" : ""}`;
       toast.textContent = message;
       root.querySelector("[data-toasts]").append(toast);
       window.setTimeout(() => toast.remove(), 3500);
@@ -157,7 +158,7 @@
       const value = get(record, column.key);
       if (column.format === "date") return dateLabel(String(value || ""));
       if (column.format === "money") return new Intl.NumberFormat("vi-VN", { style: "currency", currency: "VND", maximumFractionDigits: 0 }).format(Number(value) || 0);
-      if (column.format === "status") return `<span class="ws-status ${/từ chối|khóa|quá hạn|lỗi|vượt/i.test(value || "") ? "is-danger" : /chờ|cần|đang xử lý/i.test(value || "") ? "is-warning" : ""}">${escapeHtml(value || "—")}</span>`;
+      if (column.format === "status") return `<span class="status-badge ${/từ chối|khóa|quá hạn|lỗi|vượt/i.test(value || "") ? "is-danger" : /chờ|cần|đang xử lý/i.test(value || "") ? "is-warning" : ""}">${escapeHtml(value || "—")}</span>`;
       return escapeHtml(value || "—");
     };
     function render() {
@@ -169,8 +170,8 @@
       });
       root.querySelector("[data-count]").textContent = `${filtered.length} mục · ${records.length} tổng cộng`;
       root.querySelector("[data-empty]").hidden = filtered.length > 0;
-      root.querySelector(".ws-table-scroll").hidden = filtered.length === 0;
-      rows.innerHTML = filtered.map((record) => `<tr>${config.columns.map((column) => `<td>${formatCell(record, column)}</td>`).join("")}<td><div class="ws-row-actions">${!config.readOnly && config.statuses?.length ? `<select class="ws-status-select" aria-label="Cập nhật trạng thái" data-status-id="${escapeHtml(record.id)}">${config.statuses.map((item) => `<option ${record.status === item ? "selected" : ""}>${escapeHtml(item)}</option>`).join("")}</select>` : ""}${!config.readOnly && !config.hideEdit ? `<button class="ws-icon-button" type="button" aria-label="Sửa" title="Sửa" data-edit="${escapeHtml(record.id)}">✎</button>` : ""}${!config.readOnly && !config.hideDelete ? `<button class="ws-icon-button" type="button" aria-label="Xóa" title="Xóa" data-delete="${escapeHtml(record.id)}">×</button>` : ""}</div></td></tr>`).join("");
+      root.querySelector(".table-scroll").hidden = filtered.length === 0;
+      rows.innerHTML = filtered.map((record) => `<tr>${config.columns.map((column) => `<td>${formatCell(record, column)}</td>`).join("")}<td><div class="row-action">${!config.readOnly && config.statuses?.length ? `<select class="status-select" aria-label="Cập nhật trạng thái" data-status-id="${escapeHtml(record.id)}">${config.statuses.map((item) => `<option ${record.status === item ? "selected" : ""}>${escapeHtml(item)}</option>`).join("")}</select>` : ""}${!config.readOnly && !config.hideEdit ? `<button class="icon-button" type="button" aria-label="Sửa" title="Sửa" data-edit="${escapeHtml(record.id)}">✎</button>` : ""}${!config.readOnly && !config.hideDelete ? `<button class="icon-button" type="button" aria-label="Xóa" title="Xóa" data-delete="${escapeHtml(record.id)}">×</button>` : ""}</div></td></tr>`).join("");
       renderStats(filtered);
     }
     function renderStats(filtered) {
@@ -186,7 +187,7 @@
         else if (value && typeof value === "object" && value.count) {
           try { value = store.read(value.count, []).length; } catch { value = 0; }
         }
-        return `<article class="ws-stat"><span>${escapeHtml(item.label)}</span><strong>${escapeHtml(value)}</strong></article>`;
+        return `<article class="stat-card"><span>${escapeHtml(item.label)}</span><strong>${escapeHtml(value)}</strong></article>`;
       }).join("");
     }
     function open(record) {

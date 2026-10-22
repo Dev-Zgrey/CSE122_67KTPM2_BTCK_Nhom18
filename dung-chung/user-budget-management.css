@@ -1,5 +1,5 @@
 @import url("./user-pages.css");
 
-.user-page--budget-management .user-budget-category-card { transition: transform .16s ease, box-shadow .16s ease; }
-.user-page--budget-management .user-budget-category-card:hover { transform: translateY(-2px); box-shadow: 0 8px 22px rgba(30, 58, 43, .06); }
-.user-page--budget-management .user-budget-toolbar { min-height: 32px; }
+.budget-page .budget-category-card { transition: transform .16s ease, box-shadow .16s ease; }
+.budget-page .budget-category-card:hover { transform: translateY(-2px); box-shadow: 0 8px 22px rgba(30, 58, 43, .06); }
+.budget-page .budget-toolbar { min-height: 32px; }

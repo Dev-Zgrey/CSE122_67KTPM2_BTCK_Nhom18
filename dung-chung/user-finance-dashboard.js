@@ -32,17 +32,17 @@
       set("budget-note", budgetTotal ? `${Math.round(percent)}% hạn mức đã sử dụng` : "Chưa lập ngân sách tháng này");
       const progress = root.querySelector("[data-budget-progress]");
       progress.style.width = D.progress(percent);
-      progress.className = `user-progress-fill ${D.progressClass(percent)}`;
+      progress.className = `progress-fill ${D.progressClass(percent)}`;
       const spending = D.expensesByCategory(transactions);
       const preview = root.querySelector("[data-budget-preview]");
       const ordered = [...monthBudgets].sort((a, b) => (spending[b.category] || 0) / b.limit - (spending[a.category] || 0) / a.limit).slice(0, 4);
       preview.innerHTML = ordered.length ? ordered.map((budget) => {
         const used = spending[budget.category] || 0;
         const ratio = budget.limit ? used / budget.limit * 100 : 0;
-        return `<div class="user-budget-category-row"><span class="user-budget-category-name">${D.escape(budget.category)}</span><span class="user-budget-category-amount">${D.shortMoney(used)} / ${D.shortMoney(budget.limit)}</span><div class="user-progress-track"><div class="user-progress-fill ${D.progressClass(ratio)}" style="width:${D.progress(ratio)}"></div></div></div>`;
-      }).join("") : `<div class="user-empty-inline">Chưa có ngân sách. <a class="user-text-link" href="user-budget-management.html">Tạo ngân sách →</a></div>`;
+        return `<div class="budget-category-row"><span class="budget-category-name">${D.escape(budget.category)}</span><span class="budget-category-amount">${D.shortMoney(used)} / ${D.shortMoney(budget.limit)}</span><div class="progress-track"><div class="progress-fill ${D.progressClass(ratio)}" style="width:${D.progress(ratio)}"></div></div></div>`;
+      }).join("") : `<div class="empty-inline">Chưa có ngân sách. <a class="text-link" href="user-budget-management.html">Tạo ngân sách →</a></div>`;
       const recent = [...transactions].sort((a, b) => b.date.localeCompare(a.date)).slice(0, 4);
-      root.querySelector("[data-recent-transactions]").innerHTML = recent.length ? recent.map((item) => `<div class="user-recent-item"><div class="user-category-icon ${item.type === "income" ? "user-category-icon--income" : ""}">${D.escape(D.categoryIcons[item.category] || "◌")}</div><div class="user-recent-info"><strong>${D.escape(item.title)}</strong><span>${D.escape(item.category)} · ${D.formatDate(item.date)}</span></div><div class="user-recent-amount ${item.type === "income" ? "user-recent-amount--income" : "user-recent-amount--expense"}">${item.type === "income" ? "+" : "−"}${D.shortMoney(item.amount)}</div></div>`).join("") : `<div class="user-empty-inline">Chưa có giao dịch nào.</div>`;
+      root.querySelector("[data-recent-transactions]").innerHTML = recent.length ? recent.map((item) => `<div class="recent-item"><div class="category-icon ${item.type === "income" ? "category-icon-income" : ""}">${D.escape(D.categoryIcons[item.category] || "◌")}</div><div class="recent-info"><strong>${D.escape(item.title)}</strong><span>${D.escape(item.category)} · ${D.formatDate(item.date)}</span></div><div class="recent-amount ${item.type === "income" ? "recent-amount-income" : "recent-amount-expense"}">${item.type === "income" ? "+" : "−"}${D.shortMoney(item.amount)}</div></div>`).join("") : `<div class="empty-inline">Chưa có giao dịch nào.</div>`;
       const insight = root.querySelector("[data-insight-text]");
       insight.textContent = spent && budgetTotal
         ? (percent >= 80 ? `Bạn đã sử dụng ${Math.round(percent)}% ngân sách tháng. Hãy xem lại các khoản chi để giữ kế hoạch đúng hướng.` : `Bạn đã sử dụng ${Math.round(percent)}% ngân sách tháng. Tiếp tục ghi nhận chi tiêu để theo dõi tiến độ nhé.`)
@@ -62,7 +62,7 @@
       const label = new Intl.DateTimeFormat("vi-VN", { month: "short" }).format(new Date(`${month}-01T12:00:00`)).replace(".", "");
       const income = totals.income ? Math.max(5, totals.income / max * 100) : 3;
       const expense = totals.expense ? Math.max(5, totals.expense / max * 100) : 3;
-      return `<div class="user-chart-month" aria-label="${D.escape(label)}: thu ${D.money(totals.income)}, chi ${D.money(totals.expense)}"><div class="user-chart-bars"><div class="user-chart-bar" style="height:${income}%" title="Thu ${D.money(totals.income)}"></div><div class="user-chart-bar user-chart-bar--expense" style="height:${expense}%" title="Chi ${D.money(totals.expense)}"></div></div><span class="user-chart-month-label">${D.escape(label)}</span></div>`;
+      return `<div class="chart-mon" aria-label="${D.escape(label)}: thu ${D.money(totals.income)}, chi ${D.money(totals.expense)}"><div class="chart-label"><div class="chart-bar" style="height:${income}%" title="Thu ${D.money(totals.income)}"></div><div class="chart-bar chart-bar-expense" style="height:${expense}%" title="Chi ${D.money(totals.expense)}"></div></div><span class="chart-mon-label">${D.escape(label)}</span></div>`;
     }).join("");
   }
   window.addEventListener("spendwise:user-data", render);
