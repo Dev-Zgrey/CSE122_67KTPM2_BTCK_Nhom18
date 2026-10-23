@@ -42,33 +42,33 @@
   const icons = { dashboard: "◫", transactions: "↔", budgets: "▤", goals: "◎", insights: "⌁", ai: "✦", clients: "♙", reviews: "◷", resources: "▧", editor: "✎", feedback: "✉", moderation: "✓", templates: "✧", reports: "⚑", audit: "≡", categories: "◈", users: "♙", permissions: "⚿", settings: "⚙", profile: "◉", notifications: "♧" };
   const nav = {
     user: [
-      ["Tổng quan", "../nguoi-dung/user-finance-dashboard.html", "dashboard"],
-      ["Giao dịch", "../nguoi-dung/user-transaction-management.html", "transactions"],
-      ["Ngân sách", "../nguoi-dung/user-budget-management.html", "budgets"],
-      ["Mục tiêu", "../nguoi-dung/user-saving-goals.html", "goals"],
-      ["Phân tích", "../nguoi-dung/user-spending-insights.html", "insights"],
-      ["Gợi ý AI", "../nguoi-dung/user-ai-recommendations.html", "ai"]
+      ["Tổng quan", "../nguoi-dung/overview.html", "dashboard"],
+      ["Giao dịch", "../nguoi-dung/transactions.html", "transactions"],
+      ["Ngân sách", "../nguoi-dung/budget.html", "budgets"],
+      ["Mục tiêu", "../nguoi-dung/goals.html", "goals"],
+      ["Phân tích", "../nguoi-dung/insights.html", "insights"],
+      ["Gợi ý AI", "../nguoi-dung/ai.html", "ai"]
     ],
     coach: [
-      ["Học viên", "../huan-luyen-vien/coach-client-list.html", "clients"],
-      ["Duyệt ngân sách", "../huan-luyen-vien/coach-budget-review.html", "reviews"],
-      ["Tài nguyên", "../huan-luyen-vien/coach-resource-management.html", "resources"],
-      ["Soạn nội dung", "../huan-luyen-vien/coach-resource-editor.html", "editor"],
-      ["Phản hồi", "../huan-luyen-vien/coach-feedback.html", "feedback"]
+      ["Học viên", "../huan-luyen-vien/clients.html", "clients"],
+      ["Duyệt ngân sách", "../huan-luyen-vien/budget.html", "reviews"],
+      ["Tài nguyên", "../huan-luyen-vien/resources.html", "resources"],
+      ["Soạn nội dung", "../huan-luyen-vien/edit-resource.html", "editor"],
+      ["Phản hồi", "../huan-luyen-vien/feedback.html", "feedback"]
     ],
     moderator: [
-      ["Duyệt nội dung", "../kiem-duyet-vien/moderator-resource-review.html", "moderation"],
-      ["Mẫu AI", "../kiem-duyet-vien/moderator-ai-template-management.html", "templates"],
-      ["Báo cáo", "../kiem-duyet-vien/moderator-feedback-center.html", "reports"],
-      ["Kiểm tra AI", "../kiem-duyet-vien/moderator-ai-review.html", "ai"]
+      ["Duyệt nội dung", "../kiem-duyet-vien/resources.html", "moderation"],
+      ["Mẫu AI", "../kiem-duyet-vien/ai-templates.html", "templates"],
+      ["Báo cáo", "../kiem-duyet-vien/feedback.html", "reports"],
+      ["Kiểm tra AI", "../kiem-duyet-vien/ai-review.html", "ai"]
     ],
     admin: [
-      ["Tổng hệ thống", "../quan-tri-vien/admin-system-dashboard.html", "dashboard"],
-      ["Danh mục", "../quan-tri-vien/admin-expense-category-management.html", "categories"],
-      ["Tài khoản", "../quan-tri-vien/admin-user-management.html", "users"],
-      ["Phân quyền", "../quan-tri-vien/admin-role-permission-management.html", "permissions"],
-      ["Kiểm toán", "../quan-tri-vien/admin-audit-log.html", "audit"],
-      ["Cấu hình", "../quan-tri-vien/admin-system-settings.html", "settings"]
+      ["Tổng hệ thống", "../quan-tri-vien/dashboard.html", "dashboard"],
+      ["Danh mục", "../quan-tri-vien/categories.html", "categories"],
+      ["Tài khoản", "../quan-tri-vien/users.html", "users"],
+      ["Phân quyền", "../quan-tri-vien/permissions.html", "permissions"],
+      ["Kiểm toán", "../quan-tri-vien/audit.html", "audit"],
+      ["Cấu hình", "../quan-tri-vien/settings.html", "settings"]
     ]
   };
   const roleLabels = { user: "Người dùng", coach: "Huấn luyện viên", moderator: "Kiểm duyệt viên", admin: "Quản trị viên" };

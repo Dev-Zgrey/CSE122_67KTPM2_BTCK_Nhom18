@@ -78,6 +78,6 @@ window.WorkspacePage = {
   "exportable": true,
   "secondaryAction": {
     "label": "Mở nhật ký kiểm toán",
-    "href": "admin-audit-log.html"
+    "href": "audit.html"
   }
 };

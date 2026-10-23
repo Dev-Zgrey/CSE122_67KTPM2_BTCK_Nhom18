@@ -129,6 +129,6 @@ window.WorkspacePage = {
   "exportable": true,
   "secondaryAction": {
     "label": "Mở trình soạn",
-    "href": "coach-resource-editor.html"
+    "href": "edit-resource.html"
   }
 };

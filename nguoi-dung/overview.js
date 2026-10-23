@@ -40,7 +40,7 @@
         const used = spending[budget.category] || 0;
         const ratio = budget.limit ? used / budget.limit * 100 : 0;
         return `<div class="budget-category-row"><span class="budget-category-name">${D.escape(budget.category)}</span><span class="budget-category-amount">${D.shortMoney(used)} / ${D.shortMoney(budget.limit)}</span><div class="progress-track"><div class="progress-fill ${D.progressClass(ratio)}" style="width:${D.progress(ratio)}"></div></div></div>`;
-      }).join("") : `<div class="empty-inline">Chưa có ngân sách. <a class="text-link" href="user-budget-management.html">Tạo ngân sách →</a></div>`;
+      }).join("") : `<div class="empty-inline">Chưa có ngân sách. <a class="text-link" href="budget.html">Tạo ngân sách →</a></div>`;
       const recent = [...transactions].sort((a, b) => b.date.localeCompare(a.date)).slice(0, 4);
       root.querySelector("[data-recent-transactions]").innerHTML = recent.length ? recent.map((item) => `<div class="recent-item"><div class="category-icon ${item.type === "income" ? "category-icon-income" : ""}">${D.escape(D.categoryIcons[item.category] || "◌")}</div><div class="recent-info"><strong>${D.escape(item.title)}</strong><span>${D.escape(item.category)} · ${D.formatDate(item.date)}</span></div><div class="recent-amount ${item.type === "income" ? "recent-amount-income" : "recent-amount-expense"}">${item.type === "income" ? "+" : "−"}${D.shortMoney(item.amount)}</div></div>`).join("") : `<div class="empty-inline">Chưa có giao dịch nào.</div>`;
       const insight = root.querySelector("[data-insight-text]");

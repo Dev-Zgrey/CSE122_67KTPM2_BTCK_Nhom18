@@ -5,13 +5,13 @@
   const root = document.querySelector("[data-account-root]");
   if (!root || !config) return;
   const roles = { user: "Người dùng", coach: "Huấn luyện viên", moderator: "Kiểm duyệt viên", admin: "Quản trị viên" };
-  const roleHome = { user: "../nguoi-dung/user-finance-dashboard.html", coach: "../huan-luyen-vien/coach-client-list.html", moderator: "../kiem-duyet-vien/moderator-resource-review.html", admin: "../quan-tri-vien/admin-system-dashboard.html" };
+  const roleHome = { user: "../nguoi-dung/overview.html", coach: "../huan-luyen-vien/clients.html", moderator: "../kiem-duyet-vien/resources.html", admin: "../quan-tri-vien/dashboard.html" };
   const pageLinks = [
     ["Dùng chung", [["Đăng nhập", "login.html"], ["Đăng ký", "register.html"], ["Quên mật khẩu", "forgot-password.html"], ["Hồ sơ", "profile.html"], ["Cài đặt", "settings.html"], ["Thông báo", "notifications.html"], ["Không có quyền", "403.html"], ["Không tìm thấy", "404.html"]]],
-    ["Người dùng", [["Tổng quan tài chính", "../nguoi-dung/user-finance-dashboard.html"], ["Giao dịch", "../nguoi-dung/user-transaction-management.html"], ["Ngân sách", "../nguoi-dung/user-budget-management.html"], ["Mục tiêu tiết kiệm", "../nguoi-dung/user-saving-goals.html"], ["Phân tích chi tiêu", "../nguoi-dung/user-spending-insights.html"], ["Đề xuất AI", "../nguoi-dung/user-ai-recommendations.html"]]],
-    ["Huấn luyện viên", [["Danh sách học viên", "../huan-luyen-vien/coach-client-list.html"], ["Đánh giá ngân sách", "../huan-luyen-vien/coach-budget-review.html"], ["Quản lý tài nguyên", "../huan-luyen-vien/coach-resource-management.html"], ["Soạn tài nguyên", "../huan-luyen-vien/coach-resource-editor.html"], ["Phản hồi", "../huan-luyen-vien/coach-feedback.html"]]],
-    ["Kiểm duyệt viên", [["Duyệt nội dung", "../kiem-duyet-vien/moderator-resource-review.html"], ["Mẫu AI", "../kiem-duyet-vien/moderator-ai-template-management.html"], ["Trung tâm báo cáo", "../kiem-duyet-vien/moderator-feedback-center.html"], ["Kiểm tra AI", "../kiem-duyet-vien/moderator-ai-review.html"]]],
-    ["Quản trị viên", [["Tổng quan hệ thống", "../quan-tri-vien/admin-system-dashboard.html"], ["Danh mục chi tiêu", "../quan-tri-vien/admin-expense-category-management.html"], ["Tài khoản", "../quan-tri-vien/admin-user-management.html"], ["Phân quyền", "../quan-tri-vien/admin-role-permission-management.html"], ["Nhật ký kiểm toán", "../quan-tri-vien/admin-audit-log.html"], ["Cấu hình hệ thống", "../quan-tri-vien/admin-system-settings.html"]]]
+    ["Người dùng", [["Tổng quan tài chính", "../nguoi-dung/overview.html"], ["Giao dịch", "../nguoi-dung/transactions.html"], ["Ngân sách", "../nguoi-dung/budget.html"], ["Mục tiêu tiết kiệm", "../nguoi-dung/goals.html"], ["Phân tích chi tiêu", "../nguoi-dung/insights.html"], ["Đề xuất AI", "../nguoi-dung/ai.html"]]],
+    ["Huấn luyện viên", [["Danh sách học viên", "../huan-luyen-vien/clients.html"], ["Đánh giá ngân sách", "../huan-luyen-vien/budget.html"], ["Quản lý tài nguyên", "../huan-luyen-vien/resources.html"], ["Soạn tài nguyên", "../huan-luyen-vien/edit-resource.html"], ["Phản hồi", "../huan-luyen-vien/feedback.html"]]],
+    ["Kiểm duyệt viên", [["Duyệt nội dung", "../kiem-duyet-vien/resources.html"], ["Mẫu AI", "../kiem-duyet-vien/ai-templates.html"], ["Trung tâm báo cáo", "../kiem-duyet-vien/feedback.html"], ["Kiểm tra AI", "../kiem-duyet-vien/ai-review.html"]]],
+    ["Quản trị viên", [["Tổng quan hệ thống", "../quan-tri-vien/dashboard.html"], ["Danh mục chi tiêu", "../quan-tri-vien/categories.html"], ["Tài khoản", "../quan-tri-vien/users.html"], ["Phân quyền", "../quan-tri-vien/permissions.html"], ["Nhật ký kiểm toán", "../quan-tri-vien/audit.html"], ["Cấu hình hệ thống", "../quan-tri-vien/settings.html"]]]
   ];
   const esc = (value) => String(value ?? "").replace(/[&<>"']/g, (char) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[char]);
   const read = (key, fallback) => {
@@ -182,7 +182,7 @@
   }
 
   if (config.type === "error") {
-    root.innerHTML = shell(`<section class="error-view"><div class="error-code">${esc(config.code)}</div><h1>${esc(config.title)}</h1><p>${esc(config.description)}</p><div class="hero-actions"><a class="button" href="../nguoi-dung/user-finance-dashboard.html">Về tổng quan</a><a class="button button-secondary" href="index.html">Trang chủ</a></div></section>`);
+    root.innerHTML = shell(`<section class="error-view"><div class="error-code">${esc(config.code)}</div><h1>${esc(config.title)}</h1><p>${esc(config.description)}</p><div class="hero-actions"><a class="button" href="../nguoi-dung/overview.html">Về tổng quan</a><a class="button button-secondary" href="index.html">Trang chủ</a></div></section>`);
   }
   }
   if (document.readyState !== "complete") document.addEventListener("DOMContentLoaded", init, { once: true });

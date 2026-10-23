@@ -31,42 +31,42 @@ Trong phạm vi bản demo frontend local, **Đã làm** nghĩa là giao diện 
 
 | # | Mục tiêu | Màn hình / file | Chức năng chính | CRUD / trạng thái | AI | Người phụ trách | Trạng thái | OBS / PR |
 |---:|---|---|---|---|---|---|---|---|
-| 9 | Theo dõi tổng quan | `user-finance-dashboard.html` / `index2.html` | Tổng thu/chi, số dư, ngân sách, giao dịch gần đây, cảnh báo, mục tiêu, biểu đồ. | R; loading, rỗng, lỗi tải dữ liệu. | Spending Pattern Insight tóm tắt. |  | Đã làm |  |
-| 10 | Quản lý giao dịch | `user-transaction-management.html` / view Giao dịch | Tìm kiếm, lọc, thêm khoản thu/chi, xem, sửa, lưu trữ/xóa giao dịch. | C/R/U/D; form rỗng, validation, thành công, lỗi, rỗng. | Expense Categorizer gợi ý danh mục. |  | Đã làm |  |
-| 11 | Lập kế hoạch ngân sách | `user-budget-management.html` / view Ngân sách | Tạo ngân sách theo tháng/danh mục, sửa hạn mức, theo dõi đã dùng/còn lại, cảnh báo. | C/R/U; chưa có dữ liệu, vượt hạn mức, khóa kỳ. | Spending Pattern Insight gợi ý hạn mức. |  | Đã làm |  |
-| 12 | Quản lý mục tiêu | `user-saving-goals.html` / view Mục tiêu | Tạo mục tiêu, số tiền đích, hạn hoàn thành, cập nhật tiến độ, tạm dừng/hoàn thành. | C/R/U/D; chưa bắt đầu, đang tiến hành, hoàn thành, quá hạn. | Goal Coach tạo bước tiết kiệm. |  | Đã làm |  |
-| 13 | Hiểu thói quen chi tiêu | `user-spending-insights.html` / view AI Insights | Biểu đồ theo danh mục/thời gian, so sánh kỳ, phát hiện khoản bất thường, giải thích. | R; loading, không đủ dữ liệu, lỗi, thành công. | Spending Pattern Insight có độ chắc chắn. |  | Đã làm |  |
-| 14 | Xử lý đề xuất AI | `user-ai-recommendations.html` | Xem đề xuất, lý do, dữ liệu đầu vào; chấp nhận, sửa, từ chối, tạo lại, lưu. | C/R/U; đang xử lý, không chắc chắn, thất bại, đã lưu. | Expense Categorizer, Pattern Insight, Goal Coach. |  | Đã làm |  |
+| 9 | Theo dõi tổng quan | `overview.html` / `index2.html` | Tổng thu/chi, số dư, ngân sách, giao dịch gần đây, cảnh báo, mục tiêu, biểu đồ. | R; loading, rỗng, lỗi tải dữ liệu. | Spending Pattern Insight tóm tắt. |  | Đã làm |  |
+| 10 | Quản lý giao dịch | `transactions.html` / view Giao dịch | Tìm kiếm, lọc, thêm khoản thu/chi, xem, sửa, lưu trữ/xóa giao dịch. | C/R/U/D; form rỗng, validation, thành công, lỗi, rỗng. | Expense Categorizer gợi ý danh mục. |  | Đã làm |  |
+| 11 | Lập kế hoạch ngân sách | `budget.html` / view Ngân sách | Tạo ngân sách theo tháng/danh mục, sửa hạn mức, theo dõi đã dùng/còn lại, cảnh báo. | C/R/U; chưa có dữ liệu, vượt hạn mức, khóa kỳ. | Spending Pattern Insight gợi ý hạn mức. |  | Đã làm |  |
+| 12 | Quản lý mục tiêu | `goals.html` / view Mục tiêu | Tạo mục tiêu, số tiền đích, hạn hoàn thành, cập nhật tiến độ, tạm dừng/hoàn thành. | C/R/U/D; chưa bắt đầu, đang tiến hành, hoàn thành, quá hạn. | Goal Coach tạo bước tiết kiệm. |  | Đã làm |  |
+| 13 | Hiểu thói quen chi tiêu | `insights.html` / view AI Insights | Biểu đồ theo danh mục/thời gian, so sánh kỳ, phát hiện khoản bất thường, giải thích. | R; loading, không đủ dữ liệu, lỗi, thành công. | Spending Pattern Insight có độ chắc chắn. |  | Đã làm |  |
+| 14 | Xử lý đề xuất AI | `ai.html` | Xem đề xuất, lý do, dữ liệu đầu vào; chấp nhận, sửa, từ chối, tạo lại, lưu. | C/R/U; đang xử lý, không chắc chắn, thất bại, đã lưu. | Expense Categorizer, Pattern Insight, Goal Coach. |  | Đã làm |  |
 
 ## 4. Role Huấn luyện viên tài chính giáo dục
 
 | # | Mục tiêu | Màn hình / file | Chức năng chính | CRUD / trạng thái | AI | Người phụ trách | Trạng thái | OBS / PR |
 |---:|---|---|---|---|---|---|---|---|
-| 15 | Theo dõi người được hướng dẫn | `coach-client-list.html` | Danh sách User, tìm kiếm/lọc, trạng thái hoạt động, mục tiêu và cảnh báo ngân sách. | R; loading, rỗng, lỗi, hạn chế quyền. | Tóm tắt pattern khi được cấp quyền. |  | Đã làm |  |
-| 16 | Đánh giá ngân sách | `coach-budget-review.html` | Xem dữ liệu được chia sẻ, ghi nhận xét, đề xuất điều chỉnh, yêu cầu bổ sung, đánh dấu review. | R/C/U; chờ review, cần bổ sung, đã duyệt, từ chối. | Gợi ý insight, Coach xác nhận trước khi gửi. |  | Đã làm |  |
-| 17 | Quản lý tài nguyên | `coach-resource-management.html` | Tạo, xem, sửa, phân loại, xuất bản, lưu trữ tài liệu/bài học. | C/R/U/D; bản nháp, chờ duyệt, xuất bản, lưu trữ. | Gợi ý tiêu đề, tóm tắt, tag. |  | Đã làm |  |
-| 18 | Soạn tài nguyên | `coach-resource-editor.html` | Nhập nội dung, mục tiêu, ví dụ, bài tập; xem trước responsive và gửi duyệt. | C/U; validation, bản nháp, gửi duyệt, lỗi lưu. | Hỗ trợ soạn nháp, luôn cho phép sửa. |  | Đã làm |  |
-| 19 | Theo dõi phản hồi | `coach-feedback.html` | Xem câu hỏi/phản hồi, trả lời, gắn trạng thái, chuyển Moderator/Admin. | R/C/U; chưa xử lý, đang xử lý, đã trả lời, đã đóng. | Không bắt buộc |  | Đã làm |  |
+| 15 | Theo dõi người được hướng dẫn | `clients.html` | Danh sách User, tìm kiếm/lọc, trạng thái hoạt động, mục tiêu và cảnh báo ngân sách. | R; loading, rỗng, lỗi, hạn chế quyền. | Tóm tắt pattern khi được cấp quyền. |  | Đã làm |  |
+| 16 | Đánh giá ngân sách | `budget.html` | Xem dữ liệu được chia sẻ, ghi nhận xét, đề xuất điều chỉnh, yêu cầu bổ sung, đánh dấu review. | R/C/U; chờ review, cần bổ sung, đã duyệt, từ chối. | Gợi ý insight, Coach xác nhận trước khi gửi. |  | Đã làm |  |
+| 17 | Quản lý tài nguyên | `resources.html` | Tạo, xem, sửa, phân loại, xuất bản, lưu trữ tài liệu/bài học. | C/R/U/D; bản nháp, chờ duyệt, xuất bản, lưu trữ. | Gợi ý tiêu đề, tóm tắt, tag. |  | Đã làm |  |
+| 18 | Soạn tài nguyên | `edit-resource.html` | Nhập nội dung, mục tiêu, ví dụ, bài tập; xem trước responsive và gửi duyệt. | C/U; validation, bản nháp, gửi duyệt, lỗi lưu. | Hỗ trợ soạn nháp, luôn cho phép sửa. |  | Đã làm |  |
+| 19 | Theo dõi phản hồi | `feedback.html` | Xem câu hỏi/phản hồi, trả lời, gắn trạng thái, chuyển Moderator/Admin. | R/C/U; chưa xử lý, đang xử lý, đã trả lời, đã đóng. | Không bắt buộc |  | Đã làm |  |
 
 ## 5. Role Kiểm duyệt viên
 
 | # | Mục tiêu | Màn hình / file | Chức năng chính | CRUD / trạng thái | AI | Người phụ trách | Trạng thái | OBS / PR |
 |---:|---|---|---|---|---|---|---|---|
-| 20 | Kiểm duyệt nội dung | `moderator-resource-review.html` | Xem hàng chờ, kiểm tra, yêu cầu sửa, duyệt/từ chối kèm lý do. | R/U; chờ duyệt, cần sửa, đã duyệt, từ chối, lỗi. | Gợi ý điểm kiểm tra, không thay quyết định. |  | Đã làm |  |
-| 21 | Quản lý mẫu AI | `moderator-ai-template-management.html` | Tạo, sửa, thử nghiệm, bật/tắt, lưu trữ prompt/mẫu phản hồi và phiên bản. | C/R/U/D; nháp, thử nghiệm, hoạt động, vô hiệu hóa. | Kiểm tra đầu ra và fallback. |  | Đã làm |  |
-| 22 | Xử lý báo cáo | `moderator-feedback-center.html` | Tiếp nhận báo cáo, lọc mức độ, gán người xử lý, phản hồi, đóng/chuyển Admin. | C/R/U/D; mới, xử lý, chờ phản hồi, đóng, từ chối. | Phân loại mức độ có người xác nhận. |  | Đã làm |  |
-| 23 | Kiểm tra chi tiết AI | `moderator-ai-review.html` | So sánh input/output, xem log phiên bản, đánh dấu lỗi và yêu cầu sửa mẫu. | R/U; đạt, cần xem xét, lỗi, đã xử lý. | Bắt buộc với AI-1, AI-2, AI-3. |  | Đã làm |  |
+| 20 | Kiểm duyệt nội dung | `resources.html` | Xem hàng chờ, kiểm tra, yêu cầu sửa, duyệt/từ chối kèm lý do. | R/U; chờ duyệt, cần sửa, đã duyệt, từ chối, lỗi. | Gợi ý điểm kiểm tra, không thay quyết định. |  | Đã làm |  |
+| 21 | Quản lý mẫu AI | `ai-templates.html` | Tạo, sửa, thử nghiệm, bật/tắt, lưu trữ prompt/mẫu phản hồi và phiên bản. | C/R/U/D; nháp, thử nghiệm, hoạt động, vô hiệu hóa. | Kiểm tra đầu ra và fallback. |  | Đã làm |  |
+| 22 | Xử lý báo cáo | `feedback.html` | Tiếp nhận báo cáo, lọc mức độ, gán người xử lý, phản hồi, đóng/chuyển Admin. | C/R/U/D; mới, xử lý, chờ phản hồi, đóng, từ chối. | Phân loại mức độ có người xác nhận. |  | Đã làm |  |
+| 23 | Kiểm tra chi tiết AI | `ai-review.html` | So sánh input/output, xem log phiên bản, đánh dấu lỗi và yêu cầu sửa mẫu. | R/U; đạt, cần xem xét, lỗi, đã xử lý. | Bắt buộc với AI-1, AI-2, AI-3. |  | Đã làm |  |
 
 ## 6. Role Quản trị viên
 
 | # | Mục tiêu | Màn hình / file | Chức năng chính | CRUD / trạng thái | Người phụ trách | Trạng thái | OBS / PR |
 |---:|---|---|---|---|---|---|---|
-| 24 | Theo dõi toàn hệ thống | `admin-system-dashboard.html` / `Dashboard_admin.html` | KPI tài khoản, giao dịch, ngân sách, mục tiêu, nội dung chờ duyệt, lỗi hệ thống. | R; loading, rỗng, lỗi, cảnh báo. |  | Đã làm |  |
-| 25 | Quản lý danh mục | `admin-expense-category-management.html` | Tạo, xem, sửa, sắp xếp, bật/tắt, lưu trữ danh mục thu/chi. | C/R/U/D; trùng tên, đang dùng, hoạt động, vô hiệu hóa. |  | Đã làm |  |
-| 26 | Quản lý tài khoản | `admin-user-management.html` | Tìm kiếm, xem, tạo/sửa, gán role, khóa/mở khóa, reset mật khẩu, lịch sử. | C/R/U/D; hoạt động, khóa, chờ xác minh, vô hiệu hóa. |  | Đã làm |  |
-| 27 | Quản lý phân quyền | `admin-role-permission-management.html` | Gán quyền, giới hạn truy cập entity/màn hình, kiểm tra xung đột quyền. | C/R/U/D; chờ duyệt, hoạt động, bị từ chối. |  | Đã làm |  |
-| 28 | Nhật ký và kiểm toán | `admin-audit-log.html` | Tìm kiếm log đăng nhập, thay đổi dữ liệu, duyệt nội dung, khóa tài khoản. | R; không có dữ liệu, lỗi, đã lưu trữ. |  | Đã làm |  |
-| 29 | Cấu hình hệ thống | `admin-system-settings.html` | Cấu hình cảnh báo, AI, thông báo, danh mục mặc định, xuất dữ liệu mô phỏng. | R/U; đang lưu, thành công, lỗi, xác nhận nguy hiểm. |  | Đã làm |  |
+| 24 | Theo dõi toàn hệ thống | `dashboard.html` / `Dashboard_admin.html` | KPI tài khoản, giao dịch, ngân sách, mục tiêu, nội dung chờ duyệt, lỗi hệ thống. | R; loading, rỗng, lỗi, cảnh báo. |  | Đã làm |  |
+| 25 | Quản lý danh mục | `categories.html` | Tạo, xem, sửa, sắp xếp, bật/tắt, lưu trữ danh mục thu/chi. | C/R/U/D; trùng tên, đang dùng, hoạt động, vô hiệu hóa. |  | Đã làm |  |
+| 26 | Quản lý tài khoản | `users.html` | Tìm kiếm, xem, tạo/sửa, gán role, khóa/mở khóa, reset mật khẩu, lịch sử. | C/R/U/D; hoạt động, khóa, chờ xác minh, vô hiệu hóa. |  | Đã làm |  |
+| 27 | Quản lý phân quyền | `permissions.html` | Gán quyền, giới hạn truy cập entity/màn hình, kiểm tra xung đột quyền. | C/R/U/D; chờ duyệt, hoạt động, bị từ chối. |  | Đã làm |  |
+| 28 | Nhật ký và kiểm toán | `audit.html` | Tìm kiếm log đăng nhập, thay đổi dữ liệu, duyệt nội dung, khóa tài khoản. | R; không có dữ liệu, lỗi, đã lưu trữ. |  | Đã làm |  |
+| 29 | Cấu hình hệ thống | `settings.html` | Cấu hình cảnh báo, AI, thông báo, danh mục mặc định, xuất dữ liệu mô phỏng. | R/U; đang lưu, thành công, lỗi, xác nhận nguy hiểm. |  | Đã làm |  |
 
 ## 7. Ma trận bao phủ role
 
@@ -110,3 +110,15 @@ Trong phạm vi bản demo frontend local, **Đã làm** nghĩa là giao diện 
 - `U` = Update / Sửa
 - `D` = Delete / Xóa
 - Có thể thay xóa bằng **Hủy**, **Lưu trữ**, **Vô hiệu hóa** hoặc **Đóng** khi phù hợp nghiệp vụ.
+
+## 11. Phân chia branch cho nhóm
+
+Ba branch đều bắt đầu từ cùng một phiên bản đầy đủ của dự án; mỗi thành viên chỉ chỉnh sửa nhóm tệp được giao và tạo pull request về branch tích hợp.
+
+| Branch | Phạm vi phụ trách | Tệp chính |
+|---|---|---|
+| `feature/user-pages` | Tài khoản dùng chung và trải nghiệm Người dùng | `dung-chung/` (đăng nhập, hồ sơ, cài đặt, dữ liệu dùng chung), `nguoi-dung/` |
+| `feature/coach-moderator` | Huấn luyện viên và Kiểm duyệt viên | `huan-luyen-vien/`, `kiem-duyet-vien/` |
+| `feature/admin-integration` | Quản trị viên, tích hợp điều hướng/workspace và tài liệu | `quan-tri-vien/`, `dung-chung/workspace.*`, `báo cáo/`, các trang điều hướng tại thư mục gốc |
+
+Các branch dùng chung cùng một mã nguồn nền, không phải ba bản sao chỉ chứa một phần dự án. Thay đổi `workspace.*`, `account.*` hoặc dữ liệu dùng chung cần được thông báo để tránh xung đột khi merge.
