@@ -1,5 +1,0 @@
-@import url("../dung-chung/user-pages.css");
-
-.dashboard .summary-card-balance { box-shadow: 0 8px 22px rgba(23, 73, 54, .13); }
-.dashboard .chart-bar { transition: height .25s ease; }
-.dashboard .recent-item:hover { background: #fcfdfb; }

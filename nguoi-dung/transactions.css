@@ -1,5 +1,0 @@
-@import url("../dung-chung/user-pages.css");
-
-.transaction-page .data-table tbody tr { transition: background .15s ease; }
-.transaction-page .search-field:focus-within { border-color: #78a487; box-shadow: 0 0 0 3px rgba(91, 150, 111, .1); }
-.transaction-page .transaction-panel { overflow: hidden; }

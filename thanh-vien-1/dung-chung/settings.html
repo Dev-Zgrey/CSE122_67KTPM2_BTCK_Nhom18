@@ -1,0 +1,17 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Cài đặt</title>
+  <link rel="stylesheet" href="settings.css">
+  <script src="settings.js" defer></script>
+</head>
+<body>
+  <div class="container" data-account-root data-static-account>
+    <header class="header"><a class="brand" href="index.html"><span class="brand-mark">S</span>SpendWise</a><nav class="header-links"><a href="index.html">Trang chủ</a><a href="login.html">Đăng nhập</a></nav></header>
+    <main class="main"><section class="card"><h1>Cài đặt</h1><p>Tùy chỉnh trải nghiệm demo SpendWise trên thiết bị này.</p><form class="form" data-form><div class="field"><label for="currency">Đơn vị tiền tệ</label><select name="currency" id="currency"><option value="VND">VND — Đồng Việt Nam</option><option value="USD">USD — Đô la Mỹ</option></select></div><div class="field"><label for="timezone">Múi giờ</label><select name="timezone" id="timezone"><option value="Asia/Ho_Chi_Minh">Việt Nam (UTC+7)</option><option value="UTC">UTC</option></select></div><label class="checkbox"><input name="notifications" type="checkbox" checked><span>Cho phép thông báo trong bản demo</span></label><div class="field"><div class="field"><label for="password">Mật khẩu mới (tùy chọn)</label><input id="password" name="password" type="password" value="" placeholder=""  ></div><div class="field"><label for="confirm">Xác nhận mật khẩu</label><input id="confirm" name="confirm" type="password" value="" placeholder=""  ></div></div><button class="button button-secondary" type="button" data-signout>Đăng xuất trên thiết bị này</button><button class="button button-secondary" type="button" data-reset>Đặt lại dữ liệu demo</button><div class="error" data-error role="alert"></div><button class="button" type="submit">Lưu cài đặt</button><div class="success" data-success hidden></div></form></section></main>
+    <footer class="footer">SpendWise · Bản demo frontend · Dữ liệu chỉ lưu trên trình duyệt</footer>
+  </div>
+</body>
+</html>

@@ -1,1 +1,0 @@
-window.AccountPage = {"type": "login"};
