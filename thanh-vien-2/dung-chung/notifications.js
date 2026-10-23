@@ -1,26 +1,26 @@
 window.WorkspacePage = {
-  "slug": "moderator-resource-review",
-  "title": "Kiểm duyệt nội dung",
-  "description": "Kiểm tra nội dung, ghi lý do và cập nhật trạng thái kiểm duyệt.",
-  "role": "moderator",
-  "active": "moderation",
-  "storeKey": "resources",
+  "slug": "notifications",
+  "title": "Thông báo",
+  "description": "Xem thông báo, lọc trạng thái và đánh dấu đã đọc.",
+  "role": "user",
+  "active": "notifications",
+  "storeKey": "notifications",
   "columns": [
     {
       "key": "title",
-      "label": "Tài nguyên"
+      "label": "Thông báo"
     },
     {
       "key": "type",
       "label": "Loại"
     },
     {
-      "key": "audience",
-      "label": "Đối tượng"
+      "key": "message",
+      "label": "Nội dung"
     },
     {
-      "key": "updatedAt",
-      "label": "Cập nhật",
+      "key": "date",
+      "label": "Ngày",
       "format": "date"
     },
     {
@@ -38,13 +38,27 @@ window.WorkspacePage = {
     },
     {
       "key": "type",
-      "label": "Loại nội dung",
+      "label": "Loại",
+      "type": "select",
       "required": true,
-      "full": false
+      "options": [
+        "Ngân sách",
+        "Tài khoản",
+        "Gợi ý",
+        "Hệ thống"
+      ]
     },
     {
-      "key": "audience",
-      "label": "Đối tượng",
+      "key": "message",
+      "label": "Nội dung",
+      "type": "textarea",
+      "required": true,
+      "full": true
+    },
+    {
+      "key": "date",
+      "label": "Ngày",
+      "type": "date",
       "required": true,
       "full": false
     },
@@ -54,73 +68,50 @@ window.WorkspacePage = {
       "type": "select",
       "required": true,
       "options": [
-        "Bản nháp",
-        "Chờ duyệt",
-        "Đã xuất bản",
-        "Cần chỉnh sửa",
-        "Đã lưu trữ"
+        "Chưa đọc",
+        "Đã đọc"
       ]
-    },
-    {
-      "key": "summary",
-      "label": "Tóm tắt",
-      "required": true,
-      "full": false
-    },
-    {
-      "key": "moderationNote",
-      "label": "Lý do / yêu cầu chỉnh sửa",
-      "type": "textarea",
-      "full": true
     }
   ],
   "seed": [
     {
-      "id": "res-1",
-      "title": "Lập ngân sách 50/30/20",
-      "type": "Bài học",
-      "audience": "Người mới bắt đầu",
-      "status": "Chờ duyệt",
-      "summary": "Hướng dẫn chia thu nhập thành nhu cầu, mong muốn và tiết kiệm.",
-      "objective": "Lập ngân sách tháng đầu tiên",
-      "content": "Bắt đầu từ thu nhập thực nhận. Phân loại chi phí thiết yếu, mong muốn và tiết kiệm.",
-      "exercise": "Ghi lại ba nhóm chi tiêu trong một tuần.",
-      "tags": "ngân sách, cơ bản",
-      "updatedAt": "2026-10-08"
+      "id": "not-1",
+      "title": "Ngân sách ăn uống sắp đạt hạn mức",
+      "type": "Ngân sách",
+      "message": "Bạn đã sử dụng phần lớn hạn mức tháng này.",
+      "status": "Chưa đọc",
+      "date": "2026-10-16"
     },
     {
-      "id": "res-2",
-      "title": "Xây dựng quỹ dự phòng",
-      "type": "Hướng dẫn",
-      "audience": "Người dùng",
-      "status": "Đã xuất bản",
-      "summary": "Các bước xây dựng quỹ dự phòng theo khả năng thực tế.",
-      "objective": "Xác định mục tiêu quỹ dự phòng",
-      "content": "Tính chi phí thiết yếu theo tháng rồi đặt mốc tiết kiệm phù hợp.",
-      "exercise": "Chọn khoản chuyển tự động nhỏ mỗi tháng.",
-      "tags": "tiết kiệm, mục tiêu",
-      "updatedAt": "2026-09-24"
+      "id": "not-2",
+      "title": "Đã cập nhật dữ liệu tài chính",
+      "type": "Tài khoản",
+      "message": "Các giao dịch gần đây đã được lưu trên thiết bị.",
+      "status": "Đã đọc",
+      "date": "2026-10-15"
+    },
+    {
+      "id": "not-3",
+      "title": "Mẹo nhỏ: tự động hóa tiết kiệm",
+      "type": "Gợi ý",
+      "message": "Thiết lập khoản tiết kiệm định kỳ để duy trì thói quen.",
+      "status": "Chưa đọc",
+      "date": "2026-10-13"
     }
   ],
-  "createLabel": "Tạo tài nguyên",
-  "singular": "tài nguyên",
+  "createLabel": "Tạo thông báo demo",
+  "singular": "thông báo",
   "filters": [
-    "Bản nháp",
-    "Chờ duyệt",
-    "Đã xuất bản",
-    "Cần chỉnh sửa",
-    "Đã lưu trữ"
+    "Chưa đọc",
+    "Đã đọc"
   ],
   "statuses": [
-    "Bản nháp",
-    "Chờ duyệt",
-    "Đã xuất bản",
-    "Cần chỉnh sửa",
-    "Đã lưu trữ"
+    "Chưa đọc",
+    "Đã đọc"
   ],
-  "hideCreate": true,
-  "hideDelete": true,
-  "labelKey": "title",
+  "defaultRecord": {
+    "status": "Chưa đọc"
+  },
   "exportable": true
 };
 
@@ -183,10 +174,10 @@ window.WorkspacePage = {
       ["Phản hồi", "../../thanh-vien-2/huan-luyen-vien/feedback.html", "feedback"]
     ],
     moderator: [
-      ["Duyệt nội dung", "../../thanh-vien-2/kiem-duyet-vien/resources.html", "moderation"],
-      ["Mẫu AI", "../../thanh-vien-2/kiem-duyet-vien/ai-templates.html", "templates"],
-      ["Báo cáo", "../../thanh-vien-2/kiem-duyet-vien/feedback.html", "reports"],
-      ["Kiểm tra AI", "../../thanh-vien-2/kiem-duyet-vien/ai-review.html", "ai"]
+      ["Duyệt nội dung", "../../thanh-vien-3/kiem-duyet-vien/resources.html", "moderation"],
+      ["Mẫu AI", "../../thanh-vien-3/kiem-duyet-vien/ai-templates.html", "templates"],
+      ["Báo cáo", "../../thanh-vien-3/kiem-duyet-vien/feedback.html", "reports"],
+      ["Kiểm tra AI", "../../thanh-vien-3/kiem-duyet-vien/ai-review.html", "ai"]
     ],
     admin: [
       ["Tổng hệ thống", "../../thanh-vien-3/quan-tri-vien/dashboard.html", "dashboard"],
@@ -405,7 +396,7 @@ window.WorkspacePage = {
     });
     root.querySelector("[data-signout]").addEventListener("click", () => {
       localStorage.removeItem("spendwise.session");
-      window.location.href = "../../thanh-vien-1/dung-chung/login.html";
+      window.location.href = "login.html";
     });
     document.addEventListener("keydown", (event) => { if (event.key === "Escape") close(); });
     window.addEventListener("spendwise:data", (event) => {

@@ -1,4 +1,4 @@
-window.AccountPage = {"type": "landing"};
+window.AccountPage = {"type": "profile"};
 
 (() => {
   function init() {
@@ -7,13 +7,13 @@ window.AccountPage = {"type": "landing"};
   const root = document.querySelector("[data-account-root]");
   if (!root || !config) return;
   const roles = { user: "Người dùng", coach: "Huấn luyện viên", moderator: "Kiểm duyệt viên", admin: "Quản trị viên" };
-  const roleHome = { user: "thanh-vien-1/nguoi-dung/overview.html", coach: "thanh-vien-2/huan-luyen-vien/clients.html", moderator: "thanh-vien-2/kiem-duyet-vien/resources.html", admin: "thanh-vien-3/quan-tri-vien/dashboard.html" };
+  const roleHome = { user: "../../thanh-vien-1/nguoi-dung/overview.html", coach: "../../thanh-vien-2/huan-luyen-vien/clients.html", moderator: "../../thanh-vien-3/kiem-duyet-vien/resources.html", admin: "../../thanh-vien-3/quan-tri-vien/dashboard.html" };
   const pageLinks = [
-    ["Dùng chung", [["Đăng nhập", "thanh-vien-1/dung-chung/login.html"], ["Đăng ký", "thanh-vien-1/dung-chung/register.html"], ["Quên mật khẩu", "thanh-vien-1/dung-chung/forgot-password.html"], ["Hồ sơ", "thanh-vien-1/dung-chung/profile.html"], ["Cài đặt", "thanh-vien-1/dung-chung/settings.html"], ["Thông báo", "thanh-vien-1/dung-chung/notifications.html"], ["Không có quyền", "thanh-vien-1/dung-chung/403.html"], ["Không tìm thấy", "thanh-vien-1/dung-chung/404.html"]]],
-    ["Người dùng", [["Tổng quan tài chính", "thanh-vien-1/nguoi-dung/overview.html"], ["Giao dịch", "thanh-vien-1/nguoi-dung/transactions.html"], ["Ngân sách", "thanh-vien-1/nguoi-dung/budget.html"], ["Mục tiêu tiết kiệm", "thanh-vien-1/nguoi-dung/goals.html"], ["Phân tích chi tiêu", "thanh-vien-1/nguoi-dung/insights.html"], ["Đề xuất AI", "thanh-vien-1/nguoi-dung/ai.html"]]],
-    ["Huấn luyện viên", [["Danh sách học viên", "thanh-vien-2/huan-luyen-vien/clients.html"], ["Đánh giá ngân sách", "thanh-vien-2/huan-luyen-vien/budget.html"], ["Quản lý tài nguyên", "thanh-vien-2/huan-luyen-vien/resources.html"], ["Soạn tài nguyên", "thanh-vien-2/huan-luyen-vien/edit-resource.html"], ["Phản hồi", "thanh-vien-2/huan-luyen-vien/feedback.html"]]],
-    ["Kiểm duyệt viên", [["Duyệt nội dung", "thanh-vien-2/kiem-duyet-vien/resources.html"], ["Mẫu AI", "thanh-vien-2/kiem-duyet-vien/ai-templates.html"], ["Trung tâm báo cáo", "thanh-vien-2/kiem-duyet-vien/feedback.html"], ["Kiểm tra AI", "thanh-vien-2/kiem-duyet-vien/ai-review.html"]]],
-    ["Quản trị viên", [["Tổng quan hệ thống", "thanh-vien-3/quan-tri-vien/dashboard.html"], ["Danh mục chi tiêu", "thanh-vien-3/quan-tri-vien/categories.html"], ["Tài khoản", "thanh-vien-3/quan-tri-vien/users.html"], ["Phân quyền", "thanh-vien-3/quan-tri-vien/permissions.html"], ["Nhật ký kiểm toán", "thanh-vien-3/quan-tri-vien/audit.html"], ["Cấu hình hệ thống", "thanh-vien-3/quan-tri-vien/settings.html"]]]
+    ["Dùng chung", [["Đăng nhập", "login.html"], ["Đăng ký", "register.html"], ["Quên mật khẩu", "forgot-password.html"], ["Hồ sơ", "profile.html"], ["Cài đặt", "settings.html"], ["Thông báo", "notifications.html"], ["Không có quyền", "403.html"], ["Không tìm thấy", "404.html"]]],
+    ["Người dùng", [["Tổng quan tài chính", "../../thanh-vien-1/nguoi-dung/overview.html"], ["Giao dịch", "../../thanh-vien-1/nguoi-dung/transactions.html"], ["Ngân sách", "../../thanh-vien-1/nguoi-dung/budget.html"], ["Mục tiêu tiết kiệm", "../../thanh-vien-1/nguoi-dung/goals.html"], ["Phân tích chi tiêu", "../../thanh-vien-1/nguoi-dung/insights.html"], ["Đề xuất AI", "../../thanh-vien-1/nguoi-dung/ai.html"]]],
+    ["Huấn luyện viên", [["Danh sách học viên", "../../thanh-vien-2/huan-luyen-vien/clients.html"], ["Đánh giá ngân sách", "../../thanh-vien-2/huan-luyen-vien/budget.html"], ["Quản lý tài nguyên", "../../thanh-vien-2/huan-luyen-vien/resources.html"], ["Soạn tài nguyên", "../../thanh-vien-2/huan-luyen-vien/edit-resource.html"], ["Phản hồi", "../../thanh-vien-2/huan-luyen-vien/feedback.html"]]],
+    ["Kiểm duyệt viên", [["Duyệt nội dung", "../../thanh-vien-3/kiem-duyet-vien/resources.html"], ["Mẫu AI", "../../thanh-vien-3/kiem-duyet-vien/ai-templates.html"], ["Trung tâm báo cáo", "../../thanh-vien-3/kiem-duyet-vien/feedback.html"], ["Kiểm tra AI", "../../thanh-vien-3/kiem-duyet-vien/ai-review.html"]]],
+    ["Quản trị viên", [["Tổng quan hệ thống", "../../thanh-vien-3/quan-tri-vien/dashboard.html"], ["Danh mục chi tiêu", "../../thanh-vien-3/quan-tri-vien/categories.html"], ["Tài khoản", "../../thanh-vien-3/quan-tri-vien/users.html"], ["Phân quyền", "../../thanh-vien-3/quan-tri-vien/permissions.html"], ["Nhật ký kiểm toán", "../../thanh-vien-3/quan-tri-vien/audit.html"], ["Cấu hình hệ thống", "../../thanh-vien-3/quan-tri-vien/settings.html"]]]
   ];
   const esc = (value) => String(value ?? "").replace(/[&<>"']/g, (char) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[char]);
   const read = (key, fallback) => {
@@ -48,19 +48,19 @@ window.AccountPage = {"type": "landing"};
   } catch (error) {
     root.dataset.storageError = `Dữ liệu demo chưa khởi tạo được: ${error.message}`;
   }
-  const nav = `<header class="header"><a class="brand" href="thanh-vien-1/dung-chung/index.html"><span class="brand-mark">S</span>SpendWise</a><nav class="header-links"><a href="thanh-vien-1/dung-chung/index.html">Trang chủ</a><a href="thanh-vien-1/dung-chung/login.html">Đăng nhập</a></nav></header>`;
+  const nav = `<header class="header"><a class="brand" href="index.html"><span class="brand-mark">S</span>SpendWise</a><nav class="header-links"><a href="index.html">Trang chủ</a><a href="login.html">Đăng nhập</a></nav></header>`;
   const shell = (content) => `<div class="container">${nav}<main class="main">${content}</main><footer class="footer">SpendWise · Bản demo frontend · Dữ liệu chỉ lưu trên trình duyệt</footer></div>`;
   const field = (label, name, type = "text", value = "", required = true, placeholder = "") => `<div class="field"><label for="${name}">${label}${required ? " *" : ""}</label><input id="${name}" name="${name}" type="${type}" value="${esc(value)}" placeholder="${esc(placeholder)}" ${required ? "required" : ""} ${type === "email" ? 'autocomplete="email"' : ""}></div>`;
   const formShell = (title, description, body, button) => `<section class="card"><h1>${title}</h1><p>${description}</p><form class="form" data-form>${body}<div class="error" data-error role="alert"></div><button class="button" type="submit">${button}</button><div class="success" data-success hidden></div></form></section>`;
 
   if (config.type === "landing") {
-    if (!root.hasAttribute("data-static-account")) root.innerHTML = shell(`<section class="hero"><div class="kicker">Tiền của bạn, rõ ràng hơn</div><h1>Hiểu dòng tiền.<br>Xây thói quen tốt.</h1><p>SpendWise giúp bạn ghi nhận giao dịch, lập kế hoạch ngân sách và theo dõi mục tiêu tài chính trong một không gian dễ sử dụng.</p><div class="hero-actions"><a class="button" href="thanh-vien-1/dung-chung/login.html">Bắt đầu sử dụng</a><a class="button button-secondary" href="thanh-vien-1/dung-chung/register.html">Tạo tài khoản</a></div><div class="role-grid">${Object.entries(roles).map(([key, label]) => `<a class="role-card" href="${roleHome[key]}"><strong>${esc(label)}</strong><span>Mở bản demo theo vai trò →</span></a>`).join("")}</div></section><div class="directory">${pageLinks.map(([title, links]) => `<section class="group"><h2>${esc(title)}</h2>${links.map(([label, href]) => `<a href="${href}">${esc(label)}<span>→</span></a>`).join("")}</section>`).join("")}</div>`);
+    if (!root.hasAttribute("data-static-account")) root.innerHTML = shell(`<section class="hero"><div class="kicker">Tiền của bạn, rõ ràng hơn</div><h1>Hiểu dòng tiền.<br>Xây thói quen tốt.</h1><p>SpendWise giúp bạn ghi nhận giao dịch, lập kế hoạch ngân sách và theo dõi mục tiêu tài chính trong một không gian dễ sử dụng.</p><div class="hero-actions"><a class="button" href="login.html">Bắt đầu sử dụng</a><a class="button button-secondary" href="register.html">Tạo tài khoản</a></div><div class="role-grid">${Object.entries(roles).map(([key, label]) => `<a class="role-card" href="${roleHome[key]}"><strong>${esc(label)}</strong><span>Mở bản demo theo vai trò →</span></a>`).join("")}</div></section><div class="directory">${pageLinks.map(([title, links]) => `<section class="group"><h2>${esc(title)}</h2>${links.map(([label, href]) => `<a href="${href}">${esc(label)}<span>→</span></a>`).join("")}</section>`).join("")}</div>`);
     return;
   }
 
   if (config.type === "login") {
     const body = `${field("Email", "email", "email", "an.tran@spendwise.demo", true)}${field("Mật khẩu", "password", "password", "spendwise", true)}<div class="field"><label for="role">Vai trò demo</label><select id="role" name="role"><option value="user">Người dùng</option><option value="coach">Huấn luyện viên</option><option value="moderator">Kiểm duyệt viên</option><option value="admin">Quản trị viên</option></select></div><label class="checkbox"><input name="remember" type="checkbox" checked><span>Ghi nhớ phiên đăng nhập trên thiết bị này</span></label>`;
-    if (!root.hasAttribute("data-static-account")) root.innerHTML = shell(formShell("Đăng nhập", "Đăng nhập để tiếp tục hành trình tài chính của bạn.", body, "Đăng nhập vào SpendWise") + `<div class="divider"><a href="thanh-vien-1/dung-chung/forgot-password.html">Quên mật khẩu?</a><a href="thanh-vien-1/dung-chung/register.html">Tạo tài khoản</a></div><div class="success" style="margin-top:14px">Tài khoản demo: <b>an.tran@spendwise.demo</b> · Mật khẩu: <b>spendwise</b>. Chọn vai trò để mở các màn hình tương ứng.</div>`);
+    if (!root.hasAttribute("data-static-account")) root.innerHTML = shell(formShell("Đăng nhập", "Đăng nhập để tiếp tục hành trình tài chính của bạn.", body, "Đăng nhập vào SpendWise") + `<div class="divider"><a href="forgot-password.html">Quên mật khẩu?</a><a href="register.html">Tạo tài khoản</a></div><div class="success" style="margin-top:14px">Tài khoản demo: <b>an.tran@spendwise.demo</b> · Mật khẩu: <b>spendwise</b>. Chọn vai trò để mở các màn hình tương ứng.</div>`);
     root.querySelector("[data-form]").addEventListener("submit", (event) => {
       event.preventDefault();
       const data = Object.fromEntries(new FormData(event.currentTarget));
@@ -88,7 +88,7 @@ window.AccountPage = {"type": "landing"};
 
   if (config.type === "register") {
     const body = `${field("Họ và tên", "name", "text", "", true, "Tên hiển thị")}${field("Email", "email", "email", "", true, "ban@example.com")}${field("Mật khẩu", "password", "password", "", true, "Ít nhất 8 ký tự")}${field("Xác nhận mật khẩu", "confirm", "password", "")}<label class="checkbox"><input name="terms" type="checkbox" required><span>Tôi đồng ý với điều khoản sử dụng và chính sách quyền riêng tư.</span></label>`;
-    if (!root.hasAttribute("data-static-account")) root.innerHTML = shell(formShell("Tạo tài khoản", "Bắt đầu xây dựng thói quen tài chính lành mạnh.", body, "Tạo tài khoản") + `<div class="divider"><span>Đã có tài khoản?</span><a href="thanh-vien-1/dung-chung/login.html">Đăng nhập</a></div>`);
+    if (!root.hasAttribute("data-static-account")) root.innerHTML = shell(formShell("Tạo tài khoản", "Bắt đầu xây dựng thói quen tài chính lành mạnh.", body, "Tạo tài khoản") + `<div class="divider"><span>Đã có tài khoản?</span><a href="login.html">Đăng nhập</a></div>`);
     root.querySelector("[data-form]").addEventListener("submit", (event) => {
       event.preventDefault();
       const data = Object.fromEntries(new FormData(event.currentTarget));
@@ -109,7 +109,7 @@ window.AccountPage = {"type": "landing"};
         root.querySelector("[data-success]").hidden = false;
         root.querySelector("[data-success]").textContent = "Đăng ký thành công. Đang chuyển tới trang đăng nhập…";
         event.currentTarget.reset();
-        setTimeout(() => { location.href = "thanh-vien-1/dung-chung/login.html"; }, 900);
+        setTimeout(() => { location.href = "login.html"; }, 900);
       } catch (exception) { error.textContent = `Không thể lưu tài khoản demo: ${exception.message}`; }
     });
     return;
@@ -117,7 +117,7 @@ window.AccountPage = {"type": "landing"};
 
   if (config.type === "forgot") {
     const body = `${field("Email tài khoản", "email", "email", "", true, "ban@example.com")}${field("Mật khẩu mới", "password", "password")}${field("Xác nhận mật khẩu mới", "confirm", "password")}`;
-    if (!root.hasAttribute("data-static-account")) root.innerHTML = shell(formShell("Đặt lại mật khẩu", "Bản demo đổi mật khẩu cục bộ, không gửi email hoặc mã xác nhận.", body, "Cập nhật mật khẩu") + `<div class="divider"><a href="thanh-vien-1/dung-chung/login.html">Quay lại đăng nhập</a></div>`);
+    if (!root.hasAttribute("data-static-account")) root.innerHTML = shell(formShell("Đặt lại mật khẩu", "Bản demo đổi mật khẩu cục bộ, không gửi email hoặc mã xác nhận.", body, "Cập nhật mật khẩu") + `<div class="divider"><a href="login.html">Quay lại đăng nhập</a></div>`);
     root.querySelector("[data-form]").addEventListener("submit", (event) => {
       event.preventDefault();
       const data = Object.fromEntries(new FormData(event.currentTarget));
@@ -180,7 +180,7 @@ window.AccountPage = {"type": "landing"};
         const success = root.querySelector("[data-success]"); success.hidden = false; success.textContent = "Đã lưu cài đặt demo.";
       } catch (exception) { root.querySelector("[data-error]").textContent = `Không thể lưu cài đặt: ${exception.message}`; }
     });
-    root.querySelector("[data-signout]").addEventListener("click", () => { localStorage.removeItem("spendwise.session"); location.href = "thanh-vien-1/dung-chung/login.html"; });
+    root.querySelector("[data-signout]").addEventListener("click", () => { localStorage.removeItem("spendwise.session"); location.href = "login.html"; });
     root.querySelector("[data-reset]").addEventListener("click", () => {
       if (!confirm("Đặt lại toàn bộ dữ liệu demo trên thiết bị này? Hành động này không thể hoàn tác.")) return;
       const keep = ["spendwise.session", "spendwise.pro"];
@@ -191,7 +191,7 @@ window.AccountPage = {"type": "landing"};
   }
 
   if (config.type === "error") {
-    if (!root.hasAttribute("data-static-account")) root.innerHTML = shell(`<section class="error-view"><div class="error-code">${esc(config.code)}</div><h1>${esc(config.title)}</h1><p>${esc(config.description)}</p><div class="hero-actions"><a class="button" href="thanh-vien-1/nguoi-dung/overview.html">Về tổng quan</a><a class="button button-secondary" href="thanh-vien-1/dung-chung/index.html">Trang chủ</a></div></section>`);
+    if (!root.hasAttribute("data-static-account")) root.innerHTML = shell(`<section class="error-view"><div class="error-code">${esc(config.code)}</div><h1>${esc(config.title)}</h1><p>${esc(config.description)}</p><div class="hero-actions"><a class="button" href="../../thanh-vien-1/nguoi-dung/overview.html">Về tổng quan</a><a class="button button-secondary" href="index.html">Trang chủ</a></div></section>`);
   }
   }
   if (document.readyState !== "complete") document.addEventListener("DOMContentLoaded", init, { once: true });

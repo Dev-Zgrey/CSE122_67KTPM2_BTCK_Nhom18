@@ -7,12 +7,12 @@ window.AccountPage = {"type": "error", "code": "404", "title": "Không tìm th�
   const root = document.querySelector("[data-account-root]");
   if (!root || !config) return;
   const roles = { user: "Người dùng", coach: "Huấn luyện viên", moderator: "Kiểm duyệt viên", admin: "Quản trị viên" };
-  const roleHome = { user: "../nguoi-dung/overview.html", coach: "../../thanh-vien-2/huan-luyen-vien/clients.html", moderator: "../../thanh-vien-2/kiem-duyet-vien/resources.html", admin: "../../thanh-vien-3/quan-tri-vien/dashboard.html" };
+  const roleHome = { user: "../../thanh-vien-1/nguoi-dung/overview.html", coach: "../../thanh-vien-2/huan-luyen-vien/clients.html", moderator: "../../thanh-vien-3/kiem-duyet-vien/resources.html", admin: "../../thanh-vien-3/quan-tri-vien/dashboard.html" };
   const pageLinks = [
     ["Dùng chung", [["Đăng nhập", "login.html"], ["Đăng ký", "register.html"], ["Quên mật khẩu", "forgot-password.html"], ["Hồ sơ", "profile.html"], ["Cài đặt", "settings.html"], ["Thông báo", "notifications.html"], ["Không có quyền", "403.html"], ["Không tìm thấy", "404.html"]]],
-    ["Người dùng", [["Tổng quan tài chính", "../nguoi-dung/overview.html"], ["Giao dịch", "../nguoi-dung/transactions.html"], ["Ngân sách", "../nguoi-dung/budget.html"], ["Mục tiêu tiết kiệm", "../nguoi-dung/goals.html"], ["Phân tích chi tiêu", "../nguoi-dung/insights.html"], ["Đề xuất AI", "../nguoi-dung/ai.html"]]],
+    ["Người dùng", [["Tổng quan tài chính", "../../thanh-vien-1/nguoi-dung/overview.html"], ["Giao dịch", "../../thanh-vien-1/nguoi-dung/transactions.html"], ["Ngân sách", "../../thanh-vien-1/nguoi-dung/budget.html"], ["Mục tiêu tiết kiệm", "../../thanh-vien-1/nguoi-dung/goals.html"], ["Phân tích chi tiêu", "../../thanh-vien-1/nguoi-dung/insights.html"], ["Đề xuất AI", "../../thanh-vien-1/nguoi-dung/ai.html"]]],
     ["Huấn luyện viên", [["Danh sách học viên", "../../thanh-vien-2/huan-luyen-vien/clients.html"], ["Đánh giá ngân sách", "../../thanh-vien-2/huan-luyen-vien/budget.html"], ["Quản lý tài nguyên", "../../thanh-vien-2/huan-luyen-vien/resources.html"], ["Soạn tài nguyên", "../../thanh-vien-2/huan-luyen-vien/edit-resource.html"], ["Phản hồi", "../../thanh-vien-2/huan-luyen-vien/feedback.html"]]],
-    ["Kiểm duyệt viên", [["Duyệt nội dung", "../../thanh-vien-2/kiem-duyet-vien/resources.html"], ["Mẫu AI", "../../thanh-vien-2/kiem-duyet-vien/ai-templates.html"], ["Trung tâm báo cáo", "../../thanh-vien-2/kiem-duyet-vien/feedback.html"], ["Kiểm tra AI", "../../thanh-vien-2/kiem-duyet-vien/ai-review.html"]]],
+    ["Kiểm duyệt viên", [["Duyệt nội dung", "../../thanh-vien-3/kiem-duyet-vien/resources.html"], ["Mẫu AI", "../../thanh-vien-3/kiem-duyet-vien/ai-templates.html"], ["Trung tâm báo cáo", "../../thanh-vien-3/kiem-duyet-vien/feedback.html"], ["Kiểm tra AI", "../../thanh-vien-3/kiem-duyet-vien/ai-review.html"]]],
     ["Quản trị viên", [["Tổng quan hệ thống", "../../thanh-vien-3/quan-tri-vien/dashboard.html"], ["Danh mục chi tiêu", "../../thanh-vien-3/quan-tri-vien/categories.html"], ["Tài khoản", "../../thanh-vien-3/quan-tri-vien/users.html"], ["Phân quyền", "../../thanh-vien-3/quan-tri-vien/permissions.html"], ["Nhật ký kiểm toán", "../../thanh-vien-3/quan-tri-vien/audit.html"], ["Cấu hình hệ thống", "../../thanh-vien-3/quan-tri-vien/settings.html"]]]
   ];
   const esc = (value) => String(value ?? "").replace(/[&<>"']/g, (char) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[char]);
@@ -191,7 +191,7 @@ window.AccountPage = {"type": "error", "code": "404", "title": "Không tìm th�
   }
 
   if (config.type === "error") {
-    if (!root.hasAttribute("data-static-account")) root.innerHTML = shell(`<section class="error-view"><div class="error-code">${esc(config.code)}</div><h1>${esc(config.title)}</h1><p>${esc(config.description)}</p><div class="hero-actions"><a class="button" href="../nguoi-dung/overview.html">Về tổng quan</a><a class="button button-secondary" href="index.html">Trang chủ</a></div></section>`);
+    if (!root.hasAttribute("data-static-account")) root.innerHTML = shell(`<section class="error-view"><div class="error-code">${esc(config.code)}</div><h1>${esc(config.title)}</h1><p>${esc(config.description)}</p><div class="hero-actions"><a class="button" href="../../thanh-vien-1/nguoi-dung/overview.html">Về tổng quan</a><a class="button button-secondary" href="index.html">Trang chủ</a></div></section>`);
   }
   }
   if (document.readyState !== "complete") document.addEventListener("DOMContentLoaded", init, { once: true });

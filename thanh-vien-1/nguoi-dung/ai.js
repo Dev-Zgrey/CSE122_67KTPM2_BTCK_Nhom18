@@ -188,10 +188,10 @@ window.WorkspacePage = {
       ["Phản hồi", "../../thanh-vien-2/huan-luyen-vien/feedback.html", "feedback"]
     ],
     moderator: [
-      ["Duyệt nội dung", "../../thanh-vien-2/kiem-duyet-vien/resources.html", "moderation"],
-      ["Mẫu AI", "../../thanh-vien-2/kiem-duyet-vien/ai-templates.html", "templates"],
-      ["Báo cáo", "../../thanh-vien-2/kiem-duyet-vien/feedback.html", "reports"],
-      ["Kiểm tra AI", "../../thanh-vien-2/kiem-duyet-vien/ai-review.html", "ai"]
+      ["Duyệt nội dung", "../../thanh-vien-3/kiem-duyet-vien/resources.html", "moderation"],
+      ["Mẫu AI", "../../thanh-vien-3/kiem-duyet-vien/ai-templates.html", "templates"],
+      ["Báo cáo", "../../thanh-vien-3/kiem-duyet-vien/feedback.html", "reports"],
+      ["Kiểm tra AI", "../../thanh-vien-3/kiem-duyet-vien/ai-review.html", "ai"]
     ],
     admin: [
       ["Tổng hệ thống", "../../thanh-vien-3/quan-tri-vien/dashboard.html", "dashboard"],
@@ -410,7 +410,7 @@ window.WorkspacePage = {
     });
     root.querySelector("[data-signout]").addEventListener("click", () => {
       localStorage.removeItem("spendwise.session");
-      window.location.href = "../dung-chung/login.html";
+      window.location.href = "../../thanh-vien-2/dung-chung/login.html";
     });
     document.addEventListener("keydown", (event) => { if (event.key === "Escape") close(); });
     window.addEventListener("spendwise:data", (event) => {

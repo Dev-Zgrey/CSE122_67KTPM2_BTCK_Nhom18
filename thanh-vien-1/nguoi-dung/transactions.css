@@ -248,7 +248,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
   .summary-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .dashboard-grid { grid-template-columns: minmax(0, 1.2fr) minmax(230px, .9fr); }
 }
-@media (max-width: 760px) {
+@media (max-width: 700px) {
   .sidebar { position: sticky; top: 0; z-index: 10; width: 100%; height: auto; padding: 11px 15px; border-right: 0; border-bottom: 1px solid var(--line); }
   .brand { padding: 0; font-size: 17px; }
   .brand-mark { width: 30px; height: 30px; font-size: 16px; }
@@ -284,7 +284,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
   .budget-list-heading { align-items: flex-start; }
   .budget-list-heading .select-field { min-width: 130px; }
 }
-@media (max-width: 430px) {
+@media (max-width: 420px) {
   .main { padding-right: 14px; padding-left: 14px; }
   .header { padding-right: 14px; padding-left: 14px; }
   .footer { padding-right: 14px; padding-left: 14px; }
@@ -306,3 +306,75 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
 .transaction-page .data-table tbody tr { transition: background .15s ease; }
 .transaction-page .search-field:focus-within { border-color: #78a487; box-shadow: 0 0 0 3px rgba(91, 150, 111, .1); }
 .transaction-page .transaction-panel { overflow: hidden; }
+
+:root { --paper: #f6f8f5; font-family: "Segoe UI", Arial, sans-serif; }
+.sidebar { width: 244px; padding: 24px 16px 16px; }
+.brand { gap: 10px; padding: 0 8px; color: var(--green); font-family: inherit; font-size: 19px; letter-spacing: 0; }
+.brand-mark { width: 33px; height: 33px; font-size: 16px; }
+.sidebar-label { margin: 36px 9px 10px; letter-spacing: 1px; }
+.sidebar-nav { gap: 4px; }
+.nav-item { min-height: 40px; gap: 10px; padding: 0 10px; border-radius: 8px; font-size: 12px; }
+.nav-icon { width: 20px; font-size: 16px; }
+.sidebar-account { margin-top: auto; padding: 14px 3px 7px; border-top: 1px solid var(--line); }
+.avatar { width: 33px; height: 33px; font-size: 10px; }
+.account-profile span { font-size: 9px; }
+.sidebar-links { display: flex; justify-content: space-between; padding: 8px 3px 0; color: #7a8980; font-size: 10px; }
+.settings-link { padding: 7px; font-size: 15px; }
+.main { margin-left: 244px; padding: 0 38px 22px; }
+.header { min-height: 63px; margin-left: 244px; padding: 0 38px; }
+.breadcrumb { gap: 8px; font-size: 10px; }
+.account-area { gap: 10px; }
+.date-label { font-size: 10px; }
+.page-header { gap: 20px; padding: 30px 0 20px; }
+.eyebrow { margin-bottom: 7px; letter-spacing: 1.2px; }
+.page-heading h1 { font-size: clamp(23px, 3vw, 30px); letter-spacing: -.8px; }
+.page-heading p { margin-top: 7px; font-size: 11px; }
+.button { min-height: 36px; gap: 6px; padding: 0 12px; border-radius: 7px; font-size: 10px; }
+.summary-grid { gap: 12px; }
+.summary-card { padding: 14px 15px; border-radius: 9px; box-shadow: none; }
+.summary-card-top { font-size: 9px; }
+.summary-card-balance { border-color: var(--line); background: var(--accent-soft); color: var(--ink); }
+.summary-card-balance .summary-card-top { color: #75837a; }
+.summary-card-balance .summary-icon { background: #dcece0; color: var(--green); }
+.summary-value { margin-top: 8px; font-family: inherit; font-size: 19px; letter-spacing: -.4px; }
+.trend-positive { color: #4c8d61; }
+.panel { border-radius: 10px; box-shadow: none; }
+.footer { margin-left: 244px; padding: 18px 38px 0; }
+.modal-backdrop { z-index: 10; padding: 18px; background: rgba(20, 38, 27, .42); backdrop-filter: blur(2px); }
+.modal { width: min(100%, 510px); max-height: calc(100vh - 36px); padding: 22px; border: 0; border-radius: 12px; box-shadow: 0 20px 70px #10231940; }
+.modal-heading { gap: 12px; margin-bottom: 16px; }
+.modal-heading h2 { font-size: 17px; letter-spacing: 0; }
+.form-grid { gap: 12px; }
+.form-field { gap: 6px; }
+.form-field input, .form-field select, .form-field textarea { min-height: 36px; padding: 8px 9px; border-radius: 6px; font-size: 10px; }
+.form-field textarea { min-height: 74px; }
+.toast-region { right: 18px; bottom: 18px; z-index: 20; gap: 7px; }
+.toast { padding: 11px 14px; border-radius: 8px; font-size: 10px; }
+
+@media (max-width: 980px) {
+  .sidebar { width: 210px; }
+  .main, .header, .footer { margin-left: 210px; }
+  .main { padding-right: 22px; padding-left: 22px; }
+  .header, .footer { padding-right: 22px; padding-left: 22px; }
+}
+@media (max-width: 700px) {
+  .sidebar { width: 100%; padding: 10px 14px; }
+  .brand { padding: 0; font-size: 16px; }
+  .brand-mark { width: 29px; height: 29px; }
+  .sidebar-label, .sidebar-help, .sidebar-account, .sidebar-links { display: none; }
+  .sidebar-nav { display: flex; overflow-x: auto; gap: 3px; margin: 8px -3px -1px; }
+  .nav-item { min-height: 32px; flex: 0 0 auto; gap: 5px; padding: 0 8px; font-size: 9px; white-space: nowrap; }
+  .nav-icon { width: auto; font-size: 13px; }
+  .main { min-height: auto; margin: 0; padding: 0 14px 18px; }
+  .header { min-height: 48px; margin: 0; padding: 0 14px; }
+  .footer { margin: 0; padding: 18px 14px 0; }
+  .page-header { align-items: flex-start; flex-direction: column; gap: 13px; padding: 23px 0 17px; }
+  .page-actions, .action { width: 100%; }
+  .page-actions .button, .action .button { flex: 1; }
+}
+@media (max-width: 420px) {
+  .main { padding-right: 11px; padding-left: 11px; }
+  .header, .footer { padding-right: 11px; padding-left: 11px; }
+  .breadcrumb { gap: 6px; font-size: 10px; }
+  .account-area { gap: 8px; }
+}

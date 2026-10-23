@@ -1,116 +1,130 @@
 window.WorkspacePage = {
-  "slug": "notifications",
-  "title": "Thông báo",
-  "description": "Xem thông báo, lọc trạng thái và đánh dấu đã đọc.",
-  "role": "user",
-  "active": "notifications",
-  "storeKey": "notifications",
+  "slug": "moderator-ai-review",
+  "title": "Kiểm tra kết quả AI",
+  "description": "So sánh dữ liệu vào và đầu ra, đánh dấu lỗi và theo dõi xử lý.",
+  "role": "moderator",
+  "active": "ai",
+  "storeKey": "aiRuns",
   "columns": [
     {
-      "key": "title",
-      "label": "Thông báo"
+      "key": "task",
+      "label": "Tính năng AI"
     },
     {
-      "key": "type",
-      "label": "Loại"
+      "key": "input",
+      "label": "Dữ liệu đầu vào"
     },
     {
-      "key": "message",
-      "label": "Nội dung"
+      "key": "output",
+      "label": "Kết quả"
     },
     {
-      "key": "date",
-      "label": "Ngày",
-      "format": "date"
+      "key": "confidence",
+      "label": "Độ chắc chắn"
     },
     {
       "key": "status",
-      "label": "Trạng thái",
+      "label": "Đánh giá",
       "format": "status"
     }
   ],
   "fields": [
     {
-      "key": "title",
-      "label": "Tiêu đề",
-      "required": true,
-      "full": false
-    },
-    {
-      "key": "type",
-      "label": "Loại",
+      "key": "task",
+      "label": "Tính năng AI",
       "type": "select",
       "required": true,
       "options": [
-        "Ngân sách",
-        "Tài khoản",
-        "Gợi ý",
-        "Hệ thống"
+        "Expense Categorizer",
+        "Spending Pattern Insight",
+        "Goal Coach"
       ]
     },
     {
-      "key": "message",
-      "label": "Nội dung",
+      "key": "input",
+      "label": "Dữ liệu đầu vào",
       "type": "textarea",
       "required": true,
       "full": true
     },
     {
-      "key": "date",
-      "label": "Ngày",
-      "type": "date",
+      "key": "output",
+      "label": "Kết quả AI",
+      "type": "textarea",
       "required": true,
-      "full": false
+      "full": true
     },
     {
-      "key": "status",
-      "label": "Trạng thái",
+      "key": "confidence",
+      "label": "Độ chắc chắn",
       "type": "select",
       "required": true,
       "options": [
-        "Chưa đọc",
-        "Đã đọc"
+        "Cao",
+        "Trung bình",
+        "Thấp"
       ]
+    },
+    {
+      "key": "status",
+      "label": "Đánh giá",
+      "type": "select",
+      "required": true,
+      "options": [
+        "Chờ xem xét",
+        "Đạt",
+        "Cần xem xét",
+        "Lỗi",
+        "Đã xử lý"
+      ]
+    },
+    {
+      "key": "reviewNote",
+      "label": "Ghi chú kiểm duyệt",
+      "type": "textarea",
+      "full": true
     }
   ],
   "seed": [
     {
-      "id": "not-1",
-      "title": "Ngân sách ăn uống sắp đạt hạn mức",
-      "type": "Ngân sách",
-      "message": "Bạn đã sử dụng phần lớn hạn mức tháng này.",
-      "status": "Chưa đọc",
-      "date": "2026-10-16"
+      "id": "ai-1",
+      "task": "Expense Categorizer",
+      "input": "Giao dịch: Cà phê 65.000 ₫",
+      "output": "Danh mục đề xuất: Ăn uống",
+      "confidence": "Cao",
+      "status": "Chờ xem xét",
+      "reviewNote": ""
     },
     {
-      "id": "not-2",
-      "title": "Đã cập nhật dữ liệu tài chính",
-      "type": "Tài khoản",
-      "message": "Các giao dịch gần đây đã được lưu trên thiết bị.",
-      "status": "Đã đọc",
-      "date": "2026-10-15"
+      "id": "ai-2",
+      "task": "Spending Pattern Insight",
+      "input": "Tổng chi ăn uống tăng 24% trong tháng",
+      "output": "Gợi ý xem xét ngân sách theo tuần.",
+      "confidence": "Trung bình",
+      "status": "Cần xem xét",
+      "reviewNote": "Xác nhận dữ liệu so sánh."
     },
     {
-      "id": "not-3",
-      "title": "Mẹo nhỏ: tự động hóa tiết kiệm",
-      "type": "Gợi ý",
-      "message": "Thiết lập khoản tiết kiệm định kỳ để duy trì thói quen.",
-      "status": "Chưa đọc",
-      "date": "2026-10-13"
+      "id": "ai-3",
+      "task": "Goal Coach",
+      "input": "Mục tiêu quỹ dự phòng 30 triệu trong 12 tháng",
+      "output": "Đề xuất tiết kiệm 2,5 triệu mỗi tháng.",
+      "confidence": "Cao",
+      "status": "Đạt",
+      "reviewNote": ""
     }
   ],
-  "createLabel": "Tạo thông báo demo",
-  "singular": "thông báo",
+  "createLabel": "Ghi nhận phiên AI",
+  "singular": "phiên AI",
   "filters": [
-    "Chưa đọc",
-    "Đã đọc"
-  ],
-  "statuses": [
-    "Chưa đọc",
-    "Đã đọc"
+    "Chờ xem xét",
+    "Đạt",
+    "Cần xem xét",
+    "Lỗi",
+    "Đã xử lý"
   ],
   "defaultRecord": {
-    "status": "Chưa đọc"
+    "status": "Chờ xem xét"
   },
   "exportable": true
 };
@@ -159,12 +173,12 @@ window.WorkspacePage = {
   const icons = { dashboard: "◫", transactions: "↔", budgets: "▤", goals: "◎", insights: "⌁", ai: "✦", clients: "♙", reviews: "◷", resources: "▧", editor: "✎", feedback: "✉", moderation: "✓", templates: "✧", reports: "⚑", audit: "≡", categories: "◈", users: "♙", permissions: "⚿", settings: "⚙", profile: "◉", notifications: "♧" };
   const nav = {
     user: [
-      ["Tổng quan", "../nguoi-dung/overview.html", "dashboard"],
-      ["Giao dịch", "../nguoi-dung/transactions.html", "transactions"],
-      ["Ngân sách", "../nguoi-dung/budget.html", "budgets"],
-      ["Mục tiêu", "../nguoi-dung/goals.html", "goals"],
-      ["Phân tích", "../nguoi-dung/insights.html", "insights"],
-      ["Gợi ý AI", "../nguoi-dung/ai.html", "ai"]
+      ["Tổng quan", "../../thanh-vien-1/nguoi-dung/overview.html", "dashboard"],
+      ["Giao dịch", "../../thanh-vien-1/nguoi-dung/transactions.html", "transactions"],
+      ["Ngân sách", "../../thanh-vien-1/nguoi-dung/budget.html", "budgets"],
+      ["Mục tiêu", "../../thanh-vien-1/nguoi-dung/goals.html", "goals"],
+      ["Phân tích", "../../thanh-vien-1/nguoi-dung/insights.html", "insights"],
+      ["Gợi ý AI", "../../thanh-vien-1/nguoi-dung/ai.html", "ai"]
     ],
     coach: [
       ["Học viên", "../../thanh-vien-2/huan-luyen-vien/clients.html", "clients"],
@@ -174,10 +188,10 @@ window.WorkspacePage = {
       ["Phản hồi", "../../thanh-vien-2/huan-luyen-vien/feedback.html", "feedback"]
     ],
     moderator: [
-      ["Duyệt nội dung", "../../thanh-vien-2/kiem-duyet-vien/resources.html", "moderation"],
-      ["Mẫu AI", "../../thanh-vien-2/kiem-duyet-vien/ai-templates.html", "templates"],
-      ["Báo cáo", "../../thanh-vien-2/kiem-duyet-vien/feedback.html", "reports"],
-      ["Kiểm tra AI", "../../thanh-vien-2/kiem-duyet-vien/ai-review.html", "ai"]
+      ["Duyệt nội dung", "../../thanh-vien-3/kiem-duyet-vien/resources.html", "moderation"],
+      ["Mẫu AI", "../../thanh-vien-3/kiem-duyet-vien/ai-templates.html", "templates"],
+      ["Báo cáo", "../../thanh-vien-3/kiem-duyet-vien/feedback.html", "reports"],
+      ["Kiểm tra AI", "../../thanh-vien-3/kiem-duyet-vien/ai-review.html", "ai"]
     ],
     admin: [
       ["Tổng hệ thống", "../../thanh-vien-3/quan-tri-vien/dashboard.html", "dashboard"],
@@ -396,7 +410,7 @@ window.WorkspacePage = {
     });
     root.querySelector("[data-signout]").addEventListener("click", () => {
       localStorage.removeItem("spendwise.session");
-      window.location.href = "login.html";
+      window.location.href = "../../thanh-vien-2/dung-chung/login.html";
     });
     document.addEventListener("keydown", (event) => { if (event.key === "Escape") close(); });
     window.addEventListener("spendwise:data", (event) => {

@@ -1,131 +1,126 @@
 window.WorkspacePage = {
-  "slug": "moderator-ai-review",
-  "title": "Kiểm tra kết quả AI",
-  "description": "So sánh dữ liệu vào và đầu ra, đánh dấu lỗi và theo dõi xử lý.",
+  "slug": "moderator-resource-review",
+  "title": "Kiểm duyệt nội dung",
+  "description": "Kiểm tra nội dung, ghi lý do và cập nhật trạng thái kiểm duyệt.",
   "role": "moderator",
-  "active": "ai",
-  "storeKey": "aiRuns",
+  "active": "moderation",
+  "storeKey": "resources",
   "columns": [
     {
-      "key": "task",
-      "label": "Tính năng AI"
+      "key": "title",
+      "label": "Tài nguyên"
     },
     {
-      "key": "input",
-      "label": "Dữ liệu đầu vào"
+      "key": "type",
+      "label": "Loại"
     },
     {
-      "key": "output",
-      "label": "Kết quả"
+      "key": "audience",
+      "label": "Đối tượng"
     },
     {
-      "key": "confidence",
-      "label": "Độ chắc chắn"
+      "key": "updatedAt",
+      "label": "Cập nhật",
+      "format": "date"
     },
     {
       "key": "status",
-      "label": "Đánh giá",
+      "label": "Trạng thái",
       "format": "status"
     }
   ],
   "fields": [
     {
-      "key": "task",
-      "label": "Tính năng AI",
-      "type": "select",
+      "key": "title",
+      "label": "Tiêu đề",
       "required": true,
-      "options": [
-        "Expense Categorizer",
-        "Spending Pattern Insight",
-        "Goal Coach"
-      ]
+      "full": false
     },
     {
-      "key": "input",
-      "label": "Dữ liệu đầu vào",
-      "type": "textarea",
+      "key": "type",
+      "label": "Loại nội dung",
       "required": true,
-      "full": true
+      "full": false
     },
     {
-      "key": "output",
-      "label": "Kết quả AI",
-      "type": "textarea",
+      "key": "audience",
+      "label": "Đối tượng",
       "required": true,
-      "full": true
-    },
-    {
-      "key": "confidence",
-      "label": "Độ chắc chắn",
-      "type": "select",
-      "required": true,
-      "options": [
-        "Cao",
-        "Trung bình",
-        "Thấp"
-      ]
+      "full": false
     },
     {
       "key": "status",
-      "label": "Đánh giá",
+      "label": "Trạng thái",
       "type": "select",
       "required": true,
       "options": [
-        "Chờ xem xét",
-        "Đạt",
-        "Cần xem xét",
-        "Lỗi",
-        "Đã xử lý"
+        "Bản nháp",
+        "Chờ duyệt",
+        "Đã xuất bản",
+        "Cần chỉnh sửa",
+        "Đã lưu trữ"
       ]
     },
     {
-      "key": "reviewNote",
-      "label": "Ghi chú kiểm duyệt",
+      "key": "summary",
+      "label": "Tóm tắt",
+      "required": true,
+      "full": false
+    },
+    {
+      "key": "moderationNote",
+      "label": "Lý do / yêu cầu chỉnh sửa",
       "type": "textarea",
       "full": true
     }
   ],
   "seed": [
     {
-      "id": "ai-1",
-      "task": "Expense Categorizer",
-      "input": "Giao dịch: Cà phê 65.000 ₫",
-      "output": "Danh mục đề xuất: Ăn uống",
-      "confidence": "Cao",
-      "status": "Chờ xem xét",
-      "reviewNote": ""
+      "id": "res-1",
+      "title": "Lập ngân sách 50/30/20",
+      "type": "Bài học",
+      "audience": "Người mới bắt đầu",
+      "status": "Chờ duyệt",
+      "summary": "Hướng dẫn chia thu nhập thành nhu cầu, mong muốn và tiết kiệm.",
+      "objective": "Lập ngân sách tháng đầu tiên",
+      "content": "Bắt đầu từ thu nhập thực nhận. Phân loại chi phí thiết yếu, mong muốn và tiết kiệm.",
+      "exercise": "Ghi lại ba nhóm chi tiêu trong một tuần.",
+      "tags": "ngân sách, cơ bản",
+      "updatedAt": "2026-10-08"
     },
     {
-      "id": "ai-2",
-      "task": "Spending Pattern Insight",
-      "input": "Tổng chi ăn uống tăng 24% trong tháng",
-      "output": "Gợi ý xem xét ngân sách theo tuần.",
-      "confidence": "Trung bình",
-      "status": "Cần xem xét",
-      "reviewNote": "Xác nhận dữ liệu so sánh."
-    },
-    {
-      "id": "ai-3",
-      "task": "Goal Coach",
-      "input": "Mục tiêu quỹ dự phòng 30 triệu trong 12 tháng",
-      "output": "Đề xuất tiết kiệm 2,5 triệu mỗi tháng.",
-      "confidence": "Cao",
-      "status": "Đạt",
-      "reviewNote": ""
+      "id": "res-2",
+      "title": "Xây dựng quỹ dự phòng",
+      "type": "Hướng dẫn",
+      "audience": "Người dùng",
+      "status": "Đã xuất bản",
+      "summary": "Các bước xây dựng quỹ dự phòng theo khả năng thực tế.",
+      "objective": "Xác định mục tiêu quỹ dự phòng",
+      "content": "Tính chi phí thiết yếu theo tháng rồi đặt mốc tiết kiệm phù hợp.",
+      "exercise": "Chọn khoản chuyển tự động nhỏ mỗi tháng.",
+      "tags": "tiết kiệm, mục tiêu",
+      "updatedAt": "2026-09-24"
     }
   ],
-  "createLabel": "Ghi nhận phiên AI",
-  "singular": "phiên AI",
+  "createLabel": "Tạo tài nguyên",
+  "singular": "tài nguyên",
   "filters": [
-    "Chờ xem xét",
-    "Đạt",
-    "Cần xem xét",
-    "Lỗi",
-    "Đã xử lý"
+    "Bản nháp",
+    "Chờ duyệt",
+    "Đã xuất bản",
+    "Cần chỉnh sửa",
+    "Đã lưu trữ"
   ],
-  "defaultRecord": {
-    "status": "Chờ xem xét"
-  },
+  "statuses": [
+    "Bản nháp",
+    "Chờ duyệt",
+    "Đã xuất bản",
+    "Cần chỉnh sửa",
+    "Đã lưu trữ"
+  ],
+  "hideCreate": true,
+  "hideDelete": true,
+  "labelKey": "title",
   "exportable": true
 };
 
@@ -188,10 +183,10 @@ window.WorkspacePage = {
       ["Phản hồi", "../../thanh-vien-2/huan-luyen-vien/feedback.html", "feedback"]
     ],
     moderator: [
-      ["Duyệt nội dung", "../../thanh-vien-2/kiem-duyet-vien/resources.html", "moderation"],
-      ["Mẫu AI", "../../thanh-vien-2/kiem-duyet-vien/ai-templates.html", "templates"],
-      ["Báo cáo", "../../thanh-vien-2/kiem-duyet-vien/feedback.html", "reports"],
-      ["Kiểm tra AI", "../../thanh-vien-2/kiem-duyet-vien/ai-review.html", "ai"]
+      ["Duyệt nội dung", "../../thanh-vien-3/kiem-duyet-vien/resources.html", "moderation"],
+      ["Mẫu AI", "../../thanh-vien-3/kiem-duyet-vien/ai-templates.html", "templates"],
+      ["Báo cáo", "../../thanh-vien-3/kiem-duyet-vien/feedback.html", "reports"],
+      ["Kiểm tra AI", "../../thanh-vien-3/kiem-duyet-vien/ai-review.html", "ai"]
     ],
     admin: [
       ["Tổng hệ thống", "../../thanh-vien-3/quan-tri-vien/dashboard.html", "dashboard"],
@@ -410,7 +405,7 @@ window.WorkspacePage = {
     });
     root.querySelector("[data-signout]").addEventListener("click", () => {
       localStorage.removeItem("spendwise.session");
-      window.location.href = "../../thanh-vien-1/dung-chung/login.html";
+      window.location.href = "../../thanh-vien-2/dung-chung/login.html";
     });
     document.addEventListener("keydown", (event) => { if (event.key === "Escape") close(); });
     window.addEventListener("spendwise:data", (event) => {

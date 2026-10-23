@@ -1,73 +1,57 @@
 window.WorkspacePage = {
-  "slug": "moderator-feedback-center",
-  "title": "Trung tâm báo cáo",
-  "description": "Tiếp nhận, phân loại, giao xử lý và đóng các báo cáo phản hồi.",
+  "slug": "moderator-ai-template-management",
+  "title": "Quản lý mẫu AI",
+  "description": "Quản lý prompt, thử nghiệm đầu ra và bật hoặc tắt phiên bản AI.",
   "role": "moderator",
-  "active": "reports",
-  "storeKey": "feedback",
+  "active": "templates",
+  "storeKey": "aiTemplates",
   "columns": [
     {
-      "key": "sender",
-      "label": "Người gửi"
+      "key": "name",
+      "label": "Tên mẫu"
     },
     {
-      "key": "subject",
-      "label": "Báo cáo"
+      "key": "model",
+      "label": "Mô hình"
     },
     {
-      "key": "priority",
-      "label": "Mức độ"
+      "key": "version",
+      "label": "Phiên bản"
     },
     {
-      "key": "assigned",
-      "label": "Phụ trách"
+      "key": "updatedAt",
+      "label": "Cập nhật",
+      "format": "date"
     },
     {
       "key": "status",
       "label": "Trạng thái",
       "format": "status"
-    },
-    {
-      "key": "updatedAt",
-      "label": "Ngày",
-      "format": "date"
     }
   ],
   "fields": [
     {
-      "key": "sender",
-      "label": "Người gửi",
+      "key": "name",
+      "label": "Tên mẫu",
       "required": true,
       "full": false
     },
     {
-      "key": "subject",
-      "label": "Tiêu đề báo cáo",
+      "key": "model",
+      "label": "Mô hình",
+      "type": "select",
+      "required": true,
+      "options": [
+        "Expense Categorizer",
+        "Spending Pattern Insight",
+        "Goal Coach"
+      ]
+    },
+    {
+      "key": "version",
+      "label": "Phiên bản",
       "required": true,
       "full": false
-    },
-    {
-      "key": "priority",
-      "label": "Mức độ",
-      "type": "select",
-      "required": true,
-      "options": [
-        "Thấp",
-        "Bình thường",
-        "Cao",
-        "Khẩn cấp"
-      ]
-    },
-    {
-      "key": "assigned",
-      "label": "Người phụ trách",
-      "type": "select",
-      "required": true,
-      "options": [
-        "Kiểm duyệt viên",
-        "Quản trị viên",
-        "Huấn luyện viên"
-      ]
     },
     {
       "key": "status",
@@ -75,74 +59,62 @@ window.WorkspacePage = {
       "type": "select",
       "required": true,
       "options": [
-        "Mới",
-        "Đang xử lý",
-        "Chờ phản hồi",
-        "Đã trả lời",
-        "Đã đóng",
-        "Từ chối"
+        "Bản nháp",
+        "Đang thử nghiệm",
+        "Hoạt động",
+        "Vô hiệu hóa",
+        "Đã lưu trữ"
       ]
     },
     {
-      "key": "message",
-      "label": "Nội dung báo cáo",
+      "key": "prompt",
+      "label": "Prompt / mẫu phản hồi",
       "type": "textarea",
       "required": true,
       "full": true
     },
     {
-      "key": "response",
-      "label": "Phản hồi / lý do xử lý",
+      "key": "fallback",
+      "label": "Phản hồi dự phòng",
       "type": "textarea",
       "full": true
     }
   ],
   "seed": [
     {
-      "id": "fb-1",
-      "sender": "Nguyễn An",
-      "subject": "Câu hỏi về ngân sách ăn uống",
-      "priority": "Bình thường",
-      "assigned": "Huấn luyện viên",
-      "status": "Mới",
-      "message": "Làm thế nào để theo dõi khoản ăn uống linh hoạt?",
-      "response": "",
-      "updatedAt": "2026-10-12"
+      "id": "tpl-1",
+      "name": "Expense Categorizer",
+      "model": "Expense Categorizer",
+      "version": "1.2",
+      "updatedAt": "2026-10-08",
+      "status": "Hoạt động",
+      "prompt": "Phân loại giao dịch vào danh mục phù hợp và giải thích ngắn gọn.",
+      "fallback": "Chưa đủ dữ liệu để gợi ý."
     },
     {
-      "id": "fb-2",
-      "sender": "Trần Minh",
-      "subject": "Báo cáo nội dung không phù hợp",
-      "priority": "Cao",
-      "assigned": "Kiểm duyệt viên",
-      "status": "Đang xử lý",
-      "message": "Một tài liệu cần được kiểm tra lại ví dụ minh họa.",
-      "response": "",
-      "updatedAt": "2026-10-10"
+      "id": "tpl-2",
+      "name": "Goal Coach",
+      "model": "Goal Coach",
+      "version": "0.9",
+      "updatedAt": "2026-10-02",
+      "status": "Đang thử nghiệm",
+      "prompt": "Đề xuất kế hoạch tiết kiệm có thể điều chỉnh.",
+      "fallback": "Hãy thử lại sau."
     }
   ],
-  "createLabel": "Tiếp nhận báo cáo",
-  "singular": "báo cáo",
+  "createLabel": "Tạo mẫu AI",
+  "singular": "mẫu",
   "filters": [
-    "Mới",
-    "Đang xử lý",
-    "Chờ phản hồi",
-    "Đã trả lời",
-    "Đã đóng",
-    "Từ chối"
-  ],
-  "statuses": [
-    "Mới",
-    "Đang xử lý",
-    "Chờ phản hồi",
-    "Đã trả lời",
-    "Đã đóng",
-    "Từ chối"
+    "Bản nháp",
+    "Đang thử nghiệm",
+    "Hoạt động",
+    "Vô hiệu hóa",
+    "Đã lưu trữ"
   ],
   "defaultRecord": {
-    "status": "Mới",
-    "assigned": "Kiểm duyệt viên"
+    "status": "Bản nháp"
   },
+  "labelKey": "name",
   "exportable": true
 };
 
@@ -205,10 +177,10 @@ window.WorkspacePage = {
       ["Phản hồi", "../../thanh-vien-2/huan-luyen-vien/feedback.html", "feedback"]
     ],
     moderator: [
-      ["Duyệt nội dung", "../../thanh-vien-2/kiem-duyet-vien/resources.html", "moderation"],
-      ["Mẫu AI", "../../thanh-vien-2/kiem-duyet-vien/ai-templates.html", "templates"],
-      ["Báo cáo", "../../thanh-vien-2/kiem-duyet-vien/feedback.html", "reports"],
-      ["Kiểm tra AI", "../../thanh-vien-2/kiem-duyet-vien/ai-review.html", "ai"]
+      ["Duyệt nội dung", "../../thanh-vien-3/kiem-duyet-vien/resources.html", "moderation"],
+      ["Mẫu AI", "../../thanh-vien-3/kiem-duyet-vien/ai-templates.html", "templates"],
+      ["Báo cáo", "../../thanh-vien-3/kiem-duyet-vien/feedback.html", "reports"],
+      ["Kiểm tra AI", "../../thanh-vien-3/kiem-duyet-vien/ai-review.html", "ai"]
     ],
     admin: [
       ["Tổng hệ thống", "../../thanh-vien-3/quan-tri-vien/dashboard.html", "dashboard"],
@@ -427,7 +399,7 @@ window.WorkspacePage = {
     });
     root.querySelector("[data-signout]").addEventListener("click", () => {
       localStorage.removeItem("spendwise.session");
-      window.location.href = "../../thanh-vien-1/dung-chung/login.html";
+      window.location.href = "../../thanh-vien-2/dung-chung/login.html";
     });
     document.addEventListener("keydown", (event) => { if (event.key === "Escape") close(); });
     window.addEventListener("spendwise:data", (event) => {

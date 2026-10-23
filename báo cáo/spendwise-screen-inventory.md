@@ -115,12 +115,13 @@ Trong phạm vi bản demo frontend local, **Đã làm** nghĩa là giao diện 
 
 Mỗi trang nghiệp vụ có HTML đầy đủ, CSS riêng và JavaScript riêng trong cùng thư mục; trang không nạp stylesheet hoặc script dùng chung. Các trang tài chính có thể trao đổi dữ liệu qua cùng khóa `localStorage`, nhưng mã xử lý được đặt riêng trong từng trang.
 
-Ba branch đều chứa toàn bộ ứng dụng để có thể checkout và chạy độc lập. Mỗi thành viên phụ trách folder riêng, chỉ chỉnh sửa phần được giao và tạo pull request về branch tích hợp.
+Các branch thành viên chỉ chứa folder được giao; branch `master` là nơi tích hợp toàn bộ ứng dụng và folder báo cáo. Do các trang liên kết giữa nhiều folder, hãy chạy ứng dụng đầy đủ từ `master`.
 
 | Branch | Phạm vi phụ trách | Tệp chính |
 |---|---|---|
-| `feature/user-pages` | Tài khoản chung và trải nghiệm Người dùng | `thanh-vien-1/dung-chung/`, `thanh-vien-1/nguoi-dung/` |
-| `feature/coach-moderator` | Huấn luyện viên và Kiểm duyệt viên | `thanh-vien-2/huan-luyen-vien/`, `thanh-vien-2/kiem-duyet-vien/` |
-| `feature/admin-integration` | Quản trị viên, tài liệu và trang điều hướng gốc | `thanh-vien-3/quan-tri-vien/`, `thanh-vien-3/báo cáo/`, `index.html`, `Dashboard_admin.html` |
+| `feature/user-pages` | Thành viên 1: Người dùng | `thanh-vien-1/nguoi-dung/` |
+| `feature/coach-moderator` | Thành viên 2: Tài khoản dùng chung và Huấn luyện viên | `thanh-vien-2/dung-chung/`, `thanh-vien-2/huan-luyen-vien/` |
+| `feature/admin-integration` | Thành viên 3: Kiểm duyệt viên và Quản trị viên | `thanh-vien-3/kiem-duyet-vien/`, `thanh-vien-3/quan-tri-vien/` |
+| `master` | Ứng dụng tích hợp và báo cáo chung của nhóm | `báo cáo/` cùng toàn bộ mã nguồn |
 
-Ba branch được đồng bộ từ cùng một commit nền chứa toàn bộ dự án; mỗi thành viên checkout branch được giao và chỉ chỉnh sửa folder phụ trách. Giữ nguyên các tên thư mục để liên kết giữa ba nhóm vẫn hoạt động khi merge. Các thay đổi điều hướng hoặc cấu trúc dữ liệu `localStorage` cần được báo cho các thành viên còn lại.
+Mỗi thành viên chỉ cập nhật folder thuộc phạm vi của mình trên branch được giao. Khi tích hợp, giữ nguyên các tên thư mục để liên kết giữa các nhóm vẫn hoạt động. Các thay đổi điều hướng hoặc cấu trúc dữ liệu `localStorage` cần được báo cho các thành viên còn lại.
