@@ -126,11 +126,7 @@ window.WorkspacePage = {
     "status": "Bản nháp"
   },
   "labelKey": "title",
-  "exportable": true,
-  "secondaryAction": {
-    "label": "Mở trình soạn",
-    "href": "edit-resource.html"
-  }
+  "exportable": true
 };
 
 (() => {
