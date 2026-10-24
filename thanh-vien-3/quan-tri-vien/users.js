@@ -204,6 +204,7 @@ window.WorkspacePage = {
     ]
   };
   const roleLabels = { user: "Người dùng", coach: "Huấn luyện viên", moderator: "Kiểm duyệt viên", admin: "Quản trị viên" };
+  const usersEndpoint = "https://6ad6d572f71f154ac48728f5.mockapi.io/api/v1/users";
 
   function identity() {
     try {
@@ -324,6 +325,38 @@ window.WorkspacePage = {
         return `<article class="stat-card"><span>${escapeHtml(item.label)}</span><strong>${escapeHtml(value)}</strong></article>`;
       }).join("");
     }
+    async function loadMockApiUsers() {
+      const status = root.querySelector("[data-api-status]");
+      if (!status) return;
+      try {
+        const response = await fetch(usersEndpoint, { headers: { Accept: "application/json" } });
+        if (!response.ok) throw new Error(`HTTP ${response.status}`);
+        const apiUsers = await response.json();
+        if (!Array.isArray(apiUsers)) throw new Error("API không trả về danh sách tài khoản.");
+        const currentById = new Map(records.map((record) => [record.id, record]));
+        const remoteRecords = apiUsers.filter((record) => record && record.id != null).map((record) => {
+          const recordId = `mockapi-${record.id}`;
+          return {
+            id: recordId,
+            name: String(record.name || "Tài khoản MockAPI"),
+            email: `mockapi-${record.id}@spendwise.demo`,
+            role: "Người dùng",
+            status: "Hoạt động",
+            goal: "",
+            budget: "Chưa có dữ liệu",
+            createdAt: record.createdAt || "",
+            avatar: typeof record.avatar === "string" ? record.avatar : "",
+            ...currentById.get(recordId)
+          };
+        });
+        const remoteIds = new Set(remoteRecords.map((record) => record.id));
+        records = [...remoteRecords, ...records.filter((record) => !remoteIds.has(record.id))];
+        render();
+        status.textContent = `Đã tải ${remoteRecords.length} tài khoản từ MockAPI. Vai trò, trạng thái và hồ sơ bổ sung là dữ liệu demo lưu trên trình duyệt.`;
+      } catch (error) {
+        status.textContent = `Không tải được MockAPI (${error.message}). Đang hiển thị dữ liệu đã lưu trên trình duyệt.`;
+      }
+    }
     function open(record) {
       form.reset();
       form.elements.id.value = record?.id || "";
@@ -419,6 +452,7 @@ window.WorkspacePage = {
       try { records = store.read(config.storeKey, []); render(); } catch (error) { notify(`Không thể đồng bộ: ${error.message}`, true); }
     });
     render();
+    loadMockApiUsers();
   }
 
   window.SpendWiseWorkspace = { mount, store, escapeHtml, labelize, dateLabel };
