@@ -10,72 +10,69 @@ Mỗi dòng là một màn hình nghiệp vụ độc lập hoặc một trang c
 
 Trong phạm vi bản demo frontend local, **Đã làm** nghĩa là giao diện HTML, CSS responsive, JavaScript và dữ liệu demo đã được triển khai; các luồng đại diện đã được kiểm tra trên trình duyệt. Backend, dịch vụ AI thật, commit/PR và video OBS là minh chứng hoặc phạm vi phát hành riêng, không được suy ra từ trạng thái này.
 
-**Giới hạn bản demo:** không có backend hoặc SQL; dữ liệu được lưu trong `localStorage` của trình duyệt. Đăng nhập, vai trò, phân quyền và AI chỉ được mô phỏng phía frontend, không dùng cho dữ liệu thật hoặc bảo mật sản xuất.
+**Giới hạn bản demo:** không có backend hoặc SQL. Phần lớn dữ liệu được lưu trong `localStorage`; trang quản lý tài khoản đọc danh sách người dùng từ MockAPI, còn vai trò/trạng thái bổ sung vẫn là dữ liệu demo cục bộ. Đăng nhập, phân quyền và AI chỉ được mô phỏng phía frontend, không dùng cho dữ liệu thật hoặc bảo mật sản xuất.
 
 **Quy ước lớp giao diện:** dùng tiền tố `account-` cho trang tài khoản, `ws-` cho các workspace CRUD và `user-` cho ba trang tài chính tùy biến; biến thể dùng `--`, trạng thái dùng `is-*`, còn `data-*` chỉ dành cho móc JavaScript.
 
 ## 2. Màn hình dùng chung
 
+### Kết quả rà soát và gộp màn hình
+
+- Đã gộp các luồng ít trang trong cùng role thành chế độ xem có URL query, giữ nguyên module CRUD và khóa `localStorage`: Phân tích/AI; Học viên/Review ngân sách; Thư viện/Soạn tài nguyên; Mẫu AI/Kiểm tra AI; Dashboard/Nhật ký; Tài khoản/Phân quyền; Danh mục/Cấu hình hệ thống.
+- Đăng nhập, đăng ký và khôi phục mật khẩu cùng dùng `thanh-vien-2/dung-chung/login.html` với `?view=login|register|forgot`. Hồ sơ và cài đặt cùng dùng `profile.html` với `?view=profile|settings`.
+- `404.html` hiển thị cả lỗi 404 mặc định và lỗi 403 qua `?code=403`. Landing `index.html` thay cho trang danh mục demo; chọn role vẫn có ở biểu mẫu đăng nhập.
+- Quy mô sau gộp: 19 nhóm màn hình và 19 URL HTML; landing nằm trong tổng này. Hub demo, dashboard trùng và các trang đã nhập vào tab đã xóa.
+
 | # | Role | Màn hình / file | Mục tiêu và chức năng chính | CRUD / trạng thái cần có | AI | Người phụ trách | Trạng thái | OBS / PR |
 |---:|---|---|---|---|---|---|---|---|
-| 1 | Tất cả | `index.html` – Landing | Giới thiệu SpendWise, lợi ích, đăng nhập/đăng ký, tài nguyên công khai. | R; loading, lỗi tải nội dung. | Không bắt buộc |  | Đã làm |  |
-| 2 | Tất cả | `login.html` – Đăng nhập | Đăng nhập, ghi nhớ phiên, chọn role, hiển thị lỗi tài khoản/mật khẩu. | C/R; thành công, sai thông tin, bị khóa, đang xử lý. | Không bắt buộc |  | Đã làm |  |
-| 3 | Tất cả | `register.html` – Đăng ký | Tạo tài khoản, xác nhận mật khẩu, đồng ý điều khoản, kiểm tra email trùng. | C; rỗng, sai định dạng, email đã tồn tại, thành công. | Không bắt buộc |  | Đã làm |  |
-| 4 | Tất cả | `forgot-password.html` – Quên mật khẩu | Nhập email, gửi mã/đường dẫn, đặt mật khẩu mới. | U; mã sai, hết hạn, thành công, lỗi gửi. | Không bắt buộc |  | Đã làm |  |
-| 5 | Tất cả | `profile.html` – Hồ sơ | Xem/sửa thông tin cá nhân, ảnh đại diện, role và thông tin liên hệ. | R/U; đang lưu, validation lỗi, thành công. | Không bắt buộc |  | Đã làm |  |
-| 6 | Tất cả | `settings.html` – Cài đặt | Đổi mật khẩu, thông báo, tiền tệ, múi giờ, xóa/đăng xuất phiên. | R/U; vô hiệu hóa, xác nhận, thành công. | Không bắt buộc |  | Đã làm |  |
-| 7 | Tất cả | `notifications.html` – Thông báo | Xem, lọc, đánh dấu đã đọc và mở thông báo. | R/U; rỗng, chưa đọc, đã đọc. | Không bắt buộc |  | Đã làm |  |
-| 8 | Tất cả | `403.html` / `404.html` – Lỗi truy cập | Báo không có quyền hoặc không tìm thấy trang; quay lại dashboard. | Bị từ chối, không tồn tại. | Không bắt buộc |  | Đã làm |  |
+| 1 | Tất cả | `index.html` – Landing | Giới thiệu SpendWise và mở đăng nhập/đăng ký. | R; loading, lỗi tải nội dung. | Không bắt buộc |  | Đã làm |  |
+| 2 | Tất cả | `thanh-vien-2/dung-chung/login.html` – Tài khoản | Đăng nhập, tạo tài khoản hoặc khôi phục mật khẩu qua các tab `view=login|register|forgot`; chọn role demo. | C/R/U; xác thực lỗi, email trùng, mật khẩu sai, thành công. | Không bắt buộc |  | Đã làm |  |
+| 3 | Tất cả | `thanh-vien-2/dung-chung/profile.html` – Hồ sơ & cài đặt | Sửa hồ sơ, tiền tệ, múi giờ, thông báo, mật khẩu demo; đăng xuất và đặt lại dữ liệu. | R/U; xác nhận, validation, thành công, lỗi. | Không bắt buộc |  | Đã làm |  |
+| 4 | Tất cả | `thanh-vien-2/dung-chung/notifications.html` – Thông báo | Xem, lọc, đánh dấu đã đọc và mở thông báo. | R/U; rỗng, chưa đọc, đã đọc. | Không bắt buộc |  | Đã làm |  |
+| 5 | Tất cả | `thanh-vien-2/dung-chung/404.html` – Lỗi truy cập | Hiển thị 404 mặc định hoặc 403 qua `?code=403`; điều hướng về nơi phù hợp. | Trạng thái 403 / 404. | Không bắt buộc |  | Đã làm |  |
 
 ## 3. Role Người dùng
 
 | # | Mục tiêu | Màn hình / file | Chức năng chính | CRUD / trạng thái | AI | Người phụ trách | Trạng thái | OBS / PR |
 |---:|---|---|---|---|---|---|---|---|
-| 9 | Theo dõi tổng quan | `overview.html` / `index2.html` | Tổng thu/chi, số dư, ngân sách, giao dịch gần đây, cảnh báo, mục tiêu, biểu đồ. | R; loading, rỗng, lỗi tải dữ liệu. | Spending Pattern Insight tóm tắt. |  | Đã làm |  |
-| 10 | Quản lý giao dịch | `transactions.html` / view Giao dịch | Tìm kiếm, lọc, thêm khoản thu/chi, xem, sửa, lưu trữ/xóa giao dịch. | C/R/U/D; form rỗng, validation, thành công, lỗi, rỗng. | Expense Categorizer gợi ý danh mục. |  | Đã làm |  |
-| 11 | Lập kế hoạch ngân sách | `budget.html` / view Ngân sách | Tạo ngân sách theo tháng/danh mục, sửa hạn mức, theo dõi đã dùng/còn lại, cảnh báo. | C/R/U; chưa có dữ liệu, vượt hạn mức, khóa kỳ. | Spending Pattern Insight gợi ý hạn mức. |  | Đã làm |  |
-| 12 | Quản lý mục tiêu | `goals.html` / view Mục tiêu | Tạo mục tiêu, số tiền đích, hạn hoàn thành, cập nhật tiến độ, tạm dừng/hoàn thành. | C/R/U/D; chưa bắt đầu, đang tiến hành, hoàn thành, quá hạn. | Goal Coach tạo bước tiết kiệm. |  | Đã làm |  |
-| 13 | Hiểu thói quen chi tiêu | `insights.html` / view AI Insights | Biểu đồ theo danh mục/thời gian, so sánh kỳ, phát hiện khoản bất thường, giải thích. | R; loading, không đủ dữ liệu, lỗi, thành công. | Spending Pattern Insight có độ chắc chắn. |  | Đã làm |  |
-| 14 | Xử lý đề xuất AI | `ai.html` | Xem đề xuất, lý do, dữ liệu đầu vào; chấp nhận, sửa, từ chối, tạo lại, lưu. | C/R/U; đang xử lý, không chắc chắn, thất bại, đã lưu. | Expense Categorizer, Pattern Insight, Goal Coach. |  | Đã làm |  |
+| 6 | Theo dõi tổng quan | `thanh-vien-1/nguoi-dung/overview.html` | Tổng thu/chi, số dư, ngân sách, giao dịch gần đây, cảnh báo, mục tiêu, biểu đồ. | R; loading, rỗng, lỗi tải dữ liệu. | Spending Pattern Insight tóm tắt. |  | Đã làm |  |
+| 7 | Quản lý giao dịch | `thanh-vien-1/nguoi-dung/transactions.html` | Tìm kiếm, lọc, thêm khoản thu/chi, sửa, xóa giao dịch. | C/R/U/D; validation, thành công, lỗi, rỗng. | Expense Categorizer gợi ý danh mục. |  | Đã làm |  |
+| 8 | Lập kế hoạch ngân sách | `thanh-vien-1/nguoi-dung/budget.html` | Tạo ngân sách theo tháng/danh mục, sửa hạn mức, theo dõi đã dùng/còn lại, cảnh báo. | C/R/U; chưa có dữ liệu, vượt hạn mức, khóa kỳ. | Spending Pattern Insight gợi ý hạn mức. |  | Đã làm |  |
+| 9 | Quản lý mục tiêu | `thanh-vien-1/nguoi-dung/goals.html` | Tạo mục tiêu, số tiền đích, hạn hoàn thành, cập nhật tiến độ, tạm dừng/hoàn thành. | C/R/U/D; chưa bắt đầu, đang tiến hành, hoàn thành, quá hạn. | Goal Coach tạo bước tiết kiệm. |  | Đã làm |  |
+| 10 | Phân tích & đề xuất AI | `thanh-vien-1/nguoi-dung/insights.html` với `?view=insights|ai` | So sánh chi tiêu theo danh mục, nhận insight có độ chắc chắn; xem lý do/đầu vào và chấp nhận, sửa, từ chối, tạo lại hoặc lưu đề xuất. | R/C/U; thiếu dữ liệu, không chắc chắn, lỗi, đã lưu. | Spending Pattern Insight, Expense Categorizer, Goal Coach. |  | Đã làm |  |
 
 ## 4. Role Huấn luyện viên tài chính giáo dục
 
 | # | Mục tiêu | Màn hình / file | Chức năng chính | CRUD / trạng thái | AI | Người phụ trách | Trạng thái | OBS / PR |
 |---:|---|---|---|---|---|---|---|---|
-| 15 | Theo dõi người được hướng dẫn | `clients.html` | Danh sách User, tìm kiếm/lọc, trạng thái hoạt động, mục tiêu và cảnh báo ngân sách. | R; loading, rỗng, lỗi, hạn chế quyền. | Tóm tắt pattern khi được cấp quyền. |  | Đã làm |  |
-| 16 | Đánh giá ngân sách | `budget.html` | Xem dữ liệu được chia sẻ, ghi nhận xét, đề xuất điều chỉnh, yêu cầu bổ sung, đánh dấu review. | R/C/U; chờ review, cần bổ sung, đã duyệt, từ chối. | Gợi ý insight, Coach xác nhận trước khi gửi. |  | Đã làm |  |
-| 17 | Quản lý tài nguyên | `resources.html` | Tạo, xem, sửa, phân loại, xuất bản, lưu trữ tài liệu/bài học. | C/R/U/D; bản nháp, chờ duyệt, xuất bản, lưu trữ. | Gợi ý tiêu đề, tóm tắt, tag. |  | Đã làm |  |
-| 18 | Soạn tài nguyên | `edit-resource.html` | Nhập nội dung, mục tiêu, ví dụ, bài tập; xem trước responsive và gửi duyệt. | C/U; validation, bản nháp, gửi duyệt, lỗi lưu. | Hỗ trợ soạn nháp, luôn cho phép sửa. |  | Đã làm |  |
-| 19 | Theo dõi phản hồi | `feedback.html` | Xem câu hỏi/phản hồi, trả lời, gắn trạng thái, chuyển Moderator/Admin. | R/C/U; chưa xử lý, đang xử lý, đã trả lời, đã đóng. | Không bắt buộc |  | Đã làm |  |
+| 11 | Theo dõi học viên & review | `thanh-vien-2/huan-luyen-vien/clients.html` với `?view=clients|review` | Tìm kiếm học viên, xem dữ liệu được chia sẻ; tạo review ngân sách, nhận xét, đề xuất, yêu cầu bổ sung và cập nhật trạng thái. | R/C/U; chờ review, cần bổ sung, đã duyệt, từ chối. | Insight được Coach xác nhận trước khi gửi. |  | Đã làm |  |
+| 12 | Quản lý & soạn tài nguyên | `thanh-vien-2/huan-luyen-vien/resources.html` với `?view=library|editor` | Tạo, phân loại, lưu trữ, xuất bản; soạn mục tiêu, ví dụ, nội dung và gửi duyệt. | C/R/U/D; nháp, chờ duyệt, xuất bản, cần chỉnh sửa, lưu trữ. | Gợi ý tiêu đề/tóm tắt; luôn cho phép sửa. |  | Đã làm |  |
+| 13 | Theo dõi phản hồi | `thanh-vien-2/huan-luyen-vien/feedback.html` | Xem câu hỏi/phản hồi, trả lời, gắn trạng thái, chuyển Moderator/Admin. | R/C/U; chưa xử lý, đang xử lý, đã trả lời, đã đóng. | Không bắt buộc |  | Đã làm |  |
 
 ## 5. Role Kiểm duyệt viên
 
 | # | Mục tiêu | Màn hình / file | Chức năng chính | CRUD / trạng thái | AI | Người phụ trách | Trạng thái | OBS / PR |
 |---:|---|---|---|---|---|---|---|---|
-| 20 | Kiểm duyệt nội dung | `resources.html` | Xem hàng chờ, kiểm tra, yêu cầu sửa, duyệt/từ chối kèm lý do. | R/U; chờ duyệt, cần sửa, đã duyệt, từ chối, lỗi. | Gợi ý điểm kiểm tra, không thay quyết định. |  | Đã làm |  |
-| 21 | Quản lý mẫu AI | `ai-templates.html` | Tạo, sửa, thử nghiệm, bật/tắt, lưu trữ prompt/mẫu phản hồi và phiên bản. | C/R/U/D; nháp, thử nghiệm, hoạt động, vô hiệu hóa. | Kiểm tra đầu ra và fallback. |  | Đã làm |  |
-| 22 | Xử lý báo cáo | `feedback.html` | Tiếp nhận báo cáo, lọc mức độ, gán người xử lý, phản hồi, đóng/chuyển Admin. | C/R/U/D; mới, xử lý, chờ phản hồi, đóng, từ chối. | Phân loại mức độ có người xác nhận. |  | Đã làm |  |
-| 23 | Kiểm tra chi tiết AI | `ai-review.html` | So sánh input/output, xem log phiên bản, đánh dấu lỗi và yêu cầu sửa mẫu. | R/U; đạt, cần xem xét, lỗi, đã xử lý. | Bắt buộc với AI-1, AI-2, AI-3. |  | Đã làm |  |
+| 14 | Kiểm duyệt nội dung | `thanh-vien-3/kiem-duyet-vien/resources.html` | Xem hàng chờ, kiểm tra, yêu cầu sửa, duyệt/từ chối kèm lý do. | R/U; chờ duyệt, cần sửa, đã duyệt, từ chối, lỗi. | Gợi ý điểm kiểm tra, không thay quyết định. |  | Đã làm |  |
+| 15 | Mẫu AI & kiểm tra kết quả | `thanh-vien-3/kiem-duyet-vien/ai-templates.html` với `?view=templates|review` | Quản lý phiên bản prompt, thử nghiệm đầu ra; xem input/output và đánh dấu đạt, lỗi hoặc cần xem xét. | C/R/U/D; nháp, thử nghiệm, hoạt động, lỗi, đã xử lý. | Kiểm tra 3 trải nghiệm AI và fallback. |  | Đã làm |  |
+| 16 | Xử lý báo cáo | `thanh-vien-3/kiem-duyet-vien/feedback.html` | Tiếp nhận báo cáo, lọc mức độ, gán người xử lý, phản hồi, đóng/chuyển Admin. | C/R/U/D; mới, xử lý, chờ phản hồi, đóng, từ chối. | Phân loại mức độ có người xác nhận. |  | Đã làm |  |
 
 ## 6. Role Quản trị viên
 
 | # | Mục tiêu | Màn hình / file | Chức năng chính | CRUD / trạng thái | Người phụ trách | Trạng thái | OBS / PR |
 |---:|---|---|---|---|---|---|---|
-| 24 | Theo dõi toàn hệ thống | `dashboard.html` / `Dashboard_admin.html` | KPI tài khoản, giao dịch, ngân sách, mục tiêu, nội dung chờ duyệt, lỗi hệ thống. | R; loading, rỗng, lỗi, cảnh báo. |  | Đã làm |  |
-| 25 | Quản lý danh mục | `categories.html` | Tạo, xem, sửa, sắp xếp, bật/tắt, lưu trữ danh mục thu/chi. | C/R/U/D; trùng tên, đang dùng, hoạt động, vô hiệu hóa. |  | Đã làm |  |
-| 26 | Quản lý tài khoản | `users.html` | Tìm kiếm, xem, tạo/sửa, gán role, khóa/mở khóa, reset mật khẩu, lịch sử. | C/R/U/D; hoạt động, khóa, chờ xác minh, vô hiệu hóa. |  | Đã làm |  |
-| 27 | Quản lý phân quyền | `permissions.html` | Gán quyền, giới hạn truy cập entity/màn hình, kiểm tra xung đột quyền. | C/R/U/D; chờ duyệt, hoạt động, bị từ chối. |  | Đã làm |  |
-| 28 | Nhật ký và kiểm toán | `audit.html` | Tìm kiếm log đăng nhập, thay đổi dữ liệu, duyệt nội dung, khóa tài khoản. | R; không có dữ liệu, lỗi, đã lưu trữ. |  | Đã làm |  |
-| 29 | Cấu hình hệ thống | `settings.html` | Cấu hình cảnh báo, AI, thông báo, danh mục mặc định, xuất dữ liệu mô phỏng. | R/U; đang lưu, thành công, lỗi, xác nhận nguy hiểm. |  | Đã làm |  |
+| 17 | Tổng quan & nhật ký | `thanh-vien-3/quan-tri-vien/dashboard.html` với `?view=overview|audit` | Xem KPI hệ thống hoặc tìm kiếm/xuất nhật ký hoạt động gần đây. | R; không có dữ liệu, lỗi tải, lọc. |  |  | Đã làm |  |
+| 18 | Tài khoản & phân quyền | `thanh-vien-3/quan-tri-vien/users.html` với `?view=users|permissions` | Quản lý tài khoản, vai trò/trạng thái và quy tắc quyền theo role/phạm vi dữ liệu. | C/R/U/D; email trùng, hoạt động, khóa, chờ duyệt. |  |  | Đã làm |  |
+| 19 | Danh mục & cấu hình | `thanh-vien-3/quan-tri-vien/categories.html` với `?view=categories|settings` | CRUD danh mục thu/chi và cấu hình cảnh báo, AI, thông báo, quyền riêng tư. | C/R/U/D; trùng tên, đang dùng, xác nhận, lỗi lưu. |  |  | Đã làm |  |
 
 ## 7. Ma trận bao phủ role
 
 | Role | Màn hình nền tảng cần hoàn thành | Luồng nghiệp vụ cốt lõi |
 |---|---|---|
-| Người dùng | Dashboard, giao dịch, ngân sách, mục tiêu, insight, AI recommendations | Ghi nhận giao dịch → phân loại → lập ngân sách → theo dõi → nhận insight → chấp nhận/sửa/từ chối đề xuất. |
-| Huấn luyện viên tài chính giáo dục | Client list, budget review, resource management, resource editor, feedback | Chọn User → review dữ liệu → phản hồi/đề xuất → tạo tài nguyên → gửi duyệt. |
-| Kiểm duyệt viên | Resource review, AI template management, feedback center, AI review | Nhận hàng chờ → kiểm tra → duyệt/yêu cầu sửa/từ chối → xử lý báo cáo. |
-| Quản trị viên | System dashboard, category management, user management, role permission, audit log, settings | Theo dõi hệ thống → quản lý dữ liệu nền → quản lý tài khoản/quyền → kiểm toán. |
+| Người dùng | Tổng quan, giao dịch, ngân sách, mục tiêu, Phân tích & AI | Ghi nhận giao dịch → phân loại → lập ngân sách → theo dõi → đọc insight và xử lý đề xuất. |
+| Huấn luyện viên tài chính giáo dục | Học viên & review, Quản lý & soạn tài nguyên, phản hồi | Chọn User → review dữ liệu → phản hồi/đề xuất → soạn và gửi tài nguyên duyệt. |
+| Kiểm duyệt viên | Duyệt nội dung, Mẫu AI & kiểm tra kết quả, xử lý báo cáo | Nhận hàng chờ → kiểm tra nội dung/AI → duyệt, yêu cầu sửa hoặc đóng báo cáo. |
+| Quản trị viên | Tổng quan & nhật ký, Tài khoản & phân quyền, Danh mục & cấu hình | Theo dõi hệ thống → quản lý dữ liệu nền → quản lý tài khoản/quyền → kiểm toán. |
 
 ## 8. Ba trải nghiệm AI bắt buộc
 
@@ -113,7 +110,7 @@ Trong phạm vi bản demo frontend local, **Đã làm** nghĩa là giao diện 
 
 ## 11. Phân chia branch cho nhóm
 
-Mỗi trang nghiệp vụ có HTML đầy đủ, CSS riêng và JavaScript riêng trong cùng thư mục; trang không nạp stylesheet hoặc script dùng chung. Các trang tài chính có thể trao đổi dữ liệu qua cùng khóa `localStorage`, nhưng mã xử lý được đặt riêng trong từng trang.
+Các trang nghiệp vụ giữ module HTML/CSS/JavaScript theo chức năng; những module được gộp tải trên cùng trang host bằng `workspace-loader.js` và chuyển chế độ qua query `view` hoặc `code`. `workspace-tabs.js` cập nhật tab, sidebar và các liên kết cũ. Các trang tài chính tiếp tục dùng chung khóa `localStorage`; việc gộp URL không đổi schema hoặc xóa dữ liệu.
 
 Các branch thành viên chỉ chứa folder được giao; branch `master` là nơi tích hợp toàn bộ ứng dụng và folder báo cáo. Do các trang liên kết giữa nhiều folder, hãy chạy ứng dụng đầy đủ từ `master`.
 

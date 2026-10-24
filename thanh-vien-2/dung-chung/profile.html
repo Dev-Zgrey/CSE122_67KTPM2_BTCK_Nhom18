@@ -1,17 +1,57 @@
 <!doctype html>
 <html lang="vi">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Hồ sơ</title>
-  <link rel="stylesheet" href="profile.css">
-  <script src="profile.js" defer></script>
-</head>
-<body>
-  <div class="container" data-account-root data-static-account>
-    <header class="header"><a class="brand" href="index.html"><span class="brand-mark">S</span>SpendWise</a><nav class="header-links"><a href="index.html">Trang chủ</a><a href="login.html">Đăng nhập</a></nav></header>
-    <main class="main"><section class="card"><h1>Hồ sơ cá nhân</h1><p>Cập nhật thông tin hồ sơ hiển thị trên thiết bị này.</p><form class="form" data-form><div class="field"><label for="name">Họ và tên *</label><input id="name" name="name" type="text" value="Nguyễn An" placeholder="" required ></div><div class="field"><label for="email">Email *</label><input id="email" name="email" type="email" value="an.tran@spendwise.demo" placeholder="" required autocomplete="email"></div><div class="field"><label for="phone">Số điện thoại</label><input id="phone" name="phone" type="tel" value="" placeholder=""  ></div><div class="field"><label for="occupation">Nghề nghiệp</label><input id="occupation" name="occupation" type="text" value="" placeholder=""  ></div><div class="error" data-error role="alert"></div><button class="button" type="submit">Lưu thay đổi</button><div class="success" data-success hidden></div></form></section></main>
-    <footer class="footer">SpendWise · Bản demo frontend · Dữ liệu chỉ lưu trên trình duyệt</footer>
-  </div>
-</body>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Hồ sơ</title><script src="../../workspace-loader.js" data-group="account-settings"></script>
+    <link rel="stylesheet" href="../../workspace-tabs.css">
+    <script src="../../workspace-tabs.js" defer></script>
+  </head>
+  <body data-account-group="account-settings">
+    <div class="container" data-account-root>
+      <header class="header">
+        <a class="brand" href="index.html"><span class="brand-mark">S</span>SpendWise</a>
+        <nav class="header-links">
+          <a href="index.html">
+            Trang chủ
+          </a>
+          <a href="login.html">
+            Đăng nhập
+          </a>
+        </nav>
+      </header>
+      <main class="main">
+        <section class="card">
+          <h1>
+            Hồ sơ cá nhân
+          </h1>
+          <p>
+            Cập nhật thông tin hồ sơ hiển thị trên thiết bị này.
+          </p>
+          <form class="form" data-form>
+            <div class="field">
+              <label for="name">Họ và tên *</label><input id="name" name="name" type="text" value="Nguyễn An" placeholder="" required >
+            </div>
+            <div class="field">
+              <label for="email">Email *</label><input id="email" name="email" type="email" value="an.tran@spendwise.demo" placeholder="" required autocomplete="email">
+            </div>
+            <div class="field">
+              <label for="phone">Số điện thoại</label><input id="phone" name="phone" type="tel" value="" placeholder=""  >
+            </div>
+            <div class="field">
+              <label for="occupation">Nghề nghiệp</label><input id="occupation" name="occupation" type="text" value="" placeholder=""  >
+            </div>
+            <div class="error" data-error role="alert">
+            </div>
+            <button class="button" type="submit">Lưu thay đổi</button>
+            <div class="success" data-success hidden>
+            </div>
+          </form>
+        </section>
+      </main>
+      <footer class="footer">
+        SpendWise · Bản demo frontend · Dữ liệu chỉ lưu trên trình duyệt
+      </footer>
+    </div>
+  </body>
 </html>
