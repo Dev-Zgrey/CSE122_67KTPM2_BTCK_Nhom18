@@ -1,6 +1,22 @@
 (() => {
   "use strict";
 
+  // Áp dụng theme đã lưu ngay lập tức tránh nhấp nháy giao diện
+  const savedTheme = localStorage.getItem("spendwise-theme") || "light";
+  if (savedTheme === "dark") {
+    document.documentElement.setAttribute("data-theme", "dark");
+  }
+
+  // Tự động liên kết darkmode.css nếu chưa có
+  const isRootLevel = !window.location.pathname.includes("/thanh-vien-");
+  const darkCssPath = isRootLevel ? "darkmode.css" : "../../darkmode.css";
+  if (!document.querySelector('link[href*="darkmode.css"]')) {
+    const link = document.createElement("link");
+    link.rel = "stylesheet";
+    link.href = darkCssPath;
+    document.head.appendChild(link);
+  }
+
   const groups = {
     "account-auth": [["login", "Đăng nhập"], ["register", "Đăng ký"], ["forgot", "Quên mật khẩu"]],
     "user-insights": [["insights", "Phân tích"], ["ai", "Đề xuất AI"]],
@@ -116,6 +132,39 @@
         insightsLink.innerHTML = '<span class="nav-icon">⌁</span>Phân tích & AI';
         aiLink.remove();
       }
+    }
+
+    // Thêm nút gạt Dark Mode nổi cố định (fixed) ở góc phải dưới màn hình
+    if (!document.querySelector(".theme-switch-wrapper")) {
+      const toggleContainer = document.createElement("div");
+      toggleContainer.className = "theme-switch-wrapper";
+      const isDark = document.documentElement.getAttribute("data-theme") === "dark";
+      toggleContainer.innerHTML = `
+        <button type="button" class="theme-switch-btn" id="themeToggleBtn" aria-label="Chuyển chế độ sáng/tối" title="Chuyển đổi giao diện Sáng / Tối">
+          <span class="theme-switch-track">
+            <span class="theme-switch-thumb">${isDark ? "🌙" : "☀️"}</span>
+          </span>
+          <span class="theme-switch-label">${isDark ? "Tối" : "Sáng"}</span>
+        </button>
+      `;
+      document.body.appendChild(toggleContainer);
+
+      const btn = toggleContainer.querySelector("#themeToggleBtn");
+      const thumb = toggleContainer.querySelector(".theme-switch-thumb");
+      const label = toggleContainer.querySelector(".theme-switch-label");
+
+      btn.addEventListener("click", () => {
+        const currentTheme = document.documentElement.getAttribute("data-theme");
+        const nextTheme = currentTheme === "dark" ? "light" : "dark";
+        if (nextTheme === "dark") {
+          document.documentElement.setAttribute("data-theme", "dark");
+        } else {
+          document.documentElement.removeAttribute("data-theme");
+        }
+        localStorage.setItem("spendwise-theme", nextTheme);
+        thumb.textContent = nextTheme === "dark" ? "🌙" : "☀️";
+        label.textContent = nextTheme === "dark" ? "Tối" : "Sáng";
+      });
     }
 
     if (!main || !tabs) return;
