@@ -8,43 +8,43 @@
     <script src="budget.js" defer></script><script src="../../workspace-tabs.js" defer></script>
   </head>
   <body>
-    <div class="container budget-page" data-page="budgets">
+    <div class="container bud-page" data-page="budgets">
       <aside class="sidebar">
         <a class="brand" href="overview.html"><span class="brand-mark">S</span><span>SpendWise</span></a>
-        <div class="sidebar-label">
+        <div class="role-label">
           Người dùng
         </div>
-        <nav class="sidebar-nav" aria-label="Điều hướng chính">
-          <a class="nav-item" href="overview.html">
-            <span class="nav-icon">◫</span>Tổng quan
+        <nav class="nav" aria-label="Điều hướng chính">
+          <a class="nav-link" href="overview.html">
+            <span class="nav-icon"></span>Tổng quan
           </a>
-          <a class="nav-item" href="transactions.html">
-            <span class="nav-icon">↔</span>Giao dịch
+          <a class="nav-link" href="transactions.html">
+            <span class="nav-icon"></span>Giao dịch
           </a>
-          <a class="nav-item is-active" aria-current="page" href="budget.html">
-            <span class="nav-icon">▤</span>Ngân
+          <a class="nav-link is-active" aria-current="page" href="budget.html">
+            <span class="nav-icon"></span>Ngân
           sách
           </a>
-          <a class="nav-item" href="goals.html">
-            <span class="nav-icon">◎</span>Mục tiêu
+          <a class="nav-link" href="goals.html">
+            <span class="nav-icon"></span>Mục tiêu
           </a>
-          <a class="nav-item" href="insights.html">
-            <span class="nav-icon">⌁</span>Phân tích
+          <a class="nav-link" href="insights.html">
+            <span class="nav-icon"></span>Phân tích
           </a>
-          <a class="nav-item" href="ai.html">
-            <span class="nav-icon">✦</span>Gợi ý AI
+          <a class="nav-link" href="ai.html">
+            <span class="nav-icon"></span>Gợi ý AI
           </a>
         </nav>
-        <div class="sidebar-account">
+        <div class="side-bottom">
           <div class="avatar">
-            AN
+            ND
           </div>
-          <div class="account-profile">
-            <strong>Nguyễn An</strong><span>Tài khoản cá nhân</span>
+          <div class="identity-text">
+            <strong>Người dùng</strong><span>Tài khoản cá nhân</span>
           </div>
           <a class="settings-link" href="../../thanh-vien-2/dung-chung/settings.html" aria-label="Cài đặt">⚙</a>
         </div>
-        <div class="sidebar-links">
+        <div class="side-links">
           <a href="../../thanh-vien-2/dung-chung/profile.html">Hồ sơ</a><a
           href="../../thanh-vien-2/dung-chung/notifications.html">Thông báo</a>
         </div>
@@ -54,144 +54,134 @@
           <span>Người dùng</span><span class="breadcrumb-separator">/</span><strong>Ngân
           sách</strong>
         </div>
-        <div class="account-area">
+        <div class="head-actions">
           <span class="date-label" data-today></span><a class="icon-button"
           href="../../thanh-vien-2/dung-chung/notifications.html" aria-label="Thông báo" title="Thông báo">♧</a>
           <div class="avatar avatar-small">
-            AN
+            ND
           </div>
         </div>
       </header>
       <main class="main">
-        <section class="page-header">
-          <div class="page-heading">
+        <section class="pg-header">
+          <div class="pg-heading">
             <div class="eyebrow">
-              LẬP KẾ HOẠCH CHI TIÊU
+              Lập kế hoạch chi tiêu 
             </div>
             <h1>
-              Ngân sách của bạn
+              Ngân sách của bạn 
             </h1>
             <p>
-              Chủ động phân bổ tiền và theo dõi tiến độ theo từng danh mục.
+              Chủ động phân bố tiền và theo dõi tiến độ theo từng danh mục.
             </p>
           </div>
-          <div class="page-actions">
-            <button class="button button-primary" type="button" data-open-budget>＋ Tạo ngân
-            sách</button>
+          <div class="action">
+            <button class="button button-primary" type="button" data-open-budget>Tạo ngân sách</button>
           </div>
         </section>
-        <section class="summary-grid summary-grid-three" aria-label="Tóm tắt ngân sách tháng">
-          <article class="summary-card">
-            <div class="summary-card-top">
-              <span>Tổng ngân sách</span><span class="summary-icon summary-icon-blue">▤</span>
+        <section class="stats-grid stats-grid-three" aria-label="Tóm tắt ngân sách tháng">
+          <article class="stat-card">
+            <div class="stat-card-top">
+              <span>Tổng ngân sách</span><span class="stat-icon stat-icon-blue">▤</span>
             </div>
-            <strong class="summary-value" data-metric="budget-total">—</strong>
-            <div class="summary-note">
-              <span class="metric-caption">Tổng hạn mức đã lập</span>
-            </div>
-          </article>
-          <article class="summary-card">
-            <div class="summary-card-top">
-              <span>Đã chi tiêu</span><span class="summary-icon summary-icon-coral">↗</span>
-            </div>
-            <strong class="summary-value" data-metric="budget-spent">—</strong>
-            <div class="summary-note">
-              <span class="metric-caption" data-metric="budget-spent-note">Tổng chi trong
-              tháng</span>
+            <strong class="stat-value" data-metric="bud-total">-</strong>
+            <div class="stat-note">
+              <span class="stat-caption">Tổng hạn mức đã lập</span>
             </div>
           </article>
-          <article class="summary-card">
-            <div class="summary-card-top">
-              <span>Còn lại</span><span class="summary-icon summary-icon-green">◈</span>
+          <article class="stat-card">
+            <div class="stat-card-top">
+              <span>Đã chi tiêu</span><span class="stat-icon stat-icon-coral">↗</span>
             </div>
-            <strong class="summary-value" data-metric="remaining">—</strong>
-            <div class="summary-note">
-              <span class="metric-caption" data-metric="budget-remaining-note">Trong hạn mức ngân
-              sách</span>
+            <strong class="stat-value" data-metric="bud-spent">-</strong>
+            <div class="stat-note">
+              <span class="stat-caption" data-metric="bud-spent-note">Tổng chi trong tháng</span>
+            </div>
+          </article>
+          <article class="stat-card">
+            <div class="stat-card-top">
+              <span>Còn lại</span><span class="stat-icon stat-icon-green">◈</span>
+            </div>
+            <strong class="stat-value" data-metric="remaining">-</strong>
+            <div class="stat-note">
+              <span class="stat-caption" data-metric="bud-remaining-note">Trong hạn mức ngân sách</span>
             </div>
           </article>
         </section>
-        <section class="page-content budget-content">
-          <div class="budget-toolbar">
+        <section class="pg-content bud-content">
+          <div class="bud-toolbar">
             <div class="month-switcher">
-              <button class="icon-button" type="button" aria-label="Tháng trước"
-              data-budget-month-prev>‹</button><strong data-budget-month-label></strong><button class="icon-button"
-              type="button" aria-label="Tháng sau" data-budget-month-next>›</button>
+              <button class="icon-button" type="button" aria-label="Tháng trước" data-bud-month-prev>‹</button>
+              <strong data-bud-month-label></strong>
+              <button class="icon-button" type="button" aria-label="Tháng sau" data-bud-month-next>›</button>
             </div>
-            <button class="text-link"
-            type="button" data-budget-month-current>Về tháng này</button>
+            <button class="text-link" type="button" data-bud-month-current>Về tháng này</button>
           </div>
-          <div class="budget-overview panel">
-            <div class="overview-copy">
+          <div class="bud-overview panel">
+            <div class="ov-copy">
               <div class="eyebrow">
-                TỔNG QUAN KẾ HOẠCH
+                Tổng quan kế hoạch
               </div>
               <h2>
-                Đang đi đúng hướng
+                Đang đi đúng hướng 
               </h2>
-              <p data-budget-overview-copy>
+              <p data-bud-ov-copy>
                 Ghi nhận các khoản chi để theo dõi ngân sách chính xác hơn.
               </p>
             </div>
-            <div class="overview-total">
-              <span>Đã sử dụng</span><strong data-budget-overview-percent>0%</strong>
+            <div class="ov-total">
+              <span>Đã sử dụng</span><strong data-bud-ov-percent>0%</strong>
               <div class="progress-track progress-track-large">
-                <div class="progress-fill" data-budget-overview-progress>
+                <div class="progress-fill" data-bud-ov-progress>
                 </div>
               </div>
-              <span><b data-metric="budget-spent">—</b> trên <b data-metric="budget-total">—</b></span>
+              <span><b data-metric="bud-spent">-</b>Trên <b data-metric="bud-total">-</b></span>
             </div>
           </div>
-          <div class="budget-list-heading">
+          <div class="bud-list-heading">
             <div>
               <h2>
-                Ngân sách theo danh mục
+                Ngân sách theo danh mục 
               </h2>
               <p>
-                Chi tiêu thực tế được tính từ giao dịch của bạn.
+                Chi tiêu thực tế được tính theo giao dịch của bạn.
               </p>
             </div>
-            <label class="select-field"><span class="visually-hidden">Lọc tháng ngân sách</span><select
-              aria-label="Chọn tháng ngân sách" data-budget-month-select></select></label>
+            <label class="select-field"><span class="visually-hidden">Lọc tháng ngân sách</span><select aria-label="Chọn tháng ngân sách" data-bud-month-select></select></label>
           </div>
-          <div class="budget-card-list" data-budget-list>
-          </div>
-          <div class="empty-stat panel" data-budget-empty hidden>
-            <div class="empty-stat-icon">
-              ▤
-            </div>
-            <strong>Chưa có ngân sách cho tháng này</strong>
-            <p>
-              Tạo hạn mức theo danh mục để bắt đầu theo dõi chi tiêu.
-            </p>
-            <button class="button button-primary"
-            type="button" data-open-budget>＋ Tạo ngân sách đầu tiên</button>
+          <div class="bud-card-list" data-bud-list></div>
+            <div class="empty-stat panel" data-bud-empty hidden>
+              <div class="empty-stat-icon">◈</div>
+              <strong>Chưa có ngân sách cho tháng này</strong>
+              <p>
+                Tạo hạn mức theo danh mục để bắt đầu theo dõi chi tiêu.
+              </p>
+              <button class="button button-primary" type="button" data-open-budget>Tạo ngân sách đầu tiên</button>
           </div>
         </section>
       </main>
-      <footer class="footer">
-        <span>© 2025 SpendWise</span><span>Điều chỉnh kế hoạch linh hoạt theo cuộc sống của
+      <footer class="footer"><span>© 2025 SpendWise</span><span>Điều chỉnh kế hoạch linh hoạt theo cuộc sống của
         bạn.</span>
       </footer>
-      <div class="modal-backdrop" data-budget-modal hidden>
-        <div class="modal" role="dialog" aria-modal="true" aria-labelledby="budget-modal-title">
+      <div class="modal-backdrop" data-bud-modal hidden>
+        <div class="modal" role="dialog" aria-modal="true" aria-labelledby="bud-modal-title">
           <div class="modal-heading">
             <div>
               <div class="eyebrow">
                 KẾ HOẠCH CHI TIÊU
               </div>
-              <h2 id="budget-modal-title">
+              <h2 id="bud-modal-title">
                 Tạo ngân sách
               </h2>
             </div>
             <button class="icon-button modal-close" type="button" aria-label="Đóng" data-close-budget>×</button>
           </div>
-          <form class="form-grid" data-budget-form>
+          <form class="form-grid" data-bud-form>
             <input type="hidden" name="id"><label class="form-field form-field-full"><span class="field-label">Danh mục</span><select name="category"
-              required data-budget-category></select></label><label class="form-field form-field-full"><span class="field-label">Hạn mức (₫)</span><input name="limit"
+              required data-bud-category></select></label><label class="form-field form-field-full"><span class="field-label">Hạn mức (₫)</span><input name="limit"
               type="number" required min="0" step="10000" inputmode="numeric" placeholder="2000000"></label><label class="form-field form-field-full"><span class="field-label">Tháng áp dụng</span><input name="month"
               type="month" required></label>
-            <div class="form-error form-field-full" data-budget-error role="alert">
+            <div class="form-error form-field-full" data-bud-error role="alert">
             </div>
             <div class="modal-action form-field-full">
               <button class="button button-secondary" type="button"
@@ -203,5 +193,26 @@
       <div class="toast-region" aria-live="polite" data-toast-region>
       </div>
     </div>
+    <script type="application/json" data-category-options>
+      {
+        "expense": [
+          { "name": "Nhà cửa", "icon": "⌂" },
+          { "name": "Ăn uống", "icon": "♨" },
+          { "name": "Di chuyển", "icon": "↗" },
+          { "name": "Mua sắm", "icon": "◇" },
+          { "name": "Sức khỏe", "icon": "✚" },
+          { "name": "Giải trí", "icon": "♫" },
+          { "name": "Hóa đơn", "icon": "▧" },
+          { "name": "Khác", "icon": "◌" }
+        ],
+        "income": [
+          { "name": "Lương", "icon": "▤" },
+          { "name": "Thưởng", "icon": "✦" },
+          { "name": "Đầu tư", "icon": "↗" },
+          { "name": "Làm thêm", "icon": "✎" },
+          { "name": "Khác", "icon": "◌" }
+        ]
+      }
+    </script>
   </body>
 </html>
