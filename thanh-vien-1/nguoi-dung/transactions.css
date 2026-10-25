@@ -100,7 +100,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
   font-weight: 800;
 }
 
-.sidebar-label {
+.role-label {
   margin: 42px 10px 12px;
   color: #9aa69f;
   font-size: 10px;
@@ -109,12 +109,12 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
   text-transform: uppercase;
 }
 
-.sidebar-nav {
+.nav {
   display: grid;
   gap: 5px;
 }
 
-.nav-item {
+.nav-link {
   display: flex;
   min-height: 45px;
   align-items: center;
@@ -127,12 +127,12 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
   transition: background .18s ease, color .18s ease;
 }
 
-.nav-item:hover {
+.nav-link:hover {
   background: #f5f8f5;
   color: var(--green-deep);
 }
 
-.nav-item.is-active {
+.nav-link.is-active {
   background: var(--green-pale);
   color: var(--green-deep);
   font-weight: 700;
@@ -146,11 +146,11 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
   font-size: 18px;
 }
 
-.nav-item.is-active .nav-icon {
+.nav-link.is-active .nav-icon {
   color: var(--green);
 }
 
-.sidebar-help {
+.side-help {
   display: flex;
   align-items: center;
   gap: 11px;
@@ -173,21 +173,21 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
   font-weight: 800;
 }
 
-.sidebar-help strong, .sidebar-help span {
+.side-help strong, .side-help span {
   display: block;
 }
 
-.sidebar-help strong {
+.side-help strong {
   margin-bottom: 3px;
   font-size: 11px;
 }
 
-.sidebar-help span {
+.side-help span {
   color: var(--muted);
   font-size: 9px;
 }
 
-.sidebar-account {
+.side-bottom {
   display: flex;
   align-items: center;
   gap: 10px;
@@ -208,23 +208,23 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
   font-weight: 800;
 }
 
-.account-profile {
+.identity-text {
   min-width: 0;
   flex: 1;
 }
 
-.account-profile strong, .account-profile span {
+.identity-text strong, .identity-text span {
   display: block;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
 
-.account-profile strong {
+.identity-text strong {
   font-size: 11px;
 }
 
-.account-profile span {
+.identity-text span {
   margin-top: 3px;
   color: var(--muted);
   font-size: 10px;
@@ -270,7 +270,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
   color: #c2cbc5;
 }
 
-.account-area {
+.head-actions {
   display: flex;
   align-items: center;
   gap: 15px;
@@ -306,7 +306,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
   font-size: 9px;
 }
 
-.page-header {
+.pg-header {
   display: flex;
   align-items: flex-end;
   justify-content: space-between;
@@ -322,7 +322,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
   letter-spacing: 1.35px;
 }
 
-.page-heading h1 {
+.pg-heading h1 {
   margin: 0;
   font-family: Manrope, "Segoe UI", sans-serif;
   font-size: clamp(25px, 3vw, 32px);
@@ -331,7 +331,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
   line-height: 1.25;
 }
 
-.page-heading p {
+.pg-heading p {
   margin: 8px 0 0;
   color: var(--muted);
   font-size: 12px;
@@ -343,7 +343,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
   font-size: 20px;
 }
 
-.page-actions {
+.action {
   display: flex;
   flex: 0 0 auto;
   align-items: center;
@@ -397,17 +397,17 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
   font-size: 10px;
 }
 
-.summary-grid {
+.stats-grid {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 14px;
 }
 
-.summary-grid-three {
+.stats-grid-three {
   grid-template-columns: repeat(3, minmax(0, 1fr));
 }
 
-.summary-card {
+.stat-card {
   min-width: 0;
   padding: 17px 18px 15px;
   border: 1px solid var(--line);
@@ -416,13 +416,13 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
   box-shadow: 0 3px 12px rgba(30, 58, 43, .018);
 }
 
-.summary-card-balance {
+.stat-card-primary {
   border-color: var(--green);
   background: var(--green);
   color: #fff;
 }
 
-.summary-card-top {
+.stat-card-top {
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -432,11 +432,11 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
   font-weight: 600;
 }
 
-.summary-card-balance .summary-card-top {
+.stat-card-primary .stat-card-top {
   color: #d8e9de;
 }
 
-.summary-icon {
+.stat-icon {
   display: grid;
   width: 29px;
   height: 29px;
@@ -448,27 +448,27 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
   font-size: 14px;
 }
 
-.summary-icon-green {
+.stat-icon-green {
   background: #eaf5ed;
   color: #4c8d61;
 }
 
-.summary-icon-coral {
+.stat-icon-coral {
   background: #fbefec;
   color: var(--coral);
 }
 
-.summary-icon-blue {
+.stat-icon-blue {
   background: #edf3f9;
   color: var(--blue);
 }
 
-.summary-card-balance .summary-icon {
+.stat-card-primary .stat-icon {
   background: rgba(255,255,255,.14);
   color: var(--lime);
 }
 
-.summary-value {
+.stat-value {
   display: block;
   overflow: hidden;
   margin-top: 14px;
@@ -480,7 +480,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
   white-space: nowrap;
 }
 
-.summary-note {
+.stat-note {
   display: flex;
   min-height: 16px;
   align-items: center;
@@ -488,7 +488,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
   margin-top: 7px;
 }
 
-.metric-caption {
+.stat-caption {
   color: #929d96;
   font-size: 9px;
 }
@@ -517,7 +517,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
   box-shadow: 0 3px 12px rgba(30, 58, 43, .018);
 }
 
-.spending-panel, .budget-panel, .recent-panel {
+.spending-panel, .bud-panel, .recent-panel {
   padding: 19px 20px;
 }
 
@@ -528,7 +528,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
   gap: 12px;
 }
 
-.panel-heading h2, .budget-list-heading h2 {
+.panel-heading h2, .bud-list-heading h2 {
   margin: 0;
   font-family: Manrope, sans-serif;
   font-size: 13px;
@@ -536,7 +536,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
   letter-spacing: -.2px;
 }
 
-.panel-heading p, .budget-list-heading p {
+.panel-heading p, .bud-list-heading p {
   margin: 5px 0 0;
   color: #8b9790;
   font-size: 10px;
@@ -640,13 +640,13 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
   color: var(--green-deep);
 }
 
-.budget-total {
+.bud-total {
   margin: 24px 0 11px;
   color: #8a968e;
   font-size: 11px;
 }
 
-.budget-total strong {
+.bud-total strong {
   color: var(--ink);
   font-family: Manrope, sans-serif;
   font-size: 22px;
@@ -676,7 +676,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
   background: #d87562;
 }
 
-.budget-remaining {
+.bud-remaining {
   display: flex;
   justify-content: space-between;
   margin-top: 9px;
@@ -684,12 +684,12 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
   font-size: 9px;
 }
 
-.budget-remaining strong {
+.bud-remaining strong {
   color: #536259;
   font-weight: 700;
 }
 
-.budget-category-list {
+.bud-category-list {
   display: grid;
   gap: 14px;
   margin-top: 20px;
@@ -697,14 +697,14 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
   border-top: 1px solid #eff2ef;
 }
 
-.budget-category-row {
+.bud-category-row {
   display: grid;
   grid-template-columns: minmax(0, 1fr) auto;
   align-items: center;
   gap: 7px 12px;
 }
 
-.budget-category-name {
+.bud-category-name {
   overflow: hidden;
   color: #59675e;
   font-size: 10px;
@@ -712,13 +712,13 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
   white-space: nowrap;
 }
 
-.budget-category-amount {
+.bud-category-amount {
   color: #818d85;
   font-size: 9px;
   white-space: nowrap;
 }
 
-.budget-category-row .progress-track {
+.bud-category-row .progress-track {
   grid-column: 1 / -1;
   height: 4px;
 }
@@ -853,11 +853,11 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
   font-size: 9px;
 }
 
-.transaction-content, .budget-content {
+.tx-content, .bud-content {
   padding-bottom: 8px;
 }
 
-.transaction-panel {
+.tx-panel {
   padding: 19px 20px 8px;
 }
 
@@ -959,24 +959,24 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
   background: #fcfdfb;
 }
 
-.transaction-table {
+.tx-table {
   display: flex;
   min-width: 150px;
   align-items: center;
   gap: 9px;
 }
 
-.transaction-table .category-icon {
+.tx-table .category-icon {
   width: 32px;
   height: 32px;
   font-size: 13px;
 }
 
-.transaction-table strong, .transaction-table span {
+.tx-table strong, .tx-table span {
   display: block;
 }
 
-.transaction-table strong {
+.tx-table strong {
   max-width: 160px;
   overflow: hidden;
   color: #3e4d43;
@@ -984,7 +984,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
   text-overflow: ellipsis;
 }
 
-.transaction-table span {
+.tx-table span {
   max-width: 160px;
   overflow: hidden;
   margin-top: 3px;
@@ -1079,7 +1079,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
   line-height: 1.6;
 }
 
-.budget-toolbar {
+.bud-toolbar {
   display: flex;
   align-items: center;
   gap: 12px;
@@ -1105,7 +1105,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
   text-transform: capitalize;
 }
 
-.budget-overview {
+.bud-overview {
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -1113,35 +1113,35 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
   padding: 20px 22px;
 }
 
-.overview-copy {
+.ov-copy {
   max-width: 390px;
 }
 
-.overview-copy h2 {
+.ov-copy h2 {
   margin: 0;
   font-family: Manrope, sans-serif;
   font-size: 16px;
 }
 
-.overview-copy p {
+.ov-copy p {
   margin: 7px 0 0;
   color: #829087;
   font-size: 10px;
   line-height: 1.6;
 }
 
-.overview-total {
+.ov-total {
   width: min(300px, 45%);
   color: #7c8981;
   font-size: 9px;
 }
 
-.overview-total > span {
+.ov-total > span {
   display: flex;
   justify-content: space-between;
 }
 
-.overview-total > strong {
+.ov-total > strong {
   display: block;
   margin: 5px 0 9px;
   color: #34483a;
@@ -1149,11 +1149,11 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
   font-size: 24px;
 }
 
-.overview-total .progress-track {
+.ov-total .progress-track {
   margin-bottom: 8px;
 }
 
-.overview-total b {
+.ov-total b {
   color: #55635a;
   font-weight: 700;
 }
@@ -1162,7 +1162,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
   height: 8px;
 }
 
-.budget-list-heading {
+.bud-list-heading {
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -1170,37 +1170,37 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
   margin: 24px 0 12px;
 }
 
-.budget-list-heading .select-field {
+.bud-list-heading .select-field {
   min-width: 145px;
 }
 
-.budget-card-list {
+.bud-card-list {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 12px;
 }
 
-.budget-category-card {
+.bud-category-card {
   padding: 16px;
 }
 
-.budget-card-header {
+.bud-card-header {
   display: flex;
   align-items: flex-start;
   gap: 11px;
 }
 
-.budget-card-header .category-icon {
+.bud-card-header .category-icon {
   width: 38px;
   height: 38px;
 }
 
-.budget-card-heading {
+.bud-card-heading {
   min-width: 0;
   flex: 1;
 }
 
-.budget-card-heading strong {
+.bud-card-heading strong {
   display: block;
   overflow: hidden;
   margin-top: 2px;
@@ -1210,19 +1210,19 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
   white-space: nowrap;
 }
 
-.budget-card-heading span {
+.bud-card-heading span {
   display: block;
   margin-top: 5px;
   color: #96a099;
   font-size: 9px;
 }
 
-.budget-month-select {
+.bud-month-select {
   display: flex;
   gap: 1px;
 }
 
-.budget-card-amount {
+.bud-card-amount {
   display: flex;
   align-items: baseline;
   justify-content: space-between;
@@ -1230,19 +1230,19 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
   margin: 18px 0 9px;
 }
 
-.budget-card-amount strong {
+.bud-card-amount strong {
   color: #3b4c41;
   font-family: Manrope, sans-serif;
   font-size: 15px;
 }
 
-.budget-card-amount span {
+.bud-card-amount span {
   color: #89958d;
   font-size: 9px;
   text-align: right;
 }
 
-.budget-card-note {
+.bud-card-note {
   display: flex;
   justify-content: space-between;
   gap: 10px;
@@ -1251,27 +1251,27 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
   font-size: 9px;
 }
 
-.budget-card-note strong {
+.bud-card-note strong {
   color: #5c6a60;
 }
 
-.budget-card-note .overview-limit {
+.bud-card-note .ov-limit {
   color: #bb6557;
 }
 
-.budget-card-progress .progress-fill {
+.bud-card-progress .progress-fill {
   background: #77a783;
 }
 
-.budget-card-progress .progress-fill.is-warning {
+.bud-card-progress .progress-fill.is-warning {
   background: #d5a14d;
 }
 
-.budget-card-progress .progress-fill.is-over-limit {
+.bud-card-progress .progress-fill.is-over-limit {
   background: #d87562;
 }
 
-.budget-card-warning {
+.bud-card-warning {
   margin-top: 13px;
   padding-top: 11px;
   border-top: 1px solid #f0f3f0;
@@ -1503,7 +1503,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
     padding-right: 28px;
     padding-left: 28px;
   }
-  .summary-grid {
+  .stats-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
   .dashboard-grid {
@@ -1531,20 +1531,20 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
     height: 30px;
     font-size: 16px;
   }
-  .sidebar-label, .sidebar-help, .sidebar-account {
+  .role-label, .side-help, .side-bottom {
     display: none;
   }
-  .sidebar-nav {
+  .nav {
     display: flex;
     overflow-x: auto;
     gap: 4px;
     margin: 9px -5px -2px;
     scrollbar-width: none;
   }
-  .sidebar-nav::-webkit-scrollbar {
+  .nav::-webkit-scrollbar {
     display: none;
   }
-  .nav-item {
+  .nav-link {
     min-height: 34px;
     flex: 0 0 auto;
     gap: 6px;
@@ -1574,32 +1574,32 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
   .date-label {
     display: none;
   }
-  .page-header {
+  .pg-header {
     align-items: flex-start;
     flex-direction: column;
     gap: 17px;
     padding: 27px 0 19px;
   }
-  .page-actions {
+  .action {
     width: 100%;
   }
-  .page-actions .button {
+  .action .button {
     flex: 1;
   }
-  .summary-grid, .summary-grid-three {
+  .stats-grid, .stats-grid-three {
     gap: 9px;
   }
-  .summary-card {
+  .stat-card {
     padding: 13px;
   }
-  .summary-card-top {
+  .stat-card-top {
     font-size: 9px;
   }
-  .summary-value {
+  .stat-value {
     margin-top: 10px;
     font-size: clamp(17px, 5vw, 22px);
   }
-  .summary-icon {
+  .stat-icon {
     width: 25px;
     height: 25px;
   }
@@ -1612,7 +1612,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
     grid-column: auto;
     grid-row: auto;
   }
-  .spending-panel, .budget-panel, .recent-panel {
+  .spending-panel, .bud-panel, .recent-panel {
     padding: 16px;
   }
   .insight-panel {
@@ -1629,28 +1629,28 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
     min-width: calc(50% - 5px);
     flex: 1;
   }
-  .transaction-panel {
+  .tx-panel {
     padding: 15px 14px 5px;
   }
   .data-table {
     min-width: 680px;
   }
-  .budget-overview {
+  .bud-overview {
     align-items: flex-start;
     flex-direction: column;
     gap: 18px;
     padding: 17px;
   }
-  .overview-total {
+  .ov-total {
     width: 100%;
   }
-  .budget-card-list {
+  .bud-card-list {
     grid-template-columns: 1fr;
   }
-  .budget-list-heading {
+  .bud-list-heading {
     align-items: flex-start;
   }
-  .budget-list-heading .select-field {
+  .bud-list-heading .select-field {
     min-width: 130px;
   }
 }
@@ -1672,23 +1672,23 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
     gap: 6px;
     font-size: 10px;
   }
-  .account-area {
+  .head-actions {
     gap: 8px;
   }
-  .summary-card {
+  .stat-card {
     padding: 11px;
   }
-  .summary-card-top {
+  .stat-card-top {
     align-items: flex-start;
   }
-  .summary-card-top > span:first-child {
+  .stat-card-top > span:first-child {
     min-height: 24px;
     line-height: 1.35;
   }
-  .summary-note {
+  .stat-note {
     margin-top: 5px;
   }
-  .metric-caption {
+  .stat-caption {
     font-size: 8px;
   }
   .footer {
@@ -1712,16 +1712,16 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
   }
 }
 
-.transaction-page .data-table tbody tr {
+.tx-page .data-table tbody tr {
   transition: background .15s ease;
 }
 
-.transaction-page .search-field:focus-within {
+.tx-page .search-field:focus-within {
   border-color: #78a487;
   box-shadow: 0 0 0 3px rgba(91, 150, 111, .1);
 }
 
-.transaction-page .transaction-panel {
+.tx-page .tx-panel {
   overflow: hidden;
 }
 
@@ -1750,16 +1750,16 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
   font-size: 16px;
 }
 
-.sidebar-label {
+.role-label {
   margin: 36px 9px 10px;
   letter-spacing: 1px;
 }
 
-.sidebar-nav {
+.nav {
   gap: 4px;
 }
 
-.nav-item {
+.nav-link {
   min-height: 40px;
   gap: 10px;
   padding: 0 10px;
@@ -1772,7 +1772,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
   font-size: 16px;
 }
 
-.sidebar-account {
+.side-bottom {
   margin-top: auto;
   padding: 14px 3px 7px;
   border-top: 1px solid var(--line);
@@ -1784,11 +1784,11 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
   font-size: 10px;
 }
 
-.account-profile span {
+.identity-text span {
   font-size: 9px;
 }
 
-.sidebar-links {
+.side-links {
   display: flex;
   justify-content: space-between;
   padding: 8px 3px 0;
@@ -1817,7 +1817,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
   font-size: 10px;
 }
 
-.account-area {
+.head-actions {
   gap: 10px;
 }
 
@@ -1825,7 +1825,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
   font-size: 10px;
 }
 
-.page-header {
+.pg-header {
   gap: 20px;
   padding: 30px 0 20px;
 }
@@ -1835,12 +1835,12 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
   letter-spacing: 1.2px;
 }
 
-.page-heading h1 {
+.pg-heading h1 {
   font-size: clamp(23px, 3vw, 30px);
   letter-spacing: -.8px;
 }
 
-.page-heading p {
+.pg-heading p {
   margin-top: 7px;
   font-size: 11px;
 }
@@ -1853,36 +1853,36 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
   font-size: 10px;
 }
 
-.summary-grid {
+.stats-grid {
   gap: 12px;
 }
 
-.summary-card {
+.stat-card {
   padding: 14px 15px;
   border-radius: 9px;
   box-shadow: none;
 }
 
-.summary-card-top {
+.stat-card-top {
   font-size: 9px;
 }
 
-.summary-card-balance {
+.stat-card-primary {
   border-color: var(--line);
-  background: var(--accent-soft);
+  background: var(--green-pale);
   color: var(--ink);
 }
 
-.summary-card-balance .summary-card-top {
+.stat-card-primary .stat-card-top {
   color: #75837a;
 }
 
-.summary-card-balance .summary-icon {
+.stat-card-primary .stat-icon {
   background: #dcece0;
   color: var(--green);
 }
 
-.summary-value {
+.stat-value {
   margin-top: 8px;
   font-family: inherit;
   font-size: 19px;
@@ -1991,16 +1991,16 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
     width: 29px;
     height: 29px;
   }
-  .sidebar-label, .sidebar-help, .sidebar-account, .sidebar-links {
+  .role-label, .side-help, .side-bottom, .side-links {
     display: none;
   }
-  .sidebar-nav {
+  .nav {
     display: flex;
     overflow-x: auto;
     gap: 3px;
     margin: 8px -3px -1px;
   }
-  .nav-item {
+  .nav-link {
     min-height: 32px;
     flex: 0 0 auto;
     gap: 5px;
@@ -2026,16 +2026,16 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
     margin: 0;
     padding: 18px 14px 0;
   }
-  .page-header {
+  .pg-header {
     align-items: flex-start;
     flex-direction: column;
     gap: 13px;
     padding: 23px 0 17px;
   }
-  .page-actions, .action {
+  .action, .action {
     width: 100%;
   }
-  .page-actions .button, .action .button {
+  .action .button, .action .button {
     flex: 1;
   }
 }
@@ -2053,7 +2053,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
     gap: 6px;
     font-size: 10px;
   }
-  .account-area {
+  .head-actions {
     gap: 8px;
   }
 }

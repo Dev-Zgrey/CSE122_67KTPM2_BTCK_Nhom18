@@ -1,20 +1,16 @@
 (() => {
   "use strict";
   const keys = { transactions: "spendwise.transactions.v1", budgets: "spendwise.budgets.v1" };
-  const expenseCategories = ["Nhà cửa", "Ăn uống", "Di chuyển", "Mua sắm", "Sức khỏe", "Giải trí", "Hóa đơn", "Khác"];
-  const incomeCategories = ["Lương", "Thưởng", "Đầu tư", "Làm thêm", "Khác"];
-  const categoryIcons = { "Nhà cửa": "⌂", "Ăn uống": "♨", "Di chuyển": "↗", "Mua sắm": "◇", "Sức khỏe": "✚", "Giải trí": "♫", "Hóa đơn": "▧", "Khác": "◌", "Lương": "▤", "Thưởng": "✦", "Đầu tư": "↗", "Làm thêm": "✎" };
+  const categoryOptions = JSON.parse(document.querySelector("[data-category-options]").textContent);
+  const expenseCategories = categoryOptions.expense.map((item) => item.name);
+  const incomeCategories = categoryOptions.income.map((item) => item.name);
+  const categoryIcons = Object.fromEntries([...categoryOptions.expense, ...categoryOptions.income].map((item) => [item.name, item.icon]));
   const today = new Date();
   const currentMonth = monthKey(today);
   const currency = new Intl.NumberFormat("vi-VN", { style: "currency", currency: "VND", maximumFractionDigits: 0 });
-  const defaultCategories = [
-    ...expenseCategories.map((name, index) => ({ id: `expense-${index}`, name, type: "Chi tiêu", status: "Hoạt động", order: index + 1 })),
-    ...incomeCategories.map((name, index) => ({ id: `income-${index}`, name, type: "Thu nhập", status: "Hoạt động", order: index + 1 }))
-  ];
   function id() { return globalThis.crypto?.randomUUID?.() || `sw-${Date.now()}-${Math.random().toString(36).slice(2, 9)}`; }
   function monthKey(date) { return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, "0")}`; }
   function dateKey(date) { return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, "0")}-${String(date.getDate()).padStart(2, "0")}`; }
-  function monthDate(offset, day) { return dateKey(new Date(today.getFullYear(), today.getMonth() + offset, day)); }
   function formatDate(value) {
     const [year, month, day] = String(value).slice(0, 10).split("-").map(Number);
     return dateFormatter.format(new Date(year, month - 1, day));
@@ -22,31 +18,12 @@
   const dateFormatter = new Intl.DateTimeFormat("vi-VN", { day: "2-digit", month: "short", year: "numeric" });
   const monthFormatter = new Intl.DateTimeFormat("vi-VN", { month: "long", year: "numeric" });
   function escape(value) { return String(value ?? "").replace(/[&<>"']/g, (character) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[character]); }
-  const sampleTransactions = () => [
-    ["income", "Lương tháng", "Lương", 22000000, monthDate(0, 1), "Chuyển khoản"],
-    ["expense", "Tiền thuê nhà", "Nhà cửa", 5500000, monthDate(0, 2), "Chuyển khoản"],
-    ["expense", "Đi chợ cuối tuần", "Ăn uống", 420000, monthDate(0, 3), "Ví điện tử"],
-    ["expense", "Di chuyển", "Di chuyển", 180000, monthDate(0, 4), "Ví điện tử"],
-    ["income", "Dự án tự do", "Làm thêm", 1800000, monthDate(0, 6), "Chuyển khoản"],
-    ["expense", "Hóa đơn điện nước", "Hóa đơn", 650000, monthDate(0, 7), "Chuyển khoản"],
-    ["expense", "Bữa tối cùng bạn bè", "Ăn uống", 350000, monthDate(0, 9), "Thẻ ngân hàng"],
-    ["expense", "Sách và văn phòng phẩm", "Mua sắm", 290000, monthDate(0, 11), "Thẻ ngân hàng"],
-    ["income", "Lương tháng trước", "Lương", 22000000, monthDate(-1, 1), "Chuyển khoản"],
-    ["expense", "Hóa đơn sinh hoạt", "Hóa đơn", 690000, monthDate(-1, 8), "Chuyển khoản"],
-    ["expense", "Mua sắm gia đình", "Mua sắm", 1250000, monthDate(-1, 15), "Thẻ ngân hàng"],
-    ["income", "Lương tháng trước", "Lương", 22000000, monthDate(-2, 1), "Chuyển khoản"],
-    ["expense", "Ăn uống và đi lại", "Ăn uống", 2100000, monthDate(-2, 14), "Ví điện tử"]
-  ].map(([type, title, category, amount, date, method]) => ({ id: id(), type, title, category, amount, date, method, note: "" }));
-  const sampleBudgets = () => [
-    ["Nhà cửa", 6500000], ["Ăn uống", 3500000], ["Di chuyển", 1500000],
-    ["Mua sắm", 2000000], ["Hóa đơn", 1200000], ["Giải trí", 1000000]
-  ].map(([category, limit]) => ({ id: id(), category, limit, month: currentMonth }));
-  function load(key, seed) {
+  function load(key, empty = []) {
     try {
       const saved = localStorage.getItem(key);
       if (saved === null) {
-        localStorage.setItem(key, JSON.stringify(seed()));
-        return JSON.parse(localStorage.getItem(key));
+        localStorage.setItem(key, JSON.stringify(empty));
+        return empty;
       }
       const parsed = JSON.parse(saved);
       if (!Array.isArray(parsed)) throw new Error("Dữ liệu không đúng định dạng.");
@@ -103,11 +80,8 @@
   }
   function refreshCategories() {
     try {
-      let saved = localStorage.getItem("spendwise.categories");
-      if (saved === null) {
-        saved = JSON.stringify(defaultCategories);
-        localStorage.setItem("spendwise.categories", saved);
-      }
+      const saved = localStorage.getItem("spendwise.categories");
+      if (saved === null) return;
       const configured = JSON.parse(saved);
       if (!Array.isArray(configured)) throw new Error("Danh mục không đúng định dạng.");
       const enabled = configured.filter((item) => item.status === "Hoạt động");
@@ -115,6 +89,7 @@
       const currentIncome = enabled.filter((item) => item.type === "Thu nhập").map((item) => item.name);
       if (currentExpense.length) expenseCategories.splice(0, expenseCategories.length, ...currentExpense);
       if (currentIncome.length) incomeCategories.splice(0, incomeCategories.length, ...currentIncome);
+      enabled.forEach((item) => { categoryIcons[item.name] = item.icon || categoryIcons[item.name] || "◌"; });
     } catch (error) {
       window.setTimeout(() => notify(`Không thể tải danh mục quản trị: ${error.message}`, true), 0);
     }
@@ -127,39 +102,39 @@
 
 (() => {
   "use strict";
-  const D = window.SpendWiseUserData;
+  const userData = window.SpendWiseUserData;
   const root = document.querySelector('[data-page="transactions"]');
-  if (!D || !root) return;
-  const rows = root.querySelector("[data-transaction-rows]");
-  const search = root.querySelector("[data-transaction-search]");
-  const typeFilter = root.querySelector("[data-transaction-type]");
-  const categoryFilter = root.querySelector("[data-transaction-category]");
-  const monthFilter = root.querySelector("[data-transaction-month]");
-  const modal = root.querySelector("[data-transaction-modal]");
-  const form = root.querySelector("[data-transaction-form]");
-  const categoryField = root.querySelector("[data-transaction-form-category]");
-  const error = root.querySelector("[data-transaction-error]");
+  if (!userData || !root) return;
+  const rows = root.querySelector("[data-tx-rows]");
+  const search = root.querySelector("[data-tx-search]");
+  const typeFilter = root.querySelector("[data-tx-type]");
+  const categoryFilter = root.querySelector("[data-tx-category]");
+  const monthFilter = root.querySelector("[data-tx-month]");
+  const modal = root.querySelector("[data-tx-modal]");
+  const form = root.querySelector("[data-tx-form]");
+  const categoryField = root.querySelector("[data-tx-form-category]");
+  const error = root.querySelector("[data-tx-error]");
   let transactions = [];
   const typeLabels = { income: "Khoản thu", expense: "Khoản chi" };
 
   function fillFormCategories(type, selected) {
-    const categories = type === "income" ? D.incomeCategories : D.expenseCategories;
-    categoryField.innerHTML = categories.map((category) => `<option>${D.escape(category)}</option>`).join("");
+    const categories = type === "income" ? userData.incomeCategories : userData.expenseCategories;
+    categoryField.innerHTML = categories.map((category) => `<option>${userData.escape(category)}</option>`).join("");
     if (selected && categories.includes(selected)) categoryField.value = selected;
   }
   function refreshFilters() {
     const selectedCategory = categoryFilter.value;
     const selectedMonth = monthFilter.value;
     const categories = [...new Set(transactions.map((item) => item.category))].sort((a, b) => a.localeCompare(b, "vi"));
-    categoryFilter.innerHTML = `<option value="all">Tất cả danh mục</option>${categories.map((name) => `<option>${D.escape(name)}</option>`).join("")}`;
+    categoryFilter.innerHTML = `<option value="all">Tất cả danh mục</option>${categories.map((name) => `<option>${userData.escape(name)}</option>`).join("")}`;
     if (categories.includes(selectedCategory)) categoryFilter.value = selectedCategory;
     const months = [...new Set(transactions.map((item) => item.date.slice(0, 7)))].sort().reverse();
-    monthFilter.innerHTML = `<option value="all">Tất cả thời gian</option>${months.map((month) => `<option value="${month}">${D.escape(D.monthFormatter.format(new Date(`${month}-01T12:00:00`)))}</option>`).join("")}`;
+    monthFilter.innerHTML = `<option value="all">Tất cả thời gian</option>${months.map((month) => `<option value="${month}">${userData.escape(userData.monthFormatter.format(new Date(`${month}-01T12:00:00`)))}</option>`).join("")}`;
     if (months.includes(selectedMonth)) monthFilter.value = selectedMonth;
   }
   function render() {
     try {
-      transactions = D.load(D.keys.transactions, () => []);
+      transactions = userData.load(userData.keys.transactions, []);
       refreshFilters();
       const query = search.value.trim().toLocaleLowerCase("vi");
       const filtered = transactions.filter((item) => (!query || `${item.title} ${item.category} ${item.note || ""}`.toLocaleLowerCase("vi").includes(query))
@@ -168,14 +143,14 @@
         && (monthFilter.value === "all" || item.date.startsWith(monthFilter.value)))
         .sort((a, b) => b.date.localeCompare(a.date));
       root.querySelector("[data-filtered-count]").textContent = filtered.length;
-      root.querySelector("[data-transaction-empty]").hidden = !!filtered.length;
+      root.querySelector("[data-tx-empty]").hidden = !!filtered.length;
       root.querySelector(".table-scroll").hidden = !filtered.length;
-      rows.innerHTML = filtered.map((item) => `<tr><td><div class="transaction-table"><div class="category-icon ${item.type === "income" ? "category-icon-income" : ""}">${D.escape(D.categoryIcons[item.category] || "◌")}</div><div><strong>${D.escape(item.title)}</strong><span>${D.escape(item.note || typeLabels[item.type])}</span></div></div></td><td><span class="category-tag">${D.escape(item.category)}</span></td><td>${D.formatDate(item.date)}</td><td>${D.escape(item.method || "Tiền mặt")}</td><td class="amount-cell ${item.type === "income" ? "amount-cell-income" : ""}">${item.type === "income" ? "+" : "−"}${D.money(item.amount)}</td><td><div class="row-action-icon"><button class="row-action" type="button" aria-label="Sửa ${D.escape(item.title)}" data-edit-transaction="${D.escape(item.id)}">✎</button><button class="row-action row-action-delete" type="button" aria-label="Xóa ${D.escape(item.title)}" data-delete-transaction="${D.escape(item.id)}">×</button></div></td></tr>`).join("");
-      const monthly = D.totals(D.currentTransactions(transactions));
-      root.querySelectorAll('[data-metric="income"]').forEach((el) => { el.textContent = D.money(monthly.income); });
-      root.querySelectorAll('[data-metric="expense"]').forEach((el) => { el.textContent = D.money(monthly.expense); });
-      root.querySelectorAll('[data-metric="transaction-count"]').forEach((el) => { el.textContent = D.currentTransactions(transactions).length; });
-    } catch (exception) { D.notify(exception.message, true); }
+      rows.innerHTML = filtered.map((item) => `<tr><td><div class="tx-table"><div class="category-icon ${item.type === "income" ? "category-icon-income" : ""}">${userData.escape(userData.categoryIcons[item.category] || "◌")}</div><div><strong>${userData.escape(item.title)}</strong><span>${userData.escape(item.note || typeLabels[item.type])}</span></div></div></td><td><span class="category-tag">${userData.escape(item.category)}</span></td><td>${userData.formatDate(item.date)}</td><td>${userData.escape(item.method || "Tiền mặt")}</td><td class="amount-cell ${item.type === "income" ? "amount-cell-income" : ""}">${item.type === "income" ? "+" : "−"}${userData.money(item.amount)}</td><td><div class="row-action-icon"><button class="row-action" type="button" aria-label="Sửa ${userData.escape(item.title)}" data-edit-transaction="${userData.escape(item.id)}">✎</button><button class="row-action row-action-delete" type="button" aria-label="Xóa ${userData.escape(item.title)}" data-delete-transaction="${userData.escape(item.id)}">×</button></div></td></tr>`).join("");
+      const monthly = userData.totals(userData.currentTransactions(transactions));
+      root.querySelectorAll('[data-metric="income"]').forEach((el) => { el.textContent = userData.money(monthly.income); });
+      root.querySelectorAll('[data-metric="expense"]').forEach((el) => { el.textContent = userData.money(monthly.expense); });
+      root.querySelectorAll('[data-metric="tx-count"]').forEach((el) => { el.textContent = userData.currentTransactions(transactions).length; });
+    } catch (exception) { userData.notify(exception.message, true); }
   }
   function open(item) {
     form.reset();
@@ -185,10 +160,10 @@
     fillFormCategories(type, item?.category);
     form.elements.title.value = item?.title || "";
     form.elements.amount.value = item?.amount || "";
-    form.elements.date.value = item?.date || D.dateKey(D.today);
+    form.elements.date.value = item?.date || userData.dateKey(userData.today);
     form.elements.method.value = item?.method || "Tiền mặt";
     form.elements.note.value = item?.note || "";
-    root.querySelector("#transaction-modal-title").textContent = item ? "Chỉnh sửa giao dịch" : "Thêm giao dịch";
+    root.querySelector("#tx-modal-title").textContent = item ? "Chỉnh sửa giao dịch" : "Thêm giao dịch";
     form.querySelector('[type="submit"]').textContent = item ? "Lưu thay đổi" : "Lưu giao dịch";
     error.textContent = "";
     modal.hidden = false;
@@ -207,10 +182,10 @@
     const amount = Number(data.amount);
     if (!Number.isFinite(amount) || amount <= 0) { error.textContent = "Nhập số tiền lớn hơn 0."; return; }
     if (new Date(`${data.date}T12:00:00`) > new Date(new Date().setHours(23, 59, 59, 999))) { error.textContent = "Ngày giao dịch không thể ở tương lai."; return; }
-    const record = { ...data, amount, id: data.id || D.id(), title: data.title.trim(), note: data.note.trim() };
+    const record = { ...data, amount, id: data.id || userData.id(), title: data.title.trim(), note: data.note.trim() };
     const previous = transactions;
     transactions = data.id ? previous.map((item) => item.id === data.id ? record : item) : [record, ...previous];
-    try { D.save("transactions", transactions); close(); render(); D.notify(data.id ? "Đã cập nhật giao dịch." : "Đã thêm giao dịch."); }
+    try { userData.save("transactions", transactions); close(); render(); userData.notify(data.id ? "Đã cập nhật giao dịch." : "Đã thêm giao dịch."); }
     catch (exception) { transactions = previous; error.textContent = exception.message; }
   });
   rows.addEventListener("click", (event) => {
@@ -222,23 +197,23 @@
       if (!item || !window.confirm(`Bạn có chắc muốn xóa giao dịch “${item.title}”?`)) return;
       const previous = transactions;
       transactions = previous.filter((record) => record.id !== item.id);
-      try { D.save("transactions", transactions); render(); D.notify("Đã xóa giao dịch."); } catch (exception) { transactions = previous; D.notify(exception.message, true); }
+      try { userData.save("transactions", transactions); render(); userData.notify("Đã xóa giao dịch."); } catch (exception) { transactions = previous; userData.notify(exception.message, true); }
     }
   });
   [search, typeFilter, categoryFilter, monthFilter].forEach((control) => control.addEventListener(control === search ? "input" : "change", render));
   root.querySelector("[data-clear-filters]").addEventListener("click", () => { search.value = ""; typeFilter.value = "all"; categoryFilter.value = "all"; monthFilter.value = "all"; render(); });
   root.querySelector("[data-export-transactions]").addEventListener("click", () => {
-    if (!transactions.length) { D.notify("Chưa có giao dịch để xuất.", true); return; }
+    if (!transactions.length) { userData.notify("Chưa có giao dịch để xuất.", true); return; }
     const content = `\uFEFF${[["Ngày", "Loại", "Tên giao dịch", "Danh mục", "Số tiền", "Phương thức", "Ghi chú"], ...transactions.map((item) => [item.date, typeLabels[item.type], item.title, item.category, item.amount, item.method, item.note])].map((line) => line.map((value) => `"${String(value ?? "").replace(/"/g, '""')}"`).join(",")).join("\r\n")}`;
     const url = URL.createObjectURL(new Blob([content], { type: "text/csv;charset=utf-8" }));
-    const anchor = document.createElement("a"); anchor.href = url; anchor.download = `spendwise-giao-dich-${D.currentMonth}.csv`; anchor.click();
+    const anchor = document.createElement("a"); anchor.href = url; anchor.download = `spendwise-giao-dich-${userData.currentMonth}.csv`; anchor.click();
     window.setTimeout(() => URL.revokeObjectURL(url), 0);
-    D.notify("Đã xuất danh sách giao dịch.");
+    userData.notify("Đã xuất danh sách giao dịch.");
   });
   if (new URLSearchParams(location.search).has("new")) open();
   window.addEventListener("spendwise:user-data", render);
-  window.addEventListener("storage", (event) => { if (event.key === D.keys.transactions) render(); });
+  window.addEventListener("storage", (event) => { if (event.key === userData.keys.transactions) render(); });
   document.addEventListener("keydown", (event) => { if (event.key === "Escape" && !modal.hidden) close(); });
-  root.querySelector("[data-today]").textContent = new Intl.DateTimeFormat("vi-VN", { weekday: "short", day: "numeric", month: "short" }).format(D.today);
+  root.querySelector("[data-today]").textContent = new Intl.DateTimeFormat("vi-VN", { weekday: "short", day: "numeric", month: "short" }).format(userData.today);
   render();
 })();

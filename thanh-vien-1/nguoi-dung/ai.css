@@ -6,8 +6,7 @@
   --paper: #f6f8f5;
   --surface: #fff;
   --green: #205c47;
-  --accent: #205c47;
-  --accent-soft: #e8f3ec;
+  --green-pale: #e8f3ec;
   --danger: #b9584c;
   font-family: "Segoe UI", Arial, sans-serif;
   font-synthesis: none;
@@ -26,7 +25,7 @@ body {
   color: var(--ink);
 }
 
-button,  input,  select,  textarea {
+button, input, select, textarea {
   font: inherit;
 }
 
@@ -35,8 +34,8 @@ a {
   text-decoration: none;
 }
 
-button:focus-visible,  a:focus-visible,  input:focus-visible,  select:focus-visible,  textarea:focus-visible {
-  outline: 3px solid color-mix(in srgb, var(--accent) 25%, transparent);
+button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-visible {
+  outline: 3px solid color-mix(in srgb, var(--green) 25%, transparent);
   outline-offset: 2px;
 }
 
@@ -118,12 +117,12 @@ button:focus-visible,  a:focus-visible,  input:focus-visible,  select:focus-visi
 
 .nav-link:hover {
   background: #f5f8f5;
-  color: var(--accent);
+  color: var(--green);
 }
 
 .nav-link.is-active {
-  background: var(--accent-soft);
-  color: var(--accent);
+  background: var(--green-pale);
+  color: var(--green);
 }
 
 .nav-icon {
@@ -133,7 +132,7 @@ button:focus-visible,  a:focus-visible,  input:focus-visible,  select:focus-visi
   font-size: 16px;
 }
 
-.sidebar-bottom {
+.side-bottom {
   margin-top: auto;
   padding-top: 14px;
   border-top: 1px solid var(--line);
@@ -164,7 +163,7 @@ button:focus-visible,  a:focus-visible,  input:focus-visible,  select:focus-visi
   flex: 1;
 }
 
-.identity-text strong,  .identity-text span {
+.identity-text strong, .identity-text span {
   display: block;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -181,7 +180,7 @@ button:focus-visible,  a:focus-visible,  input:focus-visible,  select:focus-visi
   font-size: 9px;
 }
 
-.sidebar-links {
+.side-links {
   display: flex;
   justify-content: space-between;
   padding: 8px 3px 0;
@@ -219,7 +218,7 @@ button:focus-visible,  a:focus-visible,  input:focus-visible,  select:focus-visi
   font-weight: 600;
 }
 
-.header-actions {
+.head-actions {
   display: flex;
   align-items: center;
   gap: 10px;
@@ -227,7 +226,7 @@ button:focus-visible,  a:focus-visible,  input:focus-visible,  select:focus-visi
   font-size: 10px;
 }
 
-.page-header {
+.pg-header {
   display: flex;
   align-items: flex-end;
   justify-content: space-between;
@@ -244,13 +243,13 @@ button:focus-visible,  a:focus-visible,  input:focus-visible,  select:focus-visi
   text-transform: uppercase;
 }
 
-.page-header h1 {
+.pg-header h1 {
   margin: 0;
   font-size: clamp(23px, 3vw, 30px);
   letter-spacing: -.8px;
 }
 
-.page-header p {
+.pg-header p {
   margin: 7px 0 0;
   color: var(--muted);
   font-size: 11px;
@@ -272,7 +271,7 @@ button:focus-visible,  a:focus-visible,  input:focus-visible,  select:focus-visi
   padding: 0 12px;
   border: 1px solid transparent;
   border-radius: 7px;
-  background: var(--accent);
+  background: var(--green);
   color: #fff;
   cursor: pointer;
   font-size: 10px;
@@ -311,7 +310,7 @@ button:focus-visible,  a:focus-visible,  input:focus-visible,  select:focus-visi
   background: var(--surface);
 }
 
-.stat-card span,  .stat-card strong {
+.stat-card span, .stat-card strong {
   display: block;
 }
 
@@ -365,7 +364,7 @@ button:focus-visible,  a:focus-visible,  input:focus-visible,  select:focus-visi
   padding: 0 17px 13px;
 }
 
-.filter-bar input,  .filter-bar select {
+.filter-bar input, .filter-bar select {
   min-height: 34px;
   padding: 0 9px;
   border: 1px solid var(--line);
@@ -424,8 +423,8 @@ button:focus-visible,  a:focus-visible,  input:focus-visible,  select:focus-visi
   display: inline-flex;
   padding: 4px 7px;
   border-radius: 20px;
-  background: var(--accent-soft);
-  color: var(--accent);
+  background: var(--green-pale);
+  color: var(--green);
   font-size: 9px;
   font-weight: 600;
   white-space: nowrap;
@@ -471,8 +470,8 @@ button:focus-visible,  a:focus-visible,  input:focus-visible,  select:focus-visi
 }
 
 .icon-button:hover {
-  background: var(--accent-soft);
-  color: var(--accent);
+  background: var(--green-pale);
+  color: var(--green);
 }
 
 .empty {
@@ -549,7 +548,7 @@ button:focus-visible,  a:focus-visible,  input:focus-visible,  select:focus-visi
   font-weight: 700;
 }
 
-.field input,  .field select,  .field textarea {
+.field input, .field select, .field textarea {
   width: 100%;
   min-height: 36px;
   padding: 8px 9px;
@@ -640,7 +639,7 @@ button:focus-visible,  a:focus-visible,  input:focus-visible,  select:focus-visi
     width: 29px;
     height: 29px;
   }
-  .role-label,    .sidebar-bottom {
+  .role-label, .side-bottom {
     display: none;
   }
   .nav {
@@ -676,7 +675,7 @@ button:focus-visible,  a:focus-visible,  input:focus-visible,  select:focus-visi
     margin: 0;
     padding: 18px 14px 0;
   }
-  .page-header {
+  .pg-header {
     align-items: flex-start;
     flex-direction: column;
     gap: 13px;
@@ -727,10 +726,9 @@ button:focus-visible,  a:focus-visible,  input:focus-visible,  select:focus-visi
 }
 
 :root {
-  --accent: #205c47;
-  --accent-soft: #e8f3ec;
+  --green-pale: #e8f3ec;
 }
 
-.page-header h1 {
+.pg-header h1 {
   color: #192820;
 }
