@@ -3,7 +3,6 @@
 
   const groups = {
     "account-auth": [["login", "Đăng nhập"], ["register", "Đăng ký"], ["forgot", "Quên mật khẩu"]],
-    "user-insights": [["insights", "Phân tích"], ["ai", "Đề xuất AI"]],
     "coach-clients": [["clients", "Học viên"], ["review", "Đánh giá ngân sách"]],
     "coach-resources": [["library", "Tài nguyên"], ["editor", "Soạn tài nguyên"]],
     "moderator-ai": [["templates", "Mẫu AI"], ["review", "Kiểm tra AI"]],
@@ -18,7 +17,8 @@
       ["Giao dịch", "../../thanh-vien-1/nguoi-dung/transactions.html", "↔"],
       ["Ngân sách", "../../thanh-vien-1/nguoi-dung/budget.html", "▤"],
       ["Mục tiêu", "../../thanh-vien-1/nguoi-dung/goals.html", "◎"],
-      ["Phân tích & AI", "../../thanh-vien-1/nguoi-dung/insights.html", "⌁"]
+      ["Phân tích", "../../thanh-vien-1/nguoi-dung/insights.html", "⌁"],
+      ["Gợi ý AI", "../../thanh-vien-1/nguoi-dung/ai.html", "✦"]
     ],
     coach: [
       ["Học viên & ngân sách", "../../thanh-vien-2/huan-luyen-vien/clients.html", "♙"],
@@ -46,7 +46,6 @@
     if (!root) return;
 
     const routeAliases = {
-      user: { "ai.html": "insights.html?view=ai" },
       coach: {
         "budget.html": "clients.html?view=review",
         "edit-resource.html": "resources.html?view=editor"
@@ -107,17 +106,6 @@
         return `<a class="nav-link${active ? " is-active" : ""}" ${active ? 'aria-current="page"' : ""} href="${href}"><span class="nav-icon">${icon}</span>${label}</a>`;
       }).join("");
     }
-    const userSidebar = role === "user" && root.querySelector(".sidebar-nav");
-    if (userSidebar) {
-      const insightsLink = userSidebar.querySelector('a[href*="insights.html"]');
-      const aiLink = userSidebar.querySelector('a[href*="view=ai"], a[href*="ai.html"]');
-      if (insightsLink && aiLink) {
-        insightsLink.href = "../../thanh-vien-1/nguoi-dung/insights.html";
-        insightsLink.innerHTML = '<span class="nav-icon">⌁</span>Phân tích & AI';
-        aiLink.remove();
-      }
-    }
-
     if (!main || !tabs) return;
 
     const currentView = new URLSearchParams(window.location.search).get("view") || tabs[0][0];
