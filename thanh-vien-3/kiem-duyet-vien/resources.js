@@ -218,28 +218,7 @@ window.WorkspacePage = {
     const initials = user.name.split(/\s+/).slice(-2).map((part) => part[0]).join("").toUpperCase();
     root.querySelectorAll("[data-user-name], [data-header-name]").forEach((element) => { element.textContent = user.name; });
     root.querySelectorAll("[data-initials]").forEach((element) => { element.textContent = initials; });
-    if (!root.hasAttribute("data-static-workspace")) root.innerHTML = `
-      <div class="container">
-        <aside class="sidebar">
-          <a class="brand" href="index.html"><span class="brand-mark">S</span><span>SpendWise</span></a>
-          <div class="role-label">${escapeHtml(roleLabels[role] || "Không gian của bạn")}</div>
-          <nav class="nav" aria-label="Điều hướng chính">${links.map(([text, href, icon]) => `<a class="nav-link ${config.active === icon ? "is-active" : ""}" ${config.active === icon ? 'aria-current="page"' : ""} href="${href}"><span class="nav-icon">${icons[icon] || "◦"}</span>${escapeHtml(text)}</a>`).join("")}</nav>
-          <div class="sidebar-bottom"><div class="identity"><div class="avatar">${escapeHtml(initials)}</div><div class="identity-text"><strong>${escapeHtml(user.name)}</strong><span>${escapeHtml(roleLabels[role] || role)}</span></div></div><div class="sidebar-links"><a href="profile.html">Hồ sơ</a><a href="settings.html">Cài đặt</a><a href="notifications.html">Thông báo</a></div></div>
-        </aside>
-        <header class="header"><div class="breadcrumb"><span>${escapeHtml(roleLabels[role] || "SpendWise")}</span><span>/</span><strong>${escapeHtml(config.title)}</strong></div><div class="header-actions"><span>${escapeHtml(user.name)}</span><button type="button" class="button button-quiet" data-signout>Đăng xuất</button></div></header>
-        <main class="main">
-          <section class="page-header"><div><div class="eyebrow">${escapeHtml(config.kicker || roleLabels[role] || "SPENDWISE")}</div><h1>${escapeHtml(config.title)}</h1><p>${escapeHtml(config.description || "")}</p></div><div class="action">${config.readOnly || config.hideCreate ? "" : `<button class="button" type="button" data-create>＋ ${escapeHtml(config.createLabel || "Thêm mới")}</button>`}${config.exportable ? '<button class="button button-secondary" type="button" data-export>↓ Xuất dữ liệu</button>' : ""}</div></section>
-          <section class="stats-grid" data-stats></section>
-          <section class="panel"><div class="panel-header"><div><h2>${escapeHtml(config.listTitle || config.title)}</h2><p data-count></p></div>${config.secondaryAction ? `<button class="button button-secondary" data-secondary type="button">${escapeHtml(config.secondaryAction.label)}</button>` : ""}</div>
-            <div class="filter-bar"><input type="search" data-search placeholder="${escapeHtml(config.searchPlaceholder || "Tìm kiếm...")}" aria-label="Tìm kiếm">${config.filters?.length ? `<select data-status-filter aria-label="Lọc danh sách"><option value="">Tất cả trạng thái</option>${config.filters.map((item) => `<option value="${escapeHtml(item)}">${escapeHtml(item)}</option>`).join("")}</select>` : ""}<button class="button button-quiet" type="button" data-clear>Làm mới bộ lọc</button></div>
-            <div class="table-scroll"><table class="table"><thead><tr>${config.columns.map((column) => `<th>${escapeHtml(column.label)}</th>`).join("")}<th><span class="visually-hidden">Thao tác</span></th></tr></thead><tbody data-rows></tbody></table></div>
-            <div class="empty" data-empty hidden><span aria-hidden="true">${icons[config.active] || "◦"}</span><strong>${escapeHtml(config.emptyTitle || "Chưa có dữ liệu phù hợp")}</strong><p>${escapeHtml(config.emptyMessage || "Thử đổi bộ lọc hoặc thêm một mục mới.")}</p>${config.readOnly || config.hideCreate ? "" : `<button class="button" type="button" data-create>${escapeHtml(config.createLabel || "Thêm mới")}</button>`}</div>
-          </section>
-        </main>
-        <footer class="footer">SpendWise · Bản demo frontend · Dữ liệu lưu trên thiết bị này</footer>
-        <div class="modal-backdrop" data-modal hidden><section class="modal" role="dialog" aria-modal="true" aria-labelledby="modal-title"><div class="modal-header"><h2 id="modal-title">${escapeHtml(config.createLabel || "Thêm mới")}</h2><button type="button" class="icon-button" aria-label="Đóng" data-close>×</button></div><form class="form-grid" data-form><input type="hidden" name="id">${config.fields.map((field) => fieldMarkup(field)).join("")}<div class="field field-full" data-error role="alert"></div><div class="modal-action field-full"><button class="button button-secondary" type="button" data-close>Hủy</button><button class="button" type="submit">Lưu thay đổi</button></div></form></section></div>
-        <div class="toast-region" data-toasts aria-live="polite"></div>
-      </div>`;
+    // Giao dien tinh da duoc dinh nghia trong HTML
 
     const notify = (message, isError = false) => {
       const toast = document.createElement("div");
