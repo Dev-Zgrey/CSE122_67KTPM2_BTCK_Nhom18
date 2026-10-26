@@ -7,10 +7,10 @@
   --paper: #f6f8f5;
   --surface: #fff;
   --green: #205c47;
-  --accent: #205c47;
   --accent-soft: #e8f3ec;
+  --accent: #205c47;
   --danger: #b9584c;
-  font-family: "Segoe UI", Arial, sans-serif;
+  font-family: "Segoe UI", Arial, Helvetica, sans-serif;
   font-synthesis: none;
   text-rendering: optimizeLegibility;
 }
@@ -32,11 +32,11 @@ button, input, select, textarea {
 }
 
 a {
-  color: inherit;
+  color:inherit;
   text-decoration: none;
 }
 
-button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-visible {
+button:focus-visible, a:focus-visible, input:focus-visible , select:focus-visible, textarea:focus-visible {
   outline: 3px solid color-mix(in srgb, var(--accent) 25%, transparent);
   outline-offset: 2px;
 }
@@ -45,23 +45,23 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
   display: none !important;
 }
 
-.visually-hidden {
+.visually-hidden{
   position: absolute;
   width: 1px;
   height: 1px;
   overflow: hidden;
-  clip: rect(0, 0, 0, 0);
+  clip:rect(0,0,0,0);
   white-space: nowrap;
   clip-path: inset(50%);
 }
 
-.container {
+.container{
   min-height: 100vh;
 }
 
 .sidebar {
   position: fixed;
-  inset: 0 auto 0 0;
+  inset: 0 auto  0 0;
   z-index: 3;
   display: flex;
   width: 244px;
@@ -71,38 +71,38 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
   background: #fff;
 }
 
-.brand {
+.brand{
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap:10px;
   padding: 0 8px;
   color: var(--green);
   font-size: 19px;
   font-weight: 800;
 }
 
-.brand-mark {
+.brand-mark{
   display: grid;
   width: 33px;
   height: 33px;
   place-items: center;
   border-radius: 11px 11px 11px 4px;
-  background: #d8f17e;
+  background-color: #d8f17e;
   color: #174936;
 }
 
-.role-label {
+.role-label{
   margin: 36px 9px 10px;
-  color: #9aa69f;
+  color:#9aa69f;
   font-size: 10px;
   font-weight: 700;
   letter-spacing: 1px;
   text-transform: uppercase;
 }
 
-.nav {
-  display: grid;
-  gap: 4px;
+.nav{
+  display:grid;
+  gap:4px;
 }
 
 .nav-link {
@@ -110,24 +110,24 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
   min-height: 40px;
   align-items: center;
   gap: 10px;
-  padding: 0 10px;
+  padding:0 10px;
   border-radius: 8px;
   color: #69776f;
-  font-size: 12px;
+  font-size:12px;
   font-weight: 600;
 }
 
 .nav-link:hover {
-  background: #f5f8f5;
+  background-color: #f5f8f5;
   color: var(--accent);
 }
 
 .nav-link.is-active {
   background: var(--accent-soft);
-  color: var(--accent);
+  color:var(--accent);
 }
 
-.nav-icon {
+.nav-icon{
   display: grid;
   width: 20px;
   place-items: center;
@@ -137,17 +137,17 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
 .sidebar-bottom {
   margin-top: auto;
   padding-top: 14px;
-  border-top: 1px solid var(--line);
+  border-top:1px solid var(--line)
 }
 
-.identity {
+.identity{
   display: flex;
   align-items: center;
-  gap: 9px;
+  gap:9px;
   padding: 7px 3px;
 }
 
-.avatar {
+.avatar{
   display: grid;
   width: 33px;
   height: 33px;
@@ -155,17 +155,17 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
   place-items: center;
   border-radius: 50%;
   background: #f1e9df;
-  color: #6c5947;
+  color:#6c5947;
   font-size: 10px;
   font-weight: 800;
 }
 
 .identity-text {
   min-width: 0;
-  flex: 1;
+  flex:1;
 }
 
-.identity-text strong, .identity-text span {
+.identity-text strong , .identity-text span {
   display: block;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -178,11 +178,11 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
 
 .identity-text span {
   margin-top: 3px;
-  color: var(--muted);
+  color:var(--muted);
   font-size: 9px;
 }
 
-.sidebar-links {
+.sidebar-links{
   display: flex;
   justify-content: space-between;
   padding: 8px 3px 0;
@@ -190,14 +190,14 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
   font-size: 10px;
 }
 
-.main {
+.main{
   min-height: calc(100vh - 100px);
   margin-left: 244px;
   padding: 0 38px 22px;
 }
 
 .header {
-  display: flex;
+  display:flex;
   min-height: 63px;
   align-items: center;
   justify-content: space-between;
@@ -207,15 +207,15 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
   border-bottom: 1px solid var(--line);
 }
 
-.breadcrumb {
+.breadcrumb{
   display: flex;
-  align-items: center;
+  align-items: center;;
   gap: 8px;
-  color: #9aa59e;
+  color:#526158;
   font-size: 10px;
 }
 
-.breadcrumb strong {
+.breadcrumb strong{
   color: #526158;
   font-weight: 600;
 }
@@ -226,9 +226,10 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
   gap: 10px;
   color: #77857c;
   font-size: 10px;
+
 }
 
-.page-header {
+.page-header{
   display: flex;
   align-items: flex-end;
   justify-content: space-between;
@@ -245,14 +246,14 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
   text-transform: uppercase;
 }
 
-.page-header h1 {
+.page-header h1{
   margin: 0;
-  font-size: clamp(23px, 3vw, 30px);
+  font-size: clamp(23px,3vw,30px);
   letter-spacing: -.8px;
 }
 
 .page-header p {
-  margin: 7px 0 0;
+  margin: 7px 0 0 ;
   color: var(--muted);
   font-size: 11px;
   line-height: 1.6;
@@ -270,7 +271,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
   align-items: center;
   justify-content: center;
   gap: 6px;
-  padding: 0 12px;
+  padding: 0 20px;
   border: 1px solid transparent;
   border-radius: 7px;
   background: var(--accent);
@@ -282,12 +283,13 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
 
 .button:hover {
   filter: brightness(.94);
+
 }
 
-.button-secondary {
+.button-secondary{
   border-color: var(--line);
   background: #fff;
-  color: #58665d;
+  color: #78867f;
 }
 
 .button-quiet {
@@ -297,9 +299,9 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
   color: #78867f;
 }
 
-.stats-grid {
+.stats-grid{
   display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
+  grid-template-columns: repeat(4,minmax(0,1fr));
   gap: 12px;
   margin-bottom: 14px;
 }
@@ -312,7 +314,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
   background: var(--surface);
 }
 
-.stat-card span, .stat-card strong {
+.stat-card span , .stat-card strong {
   display: block;
 }
 
@@ -333,14 +335,14 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
   white-space: nowrap;
 }
 
-.panel {
+.panel{
   min-width: 0;
   border: 1px solid var(--line);
   border-radius: 10px;
   background: var(--surface);
 }
 
-.panel-header {
+.panel-header{
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -353,7 +355,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
   font-size: 13px;
 }
 
-.panel-header p {
+.page-header p{
   margin: 5px 0 0;
   color: #8b9790;
   font-size: 9px;
@@ -366,7 +368,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
   padding: 0 17px 13px;
 }
 
-.filter-bar input, .filter-bar select {
+.filter-bar input , .filter-bar select {
   min-height: 34px;
   padding: 0 9px;
   border: 1px solid var(--line);
@@ -376,9 +378,9 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
   font-size: 10px;
 }
 
-.filter-bar input {
+.filter-bar input{
   min-width: 170px;
-  flex: 1;
+  flex:1;
 }
 
 .table-scroll {
@@ -412,10 +414,6 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
   border-bottom: 0;
 }
 
-.table tbody tr:hover {
-  background: #fcfdfb;
-}
-
 .table td:first-child {
   color: #34453a;
   font-weight: 600;
@@ -430,16 +428,6 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
   font-size: 9px;
   font-weight: 600;
   white-space: nowrap;
-}
-
-.status-select {
-  max-width: 125px;
-  min-height: 26px;
-  border: 1px solid var(--line);
-  border-radius: 5px;
-  background: #fff;
-  color: #627067;
-  font-size: 9px;
 }
 
 .status-badge.is-warning {
@@ -471,11 +459,6 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
   cursor: pointer;
 }
 
-.icon-button:hover {
-  background: var(--accent-soft);
-  color: var(--accent);
-}
-
 .empty {
   padding: 35px 15px;
   color: #89958e;
@@ -503,7 +486,6 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
   place-items: center;
   padding: 18px;
   background: rgba(20, 38, 27, .42);
-  backdrop-filter: blur(2px);
 }
 
 .modal {
@@ -541,13 +523,23 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
 }
 
 .field-full {
-  grid-column: 1/-1;
+  grid-column: 1 / -1;
 }
 
 .field label {
   color: #59675e;
   font-size: 10px;
   font-weight: 700;
+}
+
+.field[data-error]:not(:empty) {
+  color: var(--danger);
+  font-size: 10px;
+  font-weight: 600;
+}
+
+.field[data-error]:empty {
+  display: none;
 }
 
 .field input, .field select, .field textarea {
@@ -593,29 +585,14 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
   font-size: 10px;
 }
 
-.footer {
-  margin-left: 244px;
-  padding: 18px 38px 0;
-  color: #a0aaa3;
-  font-size: 9px;
-}
-
 @media (max-width: 980px) {
   .sidebar {
     width: 210px;
   }
-  .main {
+  .main, .header {
     margin-left: 210px;
-    padding-right: 22px;
-    padding-left: 22px;
   }
-  .header {
-    margin-left: 210px;
-    padding-right: 22px;
-    padding-left: 22px;
-  }
-  .footer {
-    margin-left: 210px;
+  .main, .header {
     padding-right: 22px;
     padding-left: 22px;
   }
@@ -649,7 +626,6 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
     overflow-x: auto;
     gap: 3px;
     margin: 8px -3px -1px;
-    scrollbar-width: none;
   }
   .nav-link {
     min-height: 32px;
@@ -663,19 +639,15 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
     width: auto;
     font-size: 13px;
   }
-  .main {
-    min-height: auto;
-    margin: 0;
-    padding: 0 14px 18px;
-  }
-  .header {
-    min-height: 48px;
+  .main, .header {
     margin: 0;
     padding: 0 14px;
   }
-  .footer {
-    margin: 0;
-    padding: 18px 14px 0;
+  .main {
+    min-height: auto;
+  }
+  .header {
+    min-height: 48px;
   }
   .page-header {
     align-items: flex-start;
@@ -695,15 +667,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
 }
 
 @media (max-width: 420px) {
-  .main {
-    padding-right: 11px;
-    padding-left: 11px;
-  }
-  .header {
-    padding-right: 11px;
-    padding-left: 11px;
-  }
-  .footer {
+  .main, .header {
     padding-right: 11px;
     padding-left: 11px;
   }
@@ -727,11 +691,3 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
   }
 }
 
-:root {
-  --accent: #4b658f;
-  --accent-soft: #edf1f8;
-}
-
-.page-header h1 {
-  color: #192820;
-}

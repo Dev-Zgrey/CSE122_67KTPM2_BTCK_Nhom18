@@ -14,11 +14,9 @@
   font-synthesis: none;
   text-rendering: optimizeLegibility;
 }
-
 * {
   box-sizing: border-box;
 }
-
 body {
   min-width: 320px;
   min-height: 100vh;
@@ -26,23 +24,20 @@ body {
   background: var(--paper);
   color: var(--ink);
 }
-
 button, input, select, textarea {
-  font: inherit;
+  font: inherit; /*buộc kế thừa*/
 }
-
 a {
   color: inherit;
   text-decoration: none;
 }
-
 button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-visible {
   outline: 3px solid color-mix(in srgb, var(--accent) 25%, transparent);
   outline-offset: 2px;
 }
 
 [hidden] {
-  display: none !important;
+  display: none !important; /*bắt buộc theo code bỏ qua các ưu tiên*/
 }
 
 .visually-hidden {
@@ -96,8 +91,8 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
   color: #9aa69f;
   font-size: 10px;
   font-weight: 700;
-  letter-spacing: 1px;
-  text-transform: uppercase;
+  letter-spacing: 1px; /*điều chỉnh chiều ngang của các kí tự*/
+  text-transform: uppercase; /*in hoa*/
 }
 
 .nav {
@@ -168,8 +163,8 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
 .identity-text strong, .identity-text span {
   display: block;
   overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+  text-overflow: ellipsis; /*dài quá thì hiện dấu ...*/
+  white-space: nowrap; /*ép nằm trên 1 dòng*/
 }
 
 .identity-text strong {
@@ -361,7 +356,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
 
 .filter-bar {
   display: flex;
-  flex-wrap: wrap;
+  flex-wrap: wrap; /*tự động xuống dòng khi hết hàng*/
   gap: 8px;
   padding: 0 17px 13px;
 }
@@ -387,7 +382,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
 
 .table {
   width: 100%;
-  border-collapse: collapse;
+  border-collapse: collapse; /*quyết định border đg viền tách rời */
   text-align: left;
 }
 

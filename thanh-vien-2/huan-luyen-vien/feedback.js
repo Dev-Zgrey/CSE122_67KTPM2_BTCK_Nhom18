@@ -1,434 +1,406 @@
-window.WorkspacePage = {
-  "slug": "coach-feedback",
-  "title": "Phản hồi học viên",
-  "description": "Theo dõi câu hỏi, trả lời và chuyển báo cáo đúng người phụ trách.",
-  "role": "coach",
-  "active": "feedback",
-  "storeKey": "feedback",
-  "columns": [
-    {
-      "key": "sender",
-      "label": "Người gửi"
-    },
-    {
-      "key": "subject",
-      "label": "Chủ đề"
-    },
-    {
-      "key": "priority",
-      "label": "Mức độ"
-    },
-    {
-      "key": "assigned",
-      "label": "Phụ trách"
-    },
-    {
-      "key": "status",
-      "label": "Trạng thái",
-      "format": "status"
-    },
-    {
-      "key": "updatedAt",
-      "label": "Ngày",
-      "format": "date"
-    }
-  ],
-  "fields": [
-    {
-      "key": "sender",
-      "label": "Người gửi",
-      "required": true,
-      "full": false
-    },
-    {
-      "key": "subject",
-      "label": "Chủ đề",
-      "required": true,
-      "full": false
-    },
-    {
-      "key": "priority",
-      "label": "Mức độ",
-      "type": "select",
-      "required": true,
-      "options": [
-        "Thấp",
-        "Bình thường",
-        "Cao",
-        "Khẩn cấp"
-      ]
-    },
-    {
-      "key": "assigned",
-      "label": "Chuyển tới",
-      "type": "select",
-      "required": true,
-      "options": [
-        "Huấn luyện viên",
-        "Kiểm duyệt viên",
-        "Quản trị viên"
-      ]
-    },
-    {
-      "key": "status",
-      "label": "Trạng thái",
-      "type": "select",
-      "required": true,
-      "options": [
-        "Mới",
-        "Đang xử lý",
-        "Chờ phản hồi",
-        "Đã trả lời",
-        "Đã đóng"
-      ]
-    },
-    {
-      "key": "message",
-      "label": "Nội dung",
-      "type": "textarea",
-      "required": true,
-      "full": true
-    },
-    {
-      "key": "response",
-      "label": "Phản hồi",
-      "type": "textarea",
-      "full": true
-    }
-  ],
-  "seed": [
-    {
-      "id": "fb-1",
-      "sender": "Nguyễn An",
-      "subject": "Câu hỏi về ngân sách ăn uống",
-      "priority": "Bình thường",
-      "assigned": "Huấn luyện viên",
-      "status": "Mới",
-      "message": "Làm thế nào để theo dõi khoản ăn uống linh hoạt?",
-      "response": "",
-      "updatedAt": "2026-10-12"
-    },
-    {
-      "id": "fb-2",
-      "sender": "Trần Minh",
-      "subject": "Báo cáo nội dung không phù hợp",
-      "priority": "Cao",
-      "assigned": "Kiểm duyệt viên",
-      "status": "Đang xử lý",
-      "message": "Một tài liệu cần được kiểm tra lại ví dụ minh họa.",
-      "response": "",
-      "updatedAt": "2026-10-10"
-    }
-  ],
-  "createLabel": "Tạo phản hồi",
-  "singular": "phản hồi",
-  "filters": [
-    "Mới",
-    "Đang xử lý",
-    "Chờ phản hồi",
-    "Đã trả lời",
-    "Đã đóng"
-  ],
-  "defaultRecord": {
-    "status": "Mới",
-    "assigned": "Huấn luyện viên"
+// GHI CHÚ: Nạp/lưu phản hồi, hiển thị theo bộ lọc và xử lý thao tác thêm, sửa hoặc phản hồi qua modal.
+// ==========================================
+// QUẢN LÝ PHẢN HỒI HỌC VIÊN - SPENDWISE
+// Dành cho sinh viên năm 2 - Dễ hiểu, dễ bảo vệ
+// ==========================================
+
+// 1. DỮ LIỆU MẪU BAN ĐẦU (Dùng khi LocalStorage chưa có dữ liệu)
+const DEFAULT_FEEDBACKS = [
+  {
+    id: "fb-1",
+    sender: "Nguyễn An",
+    subject: "Câu hỏi về ngân sách ăn uống",
+    priority: "Bình thường",
+    assigned: "Huấn luyện viên",
+    status: "Mới",
+    message: "Làm thế nào để theo dõi khoản ăn uống linh hoạt?",
+    response: "",
+    updatedAt: "2026-10-12"
   },
-  "exportable": true
-};
+  {
+    id: "fb-2",
+    sender: "Trần Minh",
+    subject: "Báo cáo nội dung không phù hợp",
+    priority: "Cao",
+    assigned: "Kiểm duyệt viên",
+    status: "Đang xử lý",
+    message: "Một tài liệu cần được kiểm tra lại ví dụ minh họa.",
+    response: "",
+    updatedAt: "2026-10-10"
+  }
+];
 
-(() => {
-  "use strict";
+// Khóa lưu trong LocalStorage để đồng bộ giữa các trang
+const STORAGE_KEY = "spendwise.feedback";
 
-  const store = {
-    read(key, fallback = []) {
-      const value = localStorage.getItem(`spendwise.${key}`);
-      if (value === null) {
-        localStorage.setItem(`spendwise.${key}`, JSON.stringify(fallback));
-        return fallback;
-      }
-      const parsed = JSON.parse(value);
-      if (!Array.isArray(parsed) && (parsed === null || typeof parsed !== "object")) throw new Error(`Dữ liệu ${key} không hợp lệ.`);
-      return parsed;
-    },
-    write(key, value) {
-      localStorage.setItem(`spendwise.${key}`, JSON.stringify(value));
-      window.dispatchEvent(new CustomEvent("spendwise:data", { detail: { key } }));
+// Mảng chứa danh sách phản hồi hiện tại
+let feedbacks = [];
+
+// ==========================================
+// 2. CÁC HÀM XỬ LÝ LOCALSTORAGE
+// ==========================================
+
+// Đọc dữ liệu từ LocalStorage
+// Nạp các phản hồi đã lưu và xử lý trường hợp dữ liệu chưa được khởi tạo.
+function loadFeedbacks() {
+  const data = localStorage.getItem(STORAGE_KEY);
+  if (data) {
+    try {
+      feedbacks = JSON.parse(data);
+    } catch (e) {
+      feedbacks = DEFAULT_FEEDBACKS;
     }
-  };
-  const escapeHtml = (value) => String(value ?? "").replace(/[&<>"']/g, (character) => ({
-    "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;"
-  })[character]);
-  const labelize = (value) => String(value || "").replace(/[-_]/g, " ").replace(/\b\w/g, (letter) => letter.toUpperCase());
-  const id = () => globalThis.crypto?.randomUUID?.() || `sw-${Date.now()}-${Math.random().toString(36).slice(2, 9)}`;
-  const dateLabel = (value) => {
-    if (!value) return "—";
-    const date = new Date(value.length === 10 ? `${value}T12:00:00` : value);
-    return Number.isNaN(date.getTime()) ? escapeHtml(value) : new Intl.DateTimeFormat("vi-VN", { day: "numeric", month: "short", year: "numeric" }).format(date);
-  };
-  function fieldMarkup(field) {
-    const required = field.required ? "required" : "";
-    const attributes = `${required}${field.maxLength ? ` maxlength="${field.maxLength}"` : ""}${field.min != null ? ` min="${field.min}"` : ""}${field.step ? ` step="${field.step}"` : ""}`;
-    const options = field.options || [];
-    const control = field.type === "textarea"
-      ? `<textarea name="${escapeHtml(field.key)}" placeholder="${escapeHtml(field.placeholder || "")}" ${attributes}></textarea>`
-      : field.type === "select"
-        ? `<select name="${escapeHtml(field.key)}" ${attributes}>${options.map((option) => `<option>${escapeHtml(option)}</option>`).join("")}</select>`
-        : `<input name="${escapeHtml(field.key)}" type="${escapeHtml(field.type || "text")}" placeholder="${escapeHtml(field.placeholder || "")}" value="${escapeHtml(field.default || "")}" ${attributes}>`;
-    return `<div class="field ${field.full ? "field-full" : ""}"><label>${escapeHtml(field.label)}${field.required ? " *" : ""}</label>${control}</div>`;
+  } else {
+    feedbacks = DEFAULT_FEEDBACKS;
+    saveFeedbacks();
+  }
+}
+
+// Lưu dữ liệu vào LocalStorage
+// Ghi danh sách phản hồi hiện tại xuống localStorage.
+function saveFeedbacks() {
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(feedbacks));
+}
+
+// Hiển thị thông báo nhỏ (Toast)
+// Hiển thị kết quả thao tác (thành công hoặc lỗi) tạm thời trên giao diện.
+function showToast(message, isError = false) {
+  const container = document.querySelector("[data-toasts]");
+  if (!container) return;
+
+  const toast = document.createElement("div");
+  toast.className = isError ? "toast is-danger" : "toast";
+  toast.textContent = message;
+  container.appendChild(toast);
+
+  // Tự động xóa sau 3 giây
+  setTimeout(() => {
+    toast.remove();
+  }, 3000);
+}
+
+// ==========================================
+// 3. HIỂN THỊ DỮ LIỆU RA GIAO DIỆN (RENDER)
+// ==========================================
+
+// Lọc phản hồi theo điều kiện, cập nhật số liệu và dựng lại danh sách/bảng hiển thị.
+function renderUI() {
+  const searchInput = document.querySelector("[data-search]");
+  const statusFilter = document.querySelector("[data-status-filter]");
+  const tableBody = document.querySelector("[data-rows]");
+  const emptyState = document.querySelector("[data-empty]");
+  const countLabel = document.querySelector("[data-count]");
+  const statsContainer = document.querySelector("[data-stats]");
+
+  const keyword = searchInput ? searchInput.value.trim().toLowerCase() : "";
+  const selectedStatus = statusFilter ? statusFilter.value : "";
+
+  // Lọc theo từ khóa tìm kiếm và trạng thái
+  const filteredList = feedbacks.filter((item) => {
+    const matchSearch =
+      !keyword ||
+      item.sender.toLowerCase().includes(keyword) ||
+      item.subject.toLowerCase().includes(keyword) ||
+      (item.message && item.message.toLowerCase().includes(keyword));
+
+    const matchStatus = !selectedStatus || item.status === selectedStatus;
+
+    return matchSearch && matchStatus;
+  });
+
+  // 1. Cập nhật số lượng
+  if (countLabel) {
+    countLabel.textContent = `${filteredList.length} mục · ${feedbacks.length} tổng cộng`;
   }
 
-  const icons = { dashboard: "◫", transactions: "↔", budgets: "▤", goals: "◎", insights: "⌁", ai: "✦", clients: "♙", reviews: "◷", resources: "▧", editor: "✎", feedback: "✉", moderation: "✓", templates: "✧", reports: "⚑", audit: "≡", categories: "◈", users: "♙", permissions: "⚿", settings: "⚙", profile: "◉", notifications: "♧" };
-  const nav = {
-    user: [
-      ["Tổng quan", "../../thanh-vien-1/nguoi-dung/overview.html", "dashboard"],
-      ["Giao dịch", "../../thanh-vien-1/nguoi-dung/transactions.html", "transactions"],
-      ["Ngân sách", "../../thanh-vien-1/nguoi-dung/budget.html", "budgets"],
-      ["Mục tiêu", "../../thanh-vien-1/nguoi-dung/goals.html", "goals"],
-      ["Phân tích", "../../thanh-vien-1/nguoi-dung/insights.html", "insights"],
-      ["Gợi ý AI", "../../thanh-vien-1/nguoi-dung/ai.html", "ai"]
-    ],
-    coach: [
-      ["Học viên", "../../thanh-vien-2/huan-luyen-vien/clients.html", "clients"],
-      ["Duyệt ngân sách", "../../thanh-vien-2/huan-luyen-vien/budget.html", "reviews"],
-      ["Tài nguyên", "../../thanh-vien-2/huan-luyen-vien/resources.html", "resources"],
-      ["Soạn nội dung", "../../thanh-vien-2/huan-luyen-vien/edit-resource.html", "editor"],
-      ["Phản hồi", "../../thanh-vien-2/huan-luyen-vien/feedback.html", "feedback"]
-    ],
-    moderator: [
-      ["Duyệt nội dung", "../../thanh-vien-3/kiem-duyet-vien/resources.html", "moderation"],
-      ["Mẫu AI", "../../thanh-vien-3/kiem-duyet-vien/ai-templates.html", "templates"],
-      ["Báo cáo", "../../thanh-vien-3/kiem-duyet-vien/feedback.html", "reports"],
-      ["Kiểm tra AI", "../../thanh-vien-3/kiem-duyet-vien/ai-review.html", "ai"]
-    ],
-    admin: [
-      ["Tổng hệ thống", "../../thanh-vien-3/quan-tri-vien/dashboard.html", "dashboard"],
-      ["Danh mục", "../../thanh-vien-3/quan-tri-vien/categories.html", "categories"],
-      ["Tài khoản", "../../thanh-vien-3/quan-tri-vien/users.html", "users"],
-      ["Phân quyền", "../../thanh-vien-3/quan-tri-vien/permissions.html", "permissions"],
-      ["Kiểm toán", "../../thanh-vien-3/quan-tri-vien/audit.html", "audit"],
-      ["Cấu hình", "../../thanh-vien-3/quan-tri-vien/settings.html", "settings"]
-    ]
-  };
-  const roleLabels = { user: "Người dùng", coach: "Huấn luyện viên", moderator: "Kiểm duyệt viên", admin: "Quản trị viên" };
+  // 2. Cập nhật thẻ thống kê (Stats Grid)
+  if (statsContainer) {
+    const total = feedbacks.length;
+    const displaying = filteredList.length;
+    const activeCount = feedbacks.filter((item) => item.status === "Mới" || item.status === "Đang xử lý").length;
+    const pendingCount = feedbacks.filter((item) => item.status === "Chờ phản hồi" || item.status === "Mới").length;
 
-  function identity() {
-    try {
-      const saved = JSON.parse(localStorage.getItem("spendwise.pro") || "{}");
-      const session = JSON.parse(localStorage.getItem("spendwise.session") || "{}");
-      return { name: saved.name || session.name || "Nguyễn An", role: session.role || document.body.dataset.role || "user" };
-    } catch {
-      return { name: "Nguyễn An", role: document.body.dataset.role || "user" };
-    }
+    statsContainer.innerHTML = `
+      <article class="stat-card"><span>Tổng số</span><strong>${total}</strong></article>
+      <article class="stat-card"><span>Đang hiển thị</span><strong>${displaying}</strong></article>
+      <article class="stat-card"><span>Đang hoạt động</span><strong>${activeCount}</strong></article>
+      <article class="stat-card"><span>Cần xử lý</span><strong>${pendingCount}</strong></article>
+    `;
   }
 
-  function mount(config) {
-    const root = document.querySelector("[data-workspace-root]");
-    if (!root) return;
-    const user = identity();
-    const role = config.role || user.role;
-    const links = nav[role] || nav.user;
-    const initials = user.name.split(/\s+/).slice(-2).map((part) => part[0]).join("").toUpperCase();
-    root.querySelectorAll("[data-user-name], [data-header-name]").forEach((element) => { element.textContent = user.name; });
-    root.querySelectorAll("[data-initials]").forEach((element) => { element.textContent = initials; });
-    if (!root.hasAttribute("data-static-workspace")) root.innerHTML = `
-      <div class="container">
-        <aside class="sidebar">
-          <a class="brand" href="index.html"><span class="brand-mark">S</span><span>SpendWise</span></a>
-          <div class="role-label">${escapeHtml(roleLabels[role] || "Không gian của bạn")}</div>
-          <nav class="nav" aria-label="Điều hướng chính">${links.map(([text, href, icon]) => `<a class="nav-link ${config.active === icon ? "is-active" : ""}" ${config.active === icon ? 'aria-current="page"' : ""} href="${href}"><span class="nav-icon">${icons[icon] || "◦"}</span>${escapeHtml(text)}</a>`).join("")}</nav>
-          <div class="sidebar-bottom"><div class="identity"><div class="avatar">${escapeHtml(initials)}</div><div class="identity-text"><strong>${escapeHtml(user.name)}</strong><span>${escapeHtml(roleLabels[role] || role)}</span></div></div><div class="sidebar-links"><a href="profile.html">Hồ sơ</a><a href="settings.html">Cài đặt</a><a href="notifications.html">Thông báo</a></div></div>
-        </aside>
-        <header class="header"><div class="breadcrumb"><span>${escapeHtml(roleLabels[role] || "SpendWise")}</span><span>/</span><strong>${escapeHtml(config.title)}</strong></div><div class="header-actions"><span>${escapeHtml(user.name)}</span><button type="button" class="button button-quiet" data-signout>Đăng xuất</button></div></header>
-        <main class="main">
-          <section class="page-header"><div><div class="eyebrow">${escapeHtml(config.kicker || roleLabels[role] || "SPENDWISE")}</div><h1>${escapeHtml(config.title)}</h1><p>${escapeHtml(config.description || "")}</p></div><div class="action">${config.readOnly || config.hideCreate ? "" : `<button class="button" type="button" data-create>＋ ${escapeHtml(config.createLabel || "Thêm mới")}</button>`}${config.exportable ? '<button class="button button-secondary" type="button" data-export>↓ Xuất dữ liệu</button>' : ""}</div></section>
-          <section class="stats-grid" data-stats></section>
-          <section class="panel"><div class="panel-header"><div><h2>${escapeHtml(config.listTitle || config.title)}</h2><p data-count></p></div>${config.secondaryAction ? `<button class="button button-secondary" data-secondary type="button">${escapeHtml(config.secondaryAction.label)}</button>` : ""}</div>
-            <div class="filter-bar"><input type="search" data-search placeholder="${escapeHtml(config.searchPlaceholder || "Tìm kiếm...")}" aria-label="Tìm kiếm">${config.filters?.length ? `<select data-status-filter aria-label="Lọc danh sách"><option value="">Tất cả trạng thái</option>${config.filters.map((item) => `<option value="${escapeHtml(item)}">${escapeHtml(item)}</option>`).join("")}</select>` : ""}<button class="button button-quiet" type="button" data-clear>Làm mới bộ lọc</button></div>
-            <div class="table-scroll"><table class="table"><thead><tr>${config.columns.map((column) => `<th>${escapeHtml(column.label)}</th>`).join("")}<th><span class="visually-hidden">Thao tác</span></th></tr></thead><tbody data-rows></tbody></table></div>
-            <div class="empty" data-empty hidden><span aria-hidden="true">${icons[config.active] || "◦"}</span><strong>${escapeHtml(config.emptyTitle || "Chưa có dữ liệu phù hợp")}</strong><p>${escapeHtml(config.emptyMessage || "Thử đổi bộ lọc hoặc thêm một mục mới.")}</p>${config.readOnly || config.hideCreate ? "" : `<button class="button" type="button" data-create>${escapeHtml(config.createLabel || "Thêm mới")}</button>`}</div>
-          </section>
-        </main>
-        <footer class="footer">SpendWise · Bản demo frontend · Dữ liệu lưu trên thiết bị này</footer>
-        <div class="modal-backdrop" data-modal hidden><section class="modal" role="dialog" aria-modal="true" aria-labelledby="modal-title"><div class="modal-header"><h2 id="modal-title">${escapeHtml(config.createLabel || "Thêm mới")}</h2><button type="button" class="icon-button" aria-label="Đóng" data-close>×</button></div><form class="form-grid" data-form><input type="hidden" name="id">${config.fields.map((field) => fieldMarkup(field)).join("")}<div class="field field-full" data-error role="alert"></div><div class="modal-action field-full"><button class="button button-secondary" type="button" data-close>Hủy</button><button class="button" type="submit">Lưu thay đổi</button></div></form></section></div>
-        <div class="toast-region" data-toasts aria-live="polite"></div>
-      </div>`;
+  // 3. Kiểm tra danh sách rỗng
+  if (emptyState) {
+    emptyState.hidden = filteredList.length > 0;
+  }
+  const tableScroll = document.querySelector(".table-scroll");
+  if (tableScroll) {
+    tableScroll.hidden = filteredList.length === 0;
+  }
 
-    const notify = (message, isError = false) => {
-      const toast = document.createElement("div");
-      toast.className = `toast${isError ? " is-danger" : ""}`;
-      toast.textContent = message;
-      root.querySelector("[data-toasts]").append(toast);
-      window.setTimeout(() => toast.remove(), 3500);
-    };
-    let records;
-    try {
-      records = store.read(config.storeKey, config.seed || []);
-    } catch (error) {
-      records = [];
-      notify(`Không thể đọc dữ liệu: ${error.message}`, true);
-    }
-    const form = root.querySelector("[data-form]");
-    const modal = root.querySelector("[data-modal]");
-    const search = root.querySelector("[data-search]");
-    const statusFilter = root.querySelector("[data-status-filter]");
-    const rows = root.querySelector("[data-rows]");
-    const save = () => {
-      try {
-        store.write(config.storeKey, records);
-        if (config.storeKey !== "auditLog") {
-          try {
-            const history = store.read("auditLog", []);
-            history.unshift({ id: id(), actor: user.name, action: "Cập nhật dữ liệu", target: config.title, status: "Thành công", date: new Date().toISOString() });
-            store.write("auditLog", history.slice(0, 500));
-          } catch (error) {
-            notify(`Đã lưu dữ liệu nhưng không ghi được nhật ký kiểm toán: ${error.message}`, true);
-          }
-        }
-        return true;
-      } catch (error) {
-        notify(`Không thể lưu dữ liệu: ${error.message}`, true);
-        return false;
-      }
-    };
-    const get = (record, key) => {
-      const value = key.split(".").reduce((current, part) => current?.[part], record);
-      return value instanceof Date ? value.toISOString() : value;
-    };
-    const formatCell = (record, column) => {
-      const value = get(record, column.key);
-      if (column.format === "date") return dateLabel(String(value || ""));
-      if (column.format === "money") return new Intl.NumberFormat("vi-VN", { style: "currency", currency: "VND", maximumFractionDigits: 0 }).format(Number(value) || 0);
-      if (column.format === "status") return `<span class="status-badge ${/từ chối|khóa|quá hạn|lỗi|vượt/i.test(value || "") ? "is-danger" : /chờ|cần|đang xử lý/i.test(value || "") ? "is-warning" : ""}">${escapeHtml(value || "—")}</span>`;
-      return escapeHtml(value || "—");
-    };
-    function render() {
-      const query = search.value.trim().toLocaleLowerCase("vi");
-      const status = statusFilter?.value || "";
-      const filtered = records.filter((record) => {
-        const text = Object.values(record).map((value) => String(value ?? "")).join(" ").toLocaleLowerCase("vi");
-        return (!query || text.includes(query)) && (!status || record.status === status);
-      });
-      root.querySelector("[data-count]").textContent = `${filtered.length} mục · ${records.length} tổng cộng`;
-      root.querySelector("[data-empty]").hidden = filtered.length > 0;
-      root.querySelector(".table-scroll").hidden = filtered.length === 0;
-      rows.innerHTML = filtered.map((record) => `<tr>${config.columns.map((column) => `<td>${formatCell(record, column)}</td>`).join("")}<td><div class="row-action">${!config.readOnly && config.statuses?.length ? `<select class="status-select" aria-label="Cập nhật trạng thái" data-status-id="${escapeHtml(record.id)}">${config.statuses.map((item) => `<option ${record.status === item ? "selected" : ""}>${escapeHtml(item)}</option>`).join("")}</select>` : ""}${!config.readOnly && !config.hideEdit ? `<button class="icon-button" type="button" aria-label="Sửa" title="Sửa" data-edit="${escapeHtml(record.id)}">✎</button>` : ""}${!config.readOnly && !config.hideDelete ? `<button class="icon-button" type="button" aria-label="Xóa" title="Xóa" data-delete="${escapeHtml(record.id)}">×</button>` : ""}</div></td></tr>`).join("");
-      renderStats(filtered);
-    }
-    function renderStats(filtered) {
-      const stats = config.stats || [
-        { label: "Tổng số", value: records.length },
-        { label: "Đang hiển thị", value: filtered.length },
-        { label: "Đang hoạt động", value: records.filter((record) => !record.status || /đang|hoạt động|đã duyệt|đã trả lời|mới/i.test(record.status)).length },
-        { label: "Cần xử lý", value: records.filter((record) => /chờ|cần bổ sung|mới|đang xử lý|cần xem xét/i.test(record.status || "")).length }
-      ];
-      root.querySelector("[data-stats]").innerHTML = stats.map((item) => {
-        let value = item.value;
-        if (typeof value === "function") value = value(records);
-        else if (value && typeof value === "object" && value.count) {
-          try { value = store.read(value.count, []).length; } catch { value = 0; }
-        }
-        return `<article class="stat-card"><span>${escapeHtml(item.label)}</span><strong>${escapeHtml(value)}</strong></article>`;
-      }).join("");
-    }
-    function open(record) {
-      form.reset();
-      form.elements.id.value = record?.id || "";
-      config.fields.forEach((field) => {
-        const input = form.elements[field.key];
-        const value = record?.[field.key] ?? config.defaultRecord?.[field.key] ?? field.default;
-        if (input && value !== undefined && value !== null) input.value = value;
-        else if (input && field.type === "select") input.selectedIndex = 0;
-      });
-      root.querySelector("#modal-title").textContent = record ? `Sửa ${config.singular || "thông tin"}` : config.createLabel || "Thêm mới";
-      root.querySelector("[data-error]").textContent = "";
-      modal.hidden = false;
-      form.querySelector("input:not([type=hidden]),select,textarea")?.focus();
-    }
-    function close() { modal.hidden = true; }
-    root.querySelectorAll("[data-create]").forEach((button) => button.addEventListener("click", () => open()));
-    root.querySelectorAll("[data-close]").forEach((button) => button.addEventListener("click", close));
-    modal.addEventListener("click", (event) => { if (event.target === modal) close(); });
-    form.addEventListener("submit", (event) => {
-      event.preventDefault();
-      const error = root.querySelector("[data-error]");
-      const data = Object.fromEntries(new FormData(form).entries());
-      const duplicate = config.uniqueKeys?.length && records.find((item) => item.id !== data.id && config.uniqueKeys.every((key) => String(item[key] ?? "").trim().toLocaleLowerCase("vi") === String(data[key] ?? "").trim().toLocaleLowerCase("vi")));
-      if (duplicate) {
-        error.textContent = config.duplicateMessage || "Thông tin này đã tồn tại.";
+  // 4. Render các dòng của bảng
+  if (!tableBody) return;
+  tableBody.innerHTML = "";
+
+  filteredList.forEach((item) => {
+    // Xác định màu nhãn trạng thái
+    let badgeClass = "status-badge";
+    if (item.status === "Đã đóng") badgeClass += " is-danger";
+    else if (item.status === "Chờ phản hồi" || item.status === "Đang xử lý") badgeClass += " is-warning";
+
+    const tr = document.createElement("tr");
+    tr.innerHTML = `
+      <td>${item.sender}</td>
+      <td>${item.subject}</td>
+      <td>${item.priority}</td>
+      <td>${item.assigned}</td>
+      <td><span class="${badgeClass}">${item.status}</span></td>
+      <td>${item.updatedAt || "—"}</td>
+      <td>
+        <div class="row-action">
+          <select class="status-select" data-change-status="${item.id}" aria-label="Đổi trạng thái">
+            <option value="Mới" ${item.status === "Mới" ? "selected" : ""}>Mới</option>
+            <option value="Đang xử lý" ${item.status === "Đang xử lý" ? "selected" : ""}>Đang xử lý</option>
+            <option value="Chờ phản hồi" ${item.status === "Chờ phản hồi" ? "selected" : ""}>Chờ phản hồi</option>
+            <option value="Đã trả lời" ${item.status === "Đã trả lời" ? "selected" : ""}>Đã trả lời</option>
+            <option value="Đã đóng" ${item.status === "Đã đóng" ? "selected" : ""}>Đã đóng</option>
+          </select>
+          <button class="icon-button" type="button" title="Sửa" data-edit="${item.id}">✎</button>
+          <button class="icon-button" type="button" title="Xóa" data-delete="${item.id}">×</button>
+        </div>
+      </td>
+    `;
+    tableBody.appendChild(tr);
+  });
+}
+
+// ==========================================
+// 4. XỬ LÝ MODAL (THÊM / SỬA PHẢN HỒI)
+// ==========================================
+
+const modal = document.querySelector("[data-modal]");
+const form = document.querySelector("[data-form]");
+const modalTitle = document.querySelector("#modal-title");
+const errorBox = document.querySelector("[data-error]");
+
+// Mở form phản hồi mới hoặc nạp nội dung phản hồi đã chọn vào các trường chỉnh sửa.
+function openModal(editId = null) {
+  if (!modal || !form) return;
+  form.reset();
+  errorBox.textContent = "";
+
+  if (editId) {
+    // Chế độ Sửa
+    const record = feedbacks.find((item) => item.id === editId);
+    if (!record) return;
+
+    modalTitle.textContent = "Sửa phản hồi";
+    form.elements["id"].value = record.id;
+    form.elements["sender"].value = record.sender;
+    form.elements["subject"].value = record.subject;
+    form.elements["priority"].value = record.priority;
+    form.elements["assigned"].value = record.assigned;
+    form.elements["status"].value = record.status;
+    form.elements["message"].value = record.message;
+    form.elements["response"].value = record.response || "";
+  } else {
+    // Chế độ Thêm mới
+    modalTitle.textContent = "Tạo phản hồi";
+    form.elements["id"].value = "";
+    form.elements["status"].value = "Mới";
+    form.elements["assigned"].value = "Huấn luyện viên";
+  }
+
+  modal.hidden = false;
+}
+
+// Ẩn modal khi hủy hoặc khi lưu xong.
+function closeModal() {
+  if (modal) modal.hidden = true;
+}
+
+// ==========================================
+// 5. KHỞI CHẠY VÀ GẮN SỰ KIỆN (EVENT LISTENERS)
+// ==========================================
+
+// Tải dữ liệu ban đầu và gắn sự kiện cho form, thao tác bảng, bộ lọc và xuất CSV.
+document.addEventListener("DOMContentLoaded", () => {
+  // 1. Tải dữ liệu ban đầu
+  loadFeedbacks();
+  renderUI();
+
+  // 2. Mở Modal khi nhấn nút Thêm mới
+  document.querySelectorAll("[data-create]").forEach((btn) => {
+    btn.addEventListener("click", () => openModal());
+  });
+
+  // 3. Đóng Modal khi nhấn nút Hủy hoặc dấu ×
+  document.querySelectorAll("[data-close]").forEach((btn) => {
+    btn.addEventListener("click", closeModal);
+  });
+
+  // Đóng Modal khi bấm ra vùng xám mờ bên ngoài
+  if (modal) {
+    modal.addEventListener("click", (e) => {
+      if (e.target === modal) closeModal();
+    });
+  }
+
+  // 4. Lưu Form (Thêm mới hoặc Cập nhật)
+  if (form) {
+    form.addEventListener("submit", (e) => {
+      e.preventDefault();
+
+      const id = form.elements["id"].value;
+      const sender = form.elements["sender"].value.trim();
+      const subject = form.elements["subject"].value.trim();
+      const priority = form.elements["priority"].value;
+      const assigned = form.elements["assigned"].value;
+      const status = form.elements["status"].value;
+      const message = form.elements["message"].value.trim();
+      const response = form.elements["response"].value.trim();
+
+      // Kiểm tra tính hợp lệ cơ bản (Validation)
+      if (!sender || !subject || !message) {
+        errorBox.textContent = "Vui lòng nhập đầy đủ các thông tin bắt buộc (*).";
         return;
       }
-      for (const field of config.fields) {
-        if (field.required && !String(data[field.key] || "").trim()) {
-          error.textContent = `Vui lòng nhập ${field.label.toLocaleLowerCase("vi")}.`;
-          form.elements[field.key].focus();
-          return;
+
+      const today = new Date().toISOString().slice(0, 10);
+
+      if (id) {
+        // Cập nhật phản hồi cũ
+        const index = feedbacks.findIndex((item) => item.id === id);
+        if (index !== -1) {
+          feedbacks[index] = {
+            ...feedbacks[index],
+            sender,
+            subject,
+            priority,
+            assigned,
+            status,
+            message,
+            response,
+            updatedAt: today
+          };
+          showToast("Đã cập nhật phản hồi thành công.");
         }
-        if (field.type === "number" && data[field.key] !== "" && Number(data[field.key]) < 0) {
-          error.textContent = `${field.label} không được là số âm.`;
-          form.elements[field.key].focus();
-          return;
+      } else {
+        // Thêm phản hồi mới
+        const newRecord = {
+          id: "fb-" + Date.now(),
+          sender,
+          subject,
+          priority,
+          assigned,
+          status,
+          message,
+          response,
+          updatedAt: today
+        };
+        feedbacks.unshift(newRecord);
+        showToast("Đã tạo phản hồi mới.");
+      }
+
+      saveFeedbacks();
+      closeModal();
+      renderUI();
+    });
+  }
+
+  // 5. Thao tác trên bảng (Sửa, Xóa, Đổi trạng thái nhanh)
+  const tableBody = document.querySelector("[data-rows]");
+  if (tableBody) {
+    tableBody.addEventListener("click", (e) => {
+      // Nút Sửa
+      const editBtn = e.target.closest("[data-edit]");
+      if (editBtn) {
+        const id = editBtn.dataset.edit;
+        openModal(id);
+        return;
+      }
+
+      // Nút Xóa
+      const deleteBtn = e.target.closest("[data-delete]");
+      if (deleteBtn) {
+        const id = deleteBtn.dataset.delete;
+        const item = feedbacks.find((x) => x.id === id);
+        if (!item) return;
+
+        if (confirm(`Bạn có chắc muốn xóa phản hồi của "${item.sender}"?`)) {
+          feedbacks = feedbacks.filter((x) => x.id !== id);
+          saveFeedbacks();
+          renderUI();
+          showToast("Đã xóa phản hồi.");
         }
       }
-      config.fields.forEach((field) => {
-        if (field.type === "number") data[field.key] = data[field.key] === "" ? 0 : Number(data[field.key]);
+    });
+
+    // Bắt sự kiện chọn nhanh dropdown trạng thái trên từng dòng
+    tableBody.addEventListener("change", (e) => {
+      const select = e.target.closest("[data-change-status]");
+      if (select) {
+        const id = select.dataset.changeStatus;
+        const item = feedbacks.find((x) => x.id === id);
+        if (item) {
+          item.status = select.value;
+          saveFeedbacks();
+          renderUI();
+          showToast("Đã đổi trạng thái sang: " + select.value);
+        }
+      }
+    });
+  }
+
+  // 6. Tìm kiếm và Bộ lọc
+  const searchInput = document.querySelector("[data-search]");
+  if (searchInput) {
+    searchInput.addEventListener("input", renderUI);
+  }
+
+  const statusFilter = document.querySelector("[data-status-filter]");
+  if (statusFilter) {
+    statusFilter.addEventListener("change", renderUI);
+  }
+
+  // Nút Làm mới bộ lọc
+  const clearBtn = document.querySelector("[data-clear]");
+  if (clearBtn) {
+    clearBtn.addEventListener("click", () => {
+      if (searchInput) searchInput.value = "";
+      if (statusFilter) statusFilter.value = "";
+      renderUI();
+    });
+  }
+
+  // 7. Xuất file CSV dữ liệu
+  const exportBtn = document.querySelector("[data-export]");
+  if (exportBtn) {
+    exportBtn.addEventListener("click", () => {
+      if (feedbacks.length === 0) {
+        alert("Chưa có dữ liệu để xuất.");
+        return;
+      }
+      let csvContent = "\uFEFFNgười gửi,Chủ đề,Mức độ,Phụ trách,Trạng thái,Ngày\r\n";
+      feedbacks.forEach((item) => {
+        csvContent += `"${item.sender}","${item.subject}","${item.priority}","${item.assigned}","${item.status}","${item.updatedAt}"\r\n`;
       });
-      const previous = records;
-      const record = { ...data, id: data.id || id(), updatedAt: new Date().toISOString() };
-      records = data.id ? previous.map((item) => item.id === data.id ? { ...item, ...record } : item) : [{ ...(config.defaultRecord || {}), ...record }, ...previous];
-      if (!save()) { records = previous; return; }
-      close();
-      render();
-      notify(data.id ? "Đã cập nhật dữ liệu." : "Đã tạo mục mới.");
+
+      const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = `danh-sach-phan-hoi-${new Date().toISOString().slice(0, 10)}.csv`;
+      link.click();
+      URL.revokeObjectURL(url);
     });
-    rows.addEventListener("click", (event) => {
-      const edit = event.target.closest("[data-edit]");
-      const remove = event.target.closest("[data-delete]");
-      if (edit) open(records.find((record) => record.id === edit.dataset.edit));
-      if (remove) {
-        const record = records.find((item) => item.id === remove.dataset.delete);
-        if (!record || !window.confirm(`Bạn có chắc muốn xóa “${record[config.labelKey || config.fields[0]?.key] || "mục này"}”?`)) return;
-        const previous = records;
-        records = previous.filter((item) => item.id !== record.id);
-        if (save()) { render(); notify("Đã xóa mục."); } else records = previous;
-      }
-    });
-    rows.addEventListener("change", (event) => {
-      const select = event.target.closest("[data-status-id]");
-      if (!select) return;
-      const previous = records;
-      records = previous.map((record) => record.id === select.dataset.statusId ? { ...record, status: select.value } : record);
-      if (save()) { render(); notify("Đã cập nhật trạng thái."); } else records = previous;
-    });
-    search.addEventListener("input", render);
-    statusFilter?.addEventListener("change", render);
-    root.querySelector("[data-clear]").addEventListener("click", () => { search.value = ""; if (statusFilter) statusFilter.value = ""; render(); });
-    const exportButton = root.querySelector("[data-export]");
-    exportButton?.addEventListener("click", () => {
-      const csv = `\uFEFF${[config.columns.map((column) => column.label), ...records.map((record) => config.columns.map((column) => get(record, column.key) ?? ""))].map((row) => row.map((value) => `"${String(value).replace(/"/g, '""')}"`).join(",")).join("\r\n")}`;
-      const url = URL.createObjectURL(new Blob([csv], { type: "text/csv;charset=utf-8" }));
-      const anchor = document.createElement("a");
-      anchor.href = url;
-      anchor.download = `${config.slug || "spendwise"}-${new Date().toISOString().slice(0, 10)}.csv`;
-      anchor.click();
-      window.setTimeout(() => URL.revokeObjectURL(url), 0);
-    });
-    root.querySelector("[data-secondary]")?.addEventListener("click", () => {
-      window.location.href = config.secondaryAction.href;
-    });
-    root.querySelector("[data-signout]").addEventListener("click", () => {
+  }
+
+  // 8. Nút Đăng xuất
+  const signoutBtn = document.querySelector("[data-signout]");
+  if (signoutBtn) {
+    signoutBtn.addEventListener("click", () => {
       localStorage.removeItem("spendwise.session");
       window.location.href = "../../thanh-vien-2/dung-chung/login.html";
     });
-    document.addEventListener("keydown", (event) => { if (event.key === "Escape") close(); });
-    window.addEventListener("spendwise:data", (event) => {
-      if (event.detail?.key !== config.storeKey) return;
-      try { records = store.read(config.storeKey, []); render(); } catch (error) { notify(`Không thể đồng bộ: ${error.message}`, true); }
-    });
-    render();
   }
-
-  window.SpendWiseWorkspace = { mount, store, escapeHtml, labelize, dateLabel };
-  document.addEventListener("DOMContentLoaded", () => {
-    if (window.WorkspacePage) mount(window.WorkspacePage);
-  });
-})();
+});
