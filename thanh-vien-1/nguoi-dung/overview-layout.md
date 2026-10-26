@@ -3,46 +3,46 @@
 ├── .sidebar
 │   ├── .brand
 │   │   └── .brand-mark
-│   ├── .sidebar-label
-│   ├── .sidebar-nav
+│   ├── .side-label
+│   ├── .side-nav
 │   │   ├── .nav-item.is-active
 │   │   │   └── .nav-icon
 │   │   └── .nav-item
 │   │       └── .nav-icon
-│   ├── .sidebar-account
+│   ├── .side-account
 │   │   ├── .avatar
-│   │   ├── .account-profile
+│   │   ├── .acc-profile
 │   │   └── .settings-link
-│   └── .sidebar-links
+│   └── .side-links
 ├── .header
 │   ├── .breadcrumb
 │   │   └── .breadcrumb-separator
-│   └── .account-area
+│   └── .acc-area
 │       ├── .date-label
 │       ├── .icon-button
 │       └── .avatar.avatar-small
 ├── .main
-│   ├── .page-header
-│   │   ├── .page-heading
+│   ├── .pg-header
+│   │   ├── .pg-heading
 │   │   │   ├── .eyebrow
 │   │   │   └── .wave
-│   │   └── .page-actions
+│   │   └── .pg-actions
 │   │       ├── .button.button-secondary
 │   │       └── .button.button-primary
-│   ├── .summary-grid
-│   │   ├── .summary-card.summary-card-balance
-│   │   │   ├── .summary-card-top
-│   │   │   │   └── .summary-icon
-│   │   │   ├── .summary-value
-│   │   │   └── .summary-note
+│   ├── .sum-grid
+│   │   ├── .sum-card.sum-card-balance
+│   │   │   ├── .sum-card-top
+│   │   │   │   └── .sum-icon
+│   │   │   ├── .sum-value
+│   │   │   └── .sum-note
 │   │   │       └── .trend.trend-positive
-│   │   └── .summary-card
-│   │       ├── .summary-card-top
-│   │       │   ├── .summary-icon.summary-icon-green
-│   │       │   ├── .summary-icon.summary-icon-coral
-│   │       │   └── .summary-icon.summary-icon-blue
-│   │       ├── .summary-value
-│   │       └── .summary-note
+│   │   └── .sum-card
+│   │       ├── .sum-card-top
+│   │       │   ├── .sum-icon.sum-icon-green
+│   │       │   ├── .sum-icon.sum-icon-coral
+│   │       │   └── .sum-icon.sum-icon-blue
+│   │       ├── .sum-value
+│   │       └── .sum-note
 │   │           └── .metric-caption
 │   └── .dashboard-grid
 │       ├── .panel.spending-panel
@@ -56,19 +56,19 @@
 │       │           │   ├── .chart-bar
 │       │           │   └── .chart-bar.chart-bar-expense
 │       │           └── .chart-mon-label
-│       ├── .panel.budget-panel
+│       ├── .panel.bud-panel
 │       │   ├── .panel-heading
 │       │   │   └── .text-link
-│       │   ├── .budget-total
+│       │   ├── .bud-total
 │       │   ├── .progress-track
 │       │   │   ├── .progress-fill
 │       │   │   ├── .progress-fill.is-warning
 │       │   │   └── .progress-fill.is-over-limit
-│       │   ├── .budget-remaining
-│       │   └── .budget-category-list
-│       │       ├── .budget-category-row
-│       │       │   ├── .budget-category-name
-│       │       │   ├── .budget-category-amount
+│       │   ├── .bud-remaining
+│       │   └── .bud-category-list
+│       │       ├── .bud-category-row
+│       │       │   ├── .bud-category-name
+│       │       │   ├── .bud-category-amount
 │       │       │   └── .progress-track
 │       │       │       ├── .progress-fill
 │       │       │       ├── .progress-fill.is-warning

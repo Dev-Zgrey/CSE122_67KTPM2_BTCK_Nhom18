@@ -4,26 +4,32 @@ window.AccountPage = errorCode === "403"
   : { "type": "error", "code": errorCode, "title": "Không tìm thấy trang", "description": "Đường dẫn có thể đã thay đổi hoặc trang không tồn tại." };
 
 (() => {
+
   function init() {
     "use strict";
     const config = window.AccountPage;
     const root = document.querySelector("[data-account-root]");
     if (!root || !config) return;
+
     const roles = { user: "Người dùng", coach: "Huấn luyện viên", moderator: "Kiểm duyệt viên", admin: "Quản trị viên" };
     const roleHome = { user: "../../thanh-vien-1/nguoi-dung/overview.html", coach: "../../thanh-vien-2/huan-luyen-vien/clients.html", moderator: "../../thanh-vien-3/kiem-duyet-vien/resources.html", admin: "../../thanh-vien-3/quan-tri-vien/dashboard.html" };
     const pageLinks = [
-      ["Dùng chung", [["Đăng nhập", "login.html"], ["Đăng ký", "register.html"], ["Quên mật khẩu", "forgot-password.html"], ["Hồ sơ", "profile.html"], ["Cài đặt", "settings.html"], ["Thông báo", "notifications.html"], ["Không có quyền", "403.html"], ["Không tìm thấy", "404.html"]]],
-      ["Người dùng", [["Tổng quan tài chính", "../../thanh-vien-1/nguoi-dung/overview.html"], ["Giao dịch", "../../thanh-vien-1/nguoi-dung/transactions.html"], ["Ngân sách", "../../thanh-vien-1/nguoi-dung/budget.html"], ["Mục tiêu tiết kiệm", "../../thanh-vien-1/nguoi-dung/goals.html"], ["Phân tích chi tiêu", "../../thanh-vien-1/nguoi-dung/insights.html"], ["Đề xuất AI", "../../thanh-vien-1/nguoi-dung/ai.html"]]],
+      ["Dùng chung", [["Đăng nhập", "login.html"], ["Đăng ký", "register.html"], ["Quên mật khẩu", "forgot-password.html"], ["Hồ sơ", "profile.html"], ["Cài đặt", "settings.html"], ["Thông báo", "notifications.html"], ["Không tìm thấy", "404.html"]]],
+      ["Người dùng", [["Tổng quan tài chính", "../../thanh-vien-1/nguoi-dung/overview.html"], ["Giao dịch", "../../thanh-vien-1/nguoi-dung/transactions.html"], ["Ngân sách", "../../thanh-vien-1/nguoi-dung/budget.html"], ["Mục tiêu tiết kiệm", "../../thanh-vien-1/nguoi-dung/goals.html"], ["Phân tích chi tiêu", "../../thanh-vien-1/nguoi-dung/insights.html"]]],
       ["Huấn luyện viên", [["Danh sách học viên", "../../thanh-vien-2/huan-luyen-vien/clients.html"], ["Đánh giá ngân sách", "../../thanh-vien-2/huan-luyen-vien/budget.html"], ["Quản lý tài nguyên", "../../thanh-vien-2/huan-luyen-vien/resources.html"], ["Soạn tài nguyên", "../../thanh-vien-2/huan-luyen-vien/edit-resource.html"], ["Phản hồi", "../../thanh-vien-2/huan-luyen-vien/feedback.html"]]],
-      ["Kiểm duyệt viên", [["Duyệt nội dung", "../../thanh-vien-3/kiem-duyet-vien/resources.html"], ["Mẫu AI", "../../thanh-vien-3/kiem-duyet-vien/ai-templates.html"], ["Trung tâm báo cáo", "../../thanh-vien-3/kiem-duyet-vien/feedback.html"], ["Kiểm tra AI", "../../thanh-vien-3/kiem-duyet-vien/ai-review.html"]]],
-      ["Quản trị viên", [["Tổng quan hệ thống", "../../thanh-vien-3/quan-tri-vien/dashboard.html"], ["Danh mục chi tiêu", "../../thanh-vien-3/quan-tri-vien/categories.html"], ["Tài khoản", "../../thanh-vien-3/quan-tri-vien/users.html"], ["Phân quyền", "../../thanh-vien-3/quan-tri-vien/permissions.html"], ["Nhật ký kiểm toán", "../../thanh-vien-3/quan-tri-vien/audit.html"], ["Cấu hình hệ thống", "../../thanh-vien-3/quan-tri-vien/settings.html"]]]
+      ["Kiểm duyệt viên", [["Duyệt nội dung", "../../thanh-vien-3/kiem-duyet-vien/resources.html"], ["Mẫu AI", "../../thanh-vien-3/kiem-duyet-vien/ai-templates.html"], ["Trung tâm báo cáo", "../../thanh-vien-3/kiem-duyet-vien/feedback.html"]]],
+      ["Quản trị viên", [["Tổng quan hệ thống", "../../thanh-vien-3/quan-tri-vien/dashboard.html"], ["Danh mục chi tiêu", "../../thanh-vien-3/quan-tri-vien/categories.html"], ["Tài khoản", "../../thanh-vien-3/quan-tri-vien/users.html"]]]
     ];
+
     const esc = (value) => String(value ?? "").replace(/[&<>"']/g, (char) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[char]);
+
     const read = (key, fallback) => {
       const saved = localStorage.getItem(`spendwise.${key}`);
       return saved === null ? fallback : JSON.parse(saved);
     };
+
     const write = (key, value) => localStorage.setItem(`spendwise.${key}`, JSON.stringify(value));
+
     const makeId = () => globalThis.crypto?.randomUUID?.() || `sw-${Date.now()}-${Math.random().toString(36).slice(2, 9)}`;
     const demoUsers = [
       { id: "usr-an", name: "Nguyễn An", email: "an.tran@spendwise.demo", role: "Người dùng", status: "Hoạt động", goal: "Quỹ dự phòng", budget: "Đúng kế hoạch", createdAt: "2026-09-01" },
@@ -51,7 +57,8 @@ window.AccountPage = errorCode === "403"
     } catch (error) {
       root.dataset.storageError = `Dữ liệu demo chưa khởi tạo được: ${error.message}`;
     }
-    const nav = `<header class="header"><a class="brand" href="index.html"><span class="brand-mark">S</span>SpendWise</a><nav class="header-links"><a href="index.html">Trang chủ</a><a href="login.html">Đăng nhập</a></nav></header>`;
+
+    const nav = `<header class="header"><a class="brand" href="../../index.html"><span class="brand-mark">S</span>SpendWise</a><nav class="header-links"><a href="../../index.html">Trang chủ</a><a href="login.html">Đăng nhập</a></nav></header>`;
     const shell = (content) => `<div class="container">${nav}<main class="main">${content}</main><footer class="footer">SpendWise · Bản demo frontend · Dữ liệu chỉ lưu trên trình duyệt</footer></div>`;
     const field = (label, name, type = "text", value = "", required = true, placeholder = "") => `<div class="field"><label for="${name}">${label}${required ? " *" : ""}</label><input id="${name}" name="${name}" type="${type}" value="${esc(value)}" placeholder="${esc(placeholder)}" ${required ? "required" : ""} ${type === "email" ? 'autocomplete="email"' : ""}></div>`;
     const formShell = (title, description, body, button) => `<section class="card"><h1>${title}</h1><p>${description}</p><form class="form" data-form>${body}<div class="error" data-error role="alert"></div><button class="button" type="submit">${button}</button><div class="success" data-success hidden></div></form></section>`;
@@ -194,9 +201,10 @@ window.AccountPage = errorCode === "403"
     }
 
     if (config.type === "error") {
-      if (!root.hasAttribute("data-static-account")) root.innerHTML = shell(`<section class="error-view"><div class="error-code">${esc(config.code)}</div><h1>${esc(config.title)}</h1><p>${esc(config.description)}</p><div class="hero-actions"><a class="button" href="../../thanh-vien-1/nguoi-dung/overview.html">Về tổng quan</a><a class="button button-secondary" href="index.html">Trang chủ</a></div></section>`);
+      if (!root.hasAttribute("data-static-account")) root.innerHTML = shell(`<section class="error-view"><div class="error-code">${esc(config.code)}</div><h1>${esc(config.title)}</h1><p>${esc(config.description)}</p><div class="hero-actions"><a class="button" href="../../thanh-vien-1/nguoi-dung/overview.html">Về tổng quan</a><a class="button button-secondary" href="../../index.html">Trang chủ</a></div></section>`);
     }
   }
+
   if (document.readyState !== "complete") document.addEventListener("DOMContentLoaded", init, { once: true });
   else init();
 })();

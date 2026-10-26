@@ -6,10 +6,10 @@
   --paper: #f6f8f5;
   --surface: #fff;
   --green: #205c47;
-  --accent: #205c47;
-  --accent-soft: #e8f3ec;
+  --accent: #806040;
+  --accent-soft: #f6f0e8;
   --danger: #b9584c;
-  font-family: "Segoe UI", Arial, sans-serif;
+  font-family: "Segoe UI", "Tahoma", "Verdana", Arial, sans-serif;
   font-synthesis: none;
   text-rendering: optimizeLegibility;
 }
@@ -726,10 +726,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
   }
 }
 
-:root {
-  --accent: #806040;
-  --accent-soft: #f6f0e8;
-}
+
 
 .page-header h1 {
   color: #192820;

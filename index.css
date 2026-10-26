@@ -60,14 +60,14 @@ a {
   color: #174936;
 }
 
-.header-login {
+.head-login {
   color: #596b60;
   font-size: 14px;
   font-weight: 600;
   text-decoration: none;
 }
 
-.header-login:hover {
+.head-login:hover {
   color: var(--green);
 }
 

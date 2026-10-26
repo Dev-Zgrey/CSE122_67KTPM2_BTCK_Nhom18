@@ -10,7 +10,7 @@
   <body data-role="user" data-workspace-group="user-insights">
     <div class="container" data-workspace-root>
       <aside class="sidebar">
-        <a class="brand" href="../../thanh-vien-2/dung-chung/index.html"><span class="brand-mark">S</span><span>SpendWise</span></a>
+        <a class="brand" href="../../index.html"><span class="brand-mark">S</span><span>SpendWise</span></a>
         <div class="role-label">
           Người dùng
         </div>
@@ -34,7 +34,7 @@
             <span class="nav-icon">✦</span>Gợi ý AI
           </a>
         </nav>
-        <div class="sidebar-bottom">
+        <div class="side-bottom">
           <div class="identity">
             <div class="avatar" data-initials>
               AN
@@ -43,7 +43,7 @@
               <strong data-user-name>Nguyễn An</strong><span>Người dùng</span>
             </div>
           </div>
-          <div class="sidebar-links">
+          <div class="side-links">
             <a href="../../thanh-vien-2/dung-chung/profile.html">Hồ sơ</a><a href="../../thanh-vien-2/dung-chung/settings.html">Cài đặt</a><a href="../../thanh-vien-2/dung-chung/notifications.html">Thông báo</a>
           </div>
         </div>
@@ -52,12 +52,12 @@
         <div class="breadcrumb">
           <span>Người dùng</span><span>/</span><strong>Phân tích chi tiêu</strong>
         </div>
-        <div class="header-actions">
-          <span data-header-name>Nguyễn An</span><button type="button" class="button button-quiet" data-signout>Đăng xuất</button>
+        <div class="head-actions">
+          <span data-head-name>Nguyễn An</span><button type="button" class="button button-quiet" data-signout>Đăng xuất</button>
         </div>
       </header>
       <main class="main">
-        <section class="page-header">
+        <section class="pg-header">
           <div>
             <div class="eyebrow">
               Người dùng
@@ -151,5 +151,66 @@
       <div class="toast-region" data-toasts aria-live="polite">
       </div>
     </div>
+      <script type="application/json" data-workspace-config="insights">
+{
+  "slug": "user-spending-insights",
+  "title": "Phân tích chi tiêu",
+  "description": "So sánh chi tiêu theo danh mục và đọc các nhận định có giải thích.",
+  "role": "user",
+  "active": "insights",
+  "storeKey": "insights",
+  "columns": [
+    {
+      "key": "category",
+      "label": "Danh mục"
+    },
+    {
+      "key": "spent",
+      "label": "Chi kỳ này",
+      "format": "money"
+    },
+    {
+      "key": "previous",
+      "label": "Kỳ trước",
+      "format": "money"
+    },
+    {
+      "key": "change",
+      "label": "Thay đổi"
+    },
+    {
+      "key": "insight",
+      "label": "Nhận định"
+    },
+    {
+      "key": "confidence",
+      "label": "Độ chắc chắn"
+    }
+  ],
+  "fields": [],
+  "readOnly": true,
+  "hideCreate": true,
+  "listTitle": "Insight theo danh mục",
+  "stats": [
+    {
+      "label": "Danh mục phân tích",
+      "value": 4
+    },
+    {
+      "label": "Kỳ so sánh",
+      "value": "Tháng này"
+    },
+    {
+      "label": "Xu hướng tích cực",
+      "value": 2
+    },
+    {
+      "label": "Độ tin cậy",
+      "value": "Tham khảo"
+    }
+  ],
+  "exportable": true
+}
+    </script>
   </body>
 </html>

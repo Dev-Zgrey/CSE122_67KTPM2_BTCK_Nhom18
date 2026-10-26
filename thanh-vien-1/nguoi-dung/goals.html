@@ -5,12 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Mục tiêu tiết kiệm</title>
     <link rel="stylesheet" href="goals.css">
-    <script src="goals.js" defer></script><script src="../../workspace-tabs.js" defer></script>
+    <script src="../../workspace-engine.js" defer></script><script src="goals.js" defer></script><script src="../../workspace-tabs.js" defer></script>
   </head>
   <body data-role="user">
     <div class="container" data-workspace-root data-static-workspace>
       <aside class="sidebar">
-        <a class="brand" href="../../thanh-vien-2/dung-chung/index.html"><span class="brand-mark">S</span><span>SpendWise</span></a>
+        <a class="brand" href="../../index.html"><span class="brand-mark">S</span><span>SpendWise</span></a>
         <div class="role-label">
           Người dùng
         </div>
@@ -34,7 +34,7 @@
             <span class="nav-icon">✦</span>Gợi ý AI
           </a>
         </nav>
-        <div class="sidebar-bottom">
+        <div class="side-bottom">
           <div class="identity">
             <div class="avatar" data-initials>
               AN
@@ -43,7 +43,7 @@
               <strong data-user-name>Nguyễn An</strong><span>Người dùng</span>
             </div>
           </div>
-          <div class="sidebar-links">
+          <div class="side-links">
             <a href="../../thanh-vien-2/dung-chung/profile.html">Hồ sơ</a><a href="../../thanh-vien-2/dung-chung/settings.html">Cài đặt</a><a href="../../thanh-vien-2/dung-chung/notifications.html">Thông báo</a>
           </div>
         </div>
@@ -52,12 +52,12 @@
         <div class="breadcrumb">
           <span>Người dùng</span><span>/</span><strong>Mục tiêu tiết kiệm</strong>
         </div>
-        <div class="header-actions">
-          <span data-header-name>Nguyễn An</span><button type="button" class="button button-quiet" data-signout>Đăng xuất</button>
+        <div class="head-actions">
+          <span data-head-name>Nguyễn An</span><button type="button" class="button button-quiet" data-signout>Đăng xuất</button>
         </div>
       </header>
       <main class="main">
-        <section class="page-header">
+        <section class="pg-header">
           <div>
             <div class="eyebrow">
               Người dùng
@@ -74,7 +74,11 @@
           </div>
         </section>
         <section class="stats-grid" data-stats>
-        </section>
+        <article class="stat-card"><span>Tổng mục tiêu</span><strong data-stat="total">0</strong></article>
+        <article class="stat-card"><span>Đang tiến hành</span><strong data-stat="status" data-status="Đang tiến hành">0</strong></article>
+        <article class="stat-card"><span>Hoàn thành</span><strong data-stat="status" data-status="Hoàn thành">0</strong></article>
+        <article class="stat-card"><span>Quá hạn</span><strong data-stat="status" data-status="Quá hạn">0</strong></article>
+      </section>
         <section class="panel">
           <div class="panel-header">
             <div>
@@ -111,21 +115,11 @@
             <table class="table">
               <thead>
                 <tr>
-                  <th>
-                    Mục tiêu
-                  </th>
-                  <th>
-                    Số tiền mục tiêu
-                  </th>
-                  <th>
-                    Đã tiết kiệm
-                  </th>
-                  <th>
-                    Hạn hoàn thành
-                  </th>
-                  <th>
-                    Trạng thái
-                  </th>
+                  <th data-key="title">Mục tiêu</th>
+                  <th data-key="target" data-format="money">Số tiền mục tiêu</th>
+                  <th data-key="saved" data-format="money">Đã tiết kiệm</th>
+                  <th data-key="deadline" data-format="date">Hạn hoàn thành</th>
+                  <th data-key="status" data-format="status">Trạng thái</th>
                   <th>
                     <span class="visually-hidden">Thao tác</span>
                   </th>
@@ -150,7 +144,7 @@
       <div class="modal-backdrop" data-modal hidden>
         <section class="modal" role="dialog" aria-modal="true" aria-labelledby="modal-title">
           <div class="modal-header">
-            <h2 id="modal-title">
+            <h2 id="modal-title" data-edit-title="Sửa mục tiêu">
               Tạo mục tiêu
             </h2>
             <button type="button" class="icon-button" aria-label="Đóng" data-close>×</button>

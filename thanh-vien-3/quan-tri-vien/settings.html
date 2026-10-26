@@ -1,0 +1,123 @@
+<!doctype html>
+<html lang="vi">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Cấu hình hệ thống</title>
+    <link rel="stylesheet" href="settings.css">
+    <script src="settings.js" defer></script>
+    <script src="../../workspace-tabs.js" defer></script>
+</head>
+
+<body data-role="admin">
+    <div class="container" data-workspace-root data-static-workspace>
+        <aside class="sidebar"> <a class="brand" href="../../index.html"><span
+                    class="brand-mark">S</span><span>SpendWise</span></a>
+            <div class="role-label">Quản trị viên</div>
+            <nav class="nav" aria-label="Điều hướng chính"><a class="nav-link "
+                    href="../../thanh-vien-3/quan-tri-vien/dashboard.html"><span class="nav-icon">•</span>Tổng hợp hệ
+                    thống</a><a class="nav-link " href="../../thanh-vien-3/quan-tri-vien/categories.html"><span
+                        class="nav-icon">•</span>Danh mục</a><a class="nav-link "
+                    href="../../thanh-vien-3/quan-tri-vien/users.html"><span class="nav-icon">•</span>Tài khoản</a><a
+                    class="nav-link " href="../../thanh-vien-3/quan-tri-vien/permissions.html"><span
+                        class="nav-icon">•</span>Phân quyền</a><a class="nav-link "
+                    href="../../thanh-vien-3/quan-tri-vien/audit.html"><span class="nav-icon">•</span>Kiểm toán</a><a
+                    class="nav-link is-active" aria-current="page"
+                    href="../../thanh-vien-3/quan-tri-vien/settings.html"><span class="nav-icon">•</span>Cấu hình</a>
+            </nav>
+            <div class="sidebar-bottom">
+                <div class="identity">
+                    <div class="avatar" data-initials>AN</div>
+                    <div class="identity-text"><strong data-user-name>Nguyễn An</strong><span>Quản trị viên</span></div>
+                </div>
+                <div class="sidebar-links"><a href="../../thanh-vien-2/dung-chung/profile.html">Hồ sơ</a><a
+                        href="../../thanh-vien-2/dung-chung/settings.html">Cài đặt</a><a
+                        href="../../thanh-vien-2/dung-chung/notifications.html">Thông báo</a></div>
+            </div>
+        </aside>
+        <header class="header">
+            <div class="breadcrumb"><span>Quản trị viên</span><span>/</span><strong>Cấu hình hệ thống</strong></div>
+            <div class="header-actions"><span data-header-name>Nguyễn An</span><button type="button" class="button button-quiet" data-signout>Đăng xuất</button></div>
+        </header>
+        <main class="main">
+            <section class="page-header">
+                <div>
+                    <div class="eyebrow">Quản trị viên</div>
+                    <h1>Cấu hình hệ thống</h1>
+                    <p>Chỉnh sửa thông số demo, thông báo và trạng thái tính năng toàn cục.</p>
+                </div>
+                <div class="action">
+                    <button class="button" type="button" data-create>Thêm thiết lập</button>
+                    <button class="button button-secondary" type="button" data-export>Xuất dữ liệu</button>
+                </div>
+            </section>
+            <section class="stats-grid" data-stats></section>
+            <section class="panel">
+                <div class="panel-header">
+                    <div>
+                        <h2>Cấu hình hệ thống</h2>
+                        <p data-count></p>
+                    </div>
+                </div>
+                <div class="filter-bar">
+                    <input type="search" data-search placeholder="Tìm kiếm..." aria-label="Tìm kiếm">
+                    <select data-status-filter aria-label="Lọc danh sách">
+                        <option value="">Tất cả trạng thái</option>
+                        <option value="AI">AI</option>
+                        <option value="Thông báo">Thông báo</option>
+                        <option value="Tài chính">Tài chính</option>
+                        <option value="Quyền riêng tư">Quyền riêng tư</option>
+                    </select>
+                    <button class="button button-quiet" type="button" data-clear>Làm mới bộ lọc</button>
+                </div>
+                <div class="table-scroll">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Nhóm</th>
+                                <th>Thiết lập</th>
+                                <th>Giá trị</th>
+                                <th>Cập nhật</th>
+                                <th><span class="visually-hidden">Thao tác</span></th>
+                            </tr>
+                        </thead>
+                        <tbody data-rows></tbody>
+                    </table>
+                </div>
+                <div class="empty" data-empty hidden>
+                    <span aria-hidden="true">•</span>
+                    <strong>Chưa có dữ liệu phù hợp</strong>
+                    <p>Thay đổi bộ lọc hoặc thêm một mục mới.</p>
+                    <button class="button" type="button" data-create>Thêm thiết lập</button>
+                </div>
+            </section>
+        </main>
+        <footer class="footer">SpendWise — Bản demo frontend — Dữ liệu lưu trên thiết bị này</footer>
+        <div class="modal-backdrop" data-modal hidden>
+            <section class="modal" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+                <div class="modal-header">
+                    <h2 id="modal-title">Thêm thiết lập</h2>
+                    <button type="button" class="icon-button" aria-label="Đóng" data-close>×</button>
+                </div>
+                <form class="form-grid" data-form>
+                    <input type="hidden" name="id">
+                    <div class="field "><label>Nhóm thiết lập *</label><select name="group" required>
+                            <option>Thông báo</option>
+                            <option>AI</option>
+                            <option>Tài chính</option>
+                            <option>Quyền riêng tư</option>
+                        </select></div>
+                    <div class="field "><label>Tên thiết lập *</label><input name="name" type="text" placeholder="" value="" required></div>
+                    <div class="field "><label>Giá trị *</label><input name="value" type="text" placeholder="" value="" required></div>
+                    <div class="field field-full"><label>Mô tả</label><textarea name="description" placeholder=""></textarea></div>
+                    <div class="field field-full" data-error role="alert"></div>
+                    <div class="modal-action field-full"><button class="button button-secondary" type="button" data-close>Hủy</button><button class="button" type="submit">Lưu thay đổi</button></div>
+                </form>
+            </section>
+        </div>
+        <div class="toast-region" data-toasts aria-live="polite"></div>
+    </div>
+</body>
+
+</html>

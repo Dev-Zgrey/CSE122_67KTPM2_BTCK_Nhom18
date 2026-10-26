@@ -8,42 +8,42 @@
     <script src="overview.js" defer></script><script src="../../workspace-tabs.js" defer></script>
   </head>
   <body>
-    <div class="container dashboard" data-page="dashboard">
+    <div class="container" data-page="dashboard">
       <aside class="sidebar">
         <a class="brand" href="overview.html"><span class="brand-mark">S</span><span>SpendWise</span></a>
-        <div class="sidebar-label">
+        <div class="role-label">
           Người dùng
         </div>
-        <nav class="sidebar-nav" aria-label="Điều hướng chính">
-          <a class="nav-item is-active" aria-current="page" href="overview.html">
-            <span class="nav-icon"></span>Tổng quan
+        <nav class="nav" aria-label="Điều hướng chính">
+          <a class="nav-link is-active" aria-current="page" href="overview.html">
+            <span class="nav-icon">◫</span>Tổng quan
           </a>
-          <a class="nav-item" href="transactions.html">
-            <span class="nav-icon"></span>Giao dịch
+          <a class="nav-link" href="transactions.html">
+            <span class="nav-icon">↔</span>Giao dịch
           </a>
-          <a class="nav-item" href="budget.html">
-            <span class="nav-icon"></span>Ngân sách
+          <a class="nav-link" href="budget.html">
+            <span class="nav-icon">▤</span>Ngân sách
           </a>
-          <a class="nav-item" href="goals.html">
-            <span class="nav-icon"></span>Mục tiêu
+          <a class="nav-link" href="goals.html">
+            <span class="nav-icon">◎</span>Mục tiêu
           </a>
-          <a class="nav-item" href="insights.html">
-            <span class="nav-icon"></span>Phân tích
+          <a class="nav-link" href="insights.html">
+            <span class="nav-icon">⌁</span>Phân tích
           </a>
-          <a class="nav-item" href="ai.html">
-            <span class="nav-icon"></span>Gợi ý AI
+          <a class="nav-link" href="ai.html">
+            <span class="nav-icon">✦</span>Gợi ý AI
           </a>
         </nav>
-        <div class="sidebar-account">
+        <div class="side-bottom">
           <div class="avatar">
-            AN
+            ND
           </div>
-          <div class="account-profile">
-            <strong>Nguyễn An</strong><span>Tài khoản cá nhân</span>
+          <div class="identity-text">
+            <strong>Người dùng</strong><span>Tài khoản cá nhân</span>
           </div>
-          <a class="settings-link" href="../../thanh-vien-2/dung-chung/settings.html" aria-label="Cài đặt"></a>
+          <a class="settings-link" href="../../thanh-vien-2/dung-chung/settings.html" aria-label="Cài đặt">⚙</a>
         </div>
-        <div class="sidebar-links">
+        <div class="side-links">
           <a href="../../thanh-vien-2/dung-chung/profile.html">Hồ sơ</a><a href="../../thanh-vien-2/dung-chung/notifications.html">Thông báo</a>
         </div>
       </aside>
@@ -51,7 +51,7 @@
         <div class="breadcrumb">
           <span>Người dùng</span><span class="breadcrumb-separator">/</span><strong>Tổng quan</strong>
         </div>
-        <div class="account-area">
+        <div class="head-actions">
           <span class="date-label" data-today></span><a class="icon-button" href="../../thanh-vien-2/dung-chung/notifications.html" aria-label="Thông báo" title="Thông báo">♧</a>
           <div class="avatar avatar-small">
             AN
@@ -59,57 +59,57 @@
         </div>
       </header>
       <main class="main">
-        <section class="page-header">
-          <div class="page-heading">
+        <section class="pg-header">
+          <div class="pg-heading">
             <div class="eyebrow">
               THỨC TỈNH TÀI CHÍNH CỦA BẠN
             </div>
             <h1>
-              Chào buổi sáng, An <span class="wave">✦</span>
+              Chào mừng bạn <span class="wave">✦</span>
             </h1>
             <p>
               Đây là bức tranh tài chính của bạn trong tháng này.
             </p>
           </div>
-          <div class="page-actions">
+          <div class="action">
             <a class="button button-secondary" href="budget.html">Xem ngân sách</a><a class="button button-primary" href="transactions.html?new=1">＋ Thêm giao dịch</a>
           </div>
         </section>
-        <section class="summary-grid" aria-label="Tóm tắt tài chính">
-          <article class="summary-card summary-card-balance">
-            <div class="summary-card-top">
-              <span>Tổng số dư</span><span class="summary-icon">◈</span>
+        <section class="stats-grid" aria-label="Tóm tắt tài chính">
+          <article class="stat-card stat-card-primary">
+            <div class="stat-card-top">
+              <span>Tổng số dư</span><span class="stat-icon">◈</span>
             </div>
-            <strong class="summary-value" data-metric="balance">—</strong>
-            <div class="summary-note">
+            <strong class="stat-value" data-metric="balance">—</strong>
+            <div class="stat-note">
               <span class="trend trend-positive" data-metric="balance-note">Tổng thu trừ chi tháng này</span>
             </div>
           </article>
-          <article class="summary-card">
-            <div class="summary-card-top">
-              <span>Tổng thu tháng này</span><span class="summary-icon summary-icon-green">↙</span>
+          <article class="stat-card">
+            <div class="stat-card-top">
+              <span>Tổng thu tháng này</span><span class="stat-icon stat-icon-green">↙</span>
             </div>
-            <strong class="summary-value" data-metric="income">—</strong>
-            <div class="summary-note">
-              <span class="metric-caption">Các khoản thu đã ghi nhận</span>
-            </div>
-          </article>
-          <article class="summary-card">
-            <div class="summary-card-top">
-              <span>Tổng chi tháng này</span><span class="summary-icon summary-icon-coral">↗</span>
-            </div>
-            <strong class="summary-value" data-metric="expense">—</strong>
-            <div class="summary-note">
-              <span class="metric-caption" data-metric="expense-note">Các khoản chi đã ghi nhận</span>
+            <strong class="stat-value" data-metric="income">—</strong>
+            <div class="stat-note">
+              <span class="stat-caption">Các khoản thu đã ghi nhận</span>
             </div>
           </article>
-          <article class="summary-card">
-            <div class="summary-card-top">
-              <span>Ngân sách còn lại</span><span class="summary-icon summary-icon-blue">▤</span>
+          <article class="stat-card">
+            <div class="stat-card-top">
+              <span>Tổng chi tháng này</span><span class="stat-icon stat-icon-coral">↗</span>
             </div>
-            <strong class="summary-value" data-metric="remaining">—</strong>
-            <div class="summary-note">
-              <span class="metric-caption" data-metric="budget-note">So với tổng ngân sách tháng</span>
+            <strong class="stat-value" data-metric="expense">—</strong>
+            <div class="stat-note">
+              <span class="stat-caption" data-metric="expense-note">Các khoản chi đã ghi nhận</span>
+            </div>
+          </article>
+          <article class="stat-card">
+            <div class="stat-card-top">
+              <span>Ngân sách còn lại</span><span class="stat-icon stat-icon-blue">▤</span>
+            </div>
+            <strong class="stat-value" data-metric="remaining">—</strong>
+            <div class="stat-note">
+              <span class="stat-caption" data-metric="bud-note">So với tổng ngân sách tháng</span>
             </div>
           </article>
         </section>
@@ -127,12 +127,12 @@
               <span class="period-pill">6 Tháng</span>
             </div>
             <div class="chart-legend">
-              <span><i class="legend-dot legend-dot-income"></i>Thu nhập<span></span><i class="legend-dot legend-dot-expense"></i>Chi tiêu</span>
+              <span><i class="legend-dot legend-dot-income"></i>Thu nhập</span><span><i class="legend-dot legend-dot-expense"></i>Chi tiêu</span>
             </div>
             <div class="chart-area" data-chart aria-label="Biểu đồ thu nhập và chi tiêu 6 tháng">
             </div>
           </article>
-          <article class="panel budget-panel">
+          <article class="panel bud-panel">
             <div class="panel-heading">
               <div>
                 <h2>Ngân sách tháng</h2>
@@ -140,17 +140,17 @@
               </div>
               <a class="text-link" href="budget.html">Chi tiết<span>→</span></a>
             </div>
-            <div class="budget-total">
-              <strong data-metric="budget-spent">—</strong><span> / <span data-metric="budget-total">—</span></span>
+            <div class="bud-total">
+              <strong data-metric="bud-spent">—</strong><span> / <span data-metric="bud-total">—</span></span>
             </div>
             <div class="progress-track">
-              <div class="progress-fill" data-budget-progress>
+              <div class="progress-fill" data-bud-progress>
               </div>
             </div>
-            <div class="budget-remaining">
+            <div class="bud-remaining">
               <span></span><strong data-metric="remaining-inline">—</strong>
             </div>
-            <div class="budget-category-list" data-budget-preview>
+            <div class="bud-category-list" data-bud-preview>
             </div>
           </article>
           <article class="panel recent-panel">
@@ -174,20 +174,41 @@
             <div class="eyebrow">
               Insight của tháng </div>
               <h2>
-                Mỗi khoảng nhỏ dều tạo lên thay đổi lớn.
+                Mỗi khoản chi nhỏ đều tạo nên thay đổi lớn.
               </h2>
-              <p dât-insight-text>
-                Ghi lại giao dịch để SqendWise giúp bạn nhìn rõ hơn về thói quen chi tiêu
+              <p data-insight-text>
+                Ghi lại giao dịch để SpendWise giúp bạn nhìn rõ hơn về thói quen chi tiêu.
               </p>
             <a class="insight-link" href="insights.html">Khám phá phân tích<span></span></a>
           </article>
         </section>
       </main>
       <footer class="footer">
-        <span>@2026SqendWise</span><span>Quản lý tài chính theo cách của bạn</span>
+        <span>© 2026 SpendWise</span><span>Quản lý tài chính theo cách của bạn</span>
       </footer>
       <div class="toast-region" aria-live="polite" data-toast-region>
       </div>
     </div>
+    <script type="application/json" data-category-options>
+      {
+        "expense": [
+          { "name": "Nhà cửa", "icon": "⌂" },
+          { "name": "Ăn uống", "icon": "♨" },
+          { "name": "Di chuyển", "icon": "↗" },
+          { "name": "Mua sắm", "icon": "◇" },
+          { "name": "Sức khỏe", "icon": "✚" },
+          { "name": "Giải trí", "icon": "♫" },
+          { "name": "Hóa đơn", "icon": "▧" },
+          { "name": "Khác", "icon": "◌" }
+        ],
+        "income": [
+          { "name": "Lương", "icon": "▤" },
+          { "name": "Thưởng", "icon": "✦" },
+          { "name": "Đầu tư", "icon": "↗" },
+          { "name": "Làm thêm", "icon": "✎" },
+          { "name": "Khác", "icon": "◌" }
+        ]
+      }
+    </script>
   </body>
 </html>

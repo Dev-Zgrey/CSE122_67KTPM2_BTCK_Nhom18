@@ -1,104 +1,7 @@
-window.WorkspacePage = {
-  "slug": "user-spending-insights",
-  "title": "Phân tích chi tiêu",
-  "description": "So sánh chi tiêu theo danh mục và đọc các nhận định có giải thích.",
-  "role": "user",
-  "active": "insights",
-  "storeKey": "insights",
-  "columns": [
-    {
-      "key": "category",
-      "label": "Danh mục"
-    },
-    {
-      "key": "spent",
-      "label": "Chi kỳ này",
-      "format": "money"
-    },
-    {
-      "key": "previous",
-      "label": "Kỳ trước",
-      "format": "money"
-    },
-    {
-      "key": "change",
-      "label": "Thay đổi"
-    },
-    {
-      "key": "insight",
-      "label": "Nhận định"
-    },
-    {
-      "key": "confidence",
-      "label": "Độ chắc chắn"
-    }
-  ],
-  "fields": [],
-  "seed": [
-    {
-      "id": "ins-1",
-      "category": "Ăn uống",
-      "spent": 770000,
-      "previous": 620000,
-      "change": "+24%",
-      "insight": "Chi tiêu tăng nhẹ; thử đặt giới hạn theo tuần.",
-      "confidence": "Cao"
-    },
-    {
-      "id": "ins-2",
-      "category": "Nhà cửa",
-      "spent": 5500000,
-      "previous": 5500000,
-      "change": "0%",
-      "insight": "Khoản chi ổn định so với kỳ trước.",
-      "confidence": "Cao"
-    },
-    {
-      "id": "ins-3",
-      "category": "Mua sắm",
-      "spent": 290000,
-      "previous": 1250000,
-      "change": "−77%",
-      "insight": "Chi tiêu giảm đáng kể trong kỳ.",
-      "confidence": "Trung bình"
-    },
-    {
-      "id": "ins-4",
-      "category": "Di chuyển",
-      "spent": 180000,
-      "previous": 245000,
-      "change": "−27%",
-      "insight": "Chi phí di chuyển đang được kiểm soát.",
-      "confidence": "Trung bình"
-    }
-  ],
-  "readOnly": true,
-  "hideCreate": true,
-  "listTitle": "Insight theo danh mục",
-  "stats": [
-    {
-      "label": "Danh mục phân tích",
-      "value": 4
-    },
-    {
-      "label": "Kỳ so sánh",
-      "value": "Tháng này"
-    },
-    {
-      "label": "Xu hướng tích cực",
-      "value": 2
-    },
-    {
-      "label": "Độ tin cậy",
-      "value": "Tham khảo"
-    }
-  ],
-  "exportable": true
-};
-
 (() => {
   "use strict";
 
+  const pageConfigs = {};
   const store = {
     read(key, fallback = []) {
       const value = localStorage.getItem(`spendwise.${key}`);
@@ -140,12 +43,12 @@ window.WorkspacePage = {
   const icons = { dashboard: "◫", transactions: "↔", budgets: "▤", goals: "◎", insights: "⌁", ai: "✦", clients: "♙", reviews: "◷", resources: "▧", editor: "✎", feedback: "✉", moderation: "✓", templates: "✧", reports: "⚑", audit: "≡", categories: "◈", users: "♙", permissions: "⚿", settings: "⚙", profile: "◉", notifications: "♧" };
   const nav = {
     user: [
-      ["Tổng quan", "overview.html", "dashboard"],
-      ["Giao dịch", "transactions.html", "transactions"],
-      ["Ngân sách", "budget.html", "budgets"],
-      ["Mục tiêu", "goals.html", "goals"],
-      ["Phân tích", "insights.html", "insights"],
-      ["Gợi ý AI", "ai.html", "ai"]
+      ["Tổng quan", "../../thanh-vien-1/nguoi-dung/overview.html", "dashboard"],
+      ["Giao dịch", "../../thanh-vien-1/nguoi-dung/transactions.html", "transactions"],
+      ["Ngân sách", "../../thanh-vien-1/nguoi-dung/budget.html", "budgets"],
+      ["Mục tiêu", "../../thanh-vien-1/nguoi-dung/goals.html", "goals"],
+      ["Phân tích", "../../thanh-vien-1/nguoi-dung/insights.html", "insights"],
+      ["Gợi ý AI", "../../thanh-vien-1/nguoi-dung/ai.html", "ai"]
     ],
     coach: [
       ["Học viên", "../../thanh-vien-2/huan-luyen-vien/clients.html", "clients"],
@@ -175,9 +78,11 @@ window.WorkspacePage = {
     try {
       const saved = JSON.parse(localStorage.getItem("spendwise.pro") || "{}");
       const session = JSON.parse(localStorage.getItem("spendwise.session") || "{}");
-      return { name: saved.name || session.name || "Nguyễn An", role: session.role || document.body.dataset.role || "user" };
+      const role = session.role || document.body.dataset.role || "user";
+      return { name: saved.name || session.name || roleLabels[role] || "Người dùng", role };
     } catch {
-      return { name: "Nguyễn An", role: document.body.dataset.role || "user" };
+      const role = document.body.dataset.role || "user";
+      return { name: roleLabels[role] || "Người dùng", role };
     }
   }
 
@@ -188,7 +93,7 @@ window.WorkspacePage = {
     const role = config.role || user.role;
     const links = nav[role] || nav.user;
     const initials = user.name.split(/\s+/).slice(-2).map((part) => part[0]).join("").toUpperCase();
-    root.querySelectorAll("[data-user-name], [data-header-name]").forEach((element) => { element.textContent = user.name; });
+    root.querySelectorAll("[data-user-name], [data-head-name]").forEach((element) => { element.textContent = user.name; });
     root.querySelectorAll("[data-initials]").forEach((element) => { element.textContent = initials; });
     if (!root.hasAttribute("data-static-workspace")) root.innerHTML = `
       <div class="container">
@@ -196,11 +101,11 @@ window.WorkspacePage = {
           <a class="brand" href="index.html"><span class="brand-mark">S</span><span>SpendWise</span></a>
           <div class="role-label">${escapeHtml(roleLabels[role] || "Không gian của bạn")}</div>
           <nav class="nav" aria-label="Điều hướng chính">${links.map(([text, href, icon]) => `<a class="nav-link ${config.active === icon ? "is-active" : ""}" ${config.active === icon ? 'aria-current="page"' : ""} href="${href}"><span class="nav-icon">${icons[icon] || "◦"}</span>${escapeHtml(text)}</a>`).join("")}</nav>
-          <div class="sidebar-bottom"><div class="identity"><div class="avatar">${escapeHtml(initials)}</div><div class="identity-text"><strong>${escapeHtml(user.name)}</strong><span>${escapeHtml(roleLabels[role] || role)}</span></div></div><div class="sidebar-links"><a href="profile.html">Hồ sơ</a><a href="settings.html">Cài đặt</a><a href="notifications.html">Thông báo</a></div></div>
+          <div class="side-bottom"><div class="identity"><div class="avatar">${escapeHtml(initials)}</div><div class="identity-text"><strong>${escapeHtml(user.name)}</strong><span>${escapeHtml(roleLabels[role] || role)}</span></div></div><div class="side-links"><a href="profile.html">Hồ sơ</a><a href="settings.html">Cài đặt</a><a href="notifications.html">Thông báo</a></div></div>
         </aside>
-        <header class="header"><div class="breadcrumb"><span>${escapeHtml(roleLabels[role] || "SpendWise")}</span><span>/</span><strong>${escapeHtml(config.title)}</strong></div><div class="header-actions"><span>${escapeHtml(user.name)}</span><button type="button" class="button button-quiet" data-signout>Đăng xuất</button></div></header>
+        <header class="header"><div class="breadcrumb"><span>${escapeHtml(roleLabels[role] || "SpendWise")}</span><span>/</span><strong>${escapeHtml(config.title)}</strong></div><div class="head-actions"><span>${escapeHtml(user.name)}</span><button type="button" class="button button-quiet" data-signout>Đăng xuất</button></div></header>
         <main class="main">
-          <section class="page-header"><div><div class="eyebrow">${escapeHtml(config.kicker || roleLabels[role] || "SPENDWISE")}</div><h1>${escapeHtml(config.title)}</h1><p>${escapeHtml(config.description || "")}</p></div><div class="action">${config.readOnly || config.hideCreate ? "" : `<button class="button" type="button" data-create>＋ ${escapeHtml(config.createLabel || "Thêm mới")}</button>`}${config.exportable ? '<button class="button button-secondary" type="button" data-export>↓ Xuất dữ liệu</button>' : ""}</div></section>
+          <section class="pg-header"><div><div class="eyebrow">${escapeHtml(config.kicker || roleLabels[role] || "SPENDWISE")}</div><h1>${escapeHtml(config.title)}</h1><p>${escapeHtml(config.description || "")}</p></div><div class="action">${config.readOnly || config.hideCreate ? "" : `<button class="button" type="button" data-create>＋ ${escapeHtml(config.createLabel || "Thêm mới")}</button>`}${config.exportable ? '<button class="button button-secondary" type="button" data-export>↓ Xuất dữ liệu</button>' : ""}</div></section>
           <section class="stats-grid" data-stats></section>
           <section class="panel"><div class="panel-header"><div><h2>${escapeHtml(config.listTitle || config.title)}</h2><p data-count></p></div>${config.secondaryAction ? `<button class="button button-secondary" data-secondary type="button">${escapeHtml(config.secondaryAction.label)}</button>` : ""}</div>
             <div class="filter-bar"><input type="search" data-search placeholder="${escapeHtml(config.searchPlaceholder || "Tìm kiếm...")}" aria-label="Tìm kiếm">${config.filters?.length ? `<select data-status-filter aria-label="Lọc danh sách"><option value="">Tất cả trạng thái</option>${config.filters.map((item) => `<option value="${escapeHtml(item)}">${escapeHtml(item)}</option>`).join("")}</select>` : ""}<button class="button button-quiet" type="button" data-clear>Làm mới bộ lọc</button></div>
@@ -213,6 +118,22 @@ window.WorkspacePage = {
         <div class="toast-region" data-toasts aria-live="polite"></div>
       </div>`;
 
+    if (!config.columns) {
+      config = {
+        ...config,
+        title: root.querySelector("h1").textContent.trim(),
+        columns: [...root.querySelectorAll("th[data-key]")].map((th) => ({ key: th.dataset.key, label: th.textContent.trim(), format: th.dataset.format })),
+        fields: [...root.querySelectorAll("[data-form] [name]")].filter((input) => input.name !== "id").map((input) => ({
+          key: input.name,
+          label: input.closest(".field").querySelector("label").textContent.replace(/\s*\*$/, "").trim(),
+          type: input.type,
+          required: input.required
+        }))
+      };
+    }
+    const modalTitle = root.querySelector("#modal-title");
+    const createTitle = modalTitle.textContent.trim();
+
     const notify = (message, isError = false) => {
       const toast = document.createElement("div");
       toast.className = `toast${isError ? " is-danger" : ""}`;
@@ -222,7 +143,7 @@ window.WorkspacePage = {
     };
     let records;
     try {
-      records = store.read(config.storeKey, config.seed || []);
+      records = store.read(config.storeKey, []);
     } catch (error) {
       records = [];
       notify(`Không thể đọc dữ liệu: ${error.message}`, true);
@@ -275,6 +196,14 @@ window.WorkspacePage = {
       renderStats(filtered);
     }
     function renderStats(filtered) {
+      const staticStats = root.querySelectorAll("[data-stat]");
+      if (staticStats.length) {
+        staticStats.forEach((element) => {
+          const { stat, status } = element.dataset;
+          element.textContent = stat === "total" ? records.length : stat === "shown" ? filtered.length : records.filter((record) => record.status === status).length;
+        });
+        return;
+      }
       const stats = config.stats || [
         { label: "Tổng số", value: records.length },
         { label: "Đang hiển thị", value: filtered.length },
@@ -299,7 +228,7 @@ window.WorkspacePage = {
         if (input && value !== undefined && value !== null) input.value = value;
         else if (input && field.type === "select") input.selectedIndex = 0;
       });
-      root.querySelector("#modal-title").textContent = record ? `Sửa ${config.singular || "thông tin"}` : config.createLabel || "Thêm mới";
+      modalTitle.textContent = record ? modalTitle.dataset.editTitle || `Sửa ${config.singular || "thông tin"}` : createTitle;
       root.querySelector("[data-error]").textContent = "";
       modal.hidden = false;
       form.querySelector("input:not([type=hidden]),select,textarea")?.focus();
@@ -387,8 +316,32 @@ window.WorkspacePage = {
     render();
   }
 
-  window.SpendWiseWorkspace = { mount, store, escapeHtml, labelize, dateLabel };
+  window.SpendWiseWorkspace = {
+    mount,
+    configure(module, config) {
+      pageConfigs[module] = config;
+    },
+    store,
+    escapeHtml,
+    labelize,
+    dateLabel
+  };
   document.addEventListener("DOMContentLoaded", () => {
-    if (window.WorkspacePage) mount(window.WorkspacePage);
+    const module = document.documentElement.dataset.workspaceModule || document.body.dataset.workspaceModule;
+    if (!module) return;
+    const configElement = document.querySelector(`[data-workspace-config="${module}"]`);
+    if (configElement) {
+      try {
+        mount(JSON.parse(configElement.textContent));
+      } catch (error) {
+        console.error(`Không thể tải cấu hình màn hình: ${error.message}`);
+      }
+      return;
+    }
+    if (pageConfigs[module]) {
+      mount(pageConfigs[module]);
+      return;
+    }
+    console.error(`Không tìm thấy cấu hình cho màn hình ${module}.`);
   });
 })();

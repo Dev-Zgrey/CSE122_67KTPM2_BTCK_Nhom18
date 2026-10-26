@@ -92,7 +92,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
   font-weight: 800;
 }
 
-.sidebar-label {
+.role-label {
   margin: 36px 9px 10px;
   color: #9aa69f;
   font-size: 10px;
@@ -101,12 +101,12 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
   text-transform: uppercase;
 }
 
-.sidebar-nav {
+.nav {
   display: grid;
   gap: 4px;
 }
 
-.nav-item {
+.nav-link {
   display: flex;
   min-height: 40px;
   align-items: center;
@@ -119,12 +119,12 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
   transition: background .18s ease, color .18s ease;
 }
 
-.nav-item:hover {
+.nav-link:hover {
   background: #f5f8f5;
   color: var(--green-deep);
 }
 
-.nav-item.is-active {
+.nav-link.is-active {
   background: var(--green-pale);
   color: var(--green-deep);
   font-weight: 700;
@@ -138,11 +138,11 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
   font-size: 16px;
 }
 
-.nav-item.is-active .nav-icon {
+.nav-link.is-active .nav-icon {
   color: var(--green);
 }
 
-.sidebar-account {
+.side-bottom {
   display: flex;
   align-items: center;
   gap: 10px;
@@ -164,23 +164,23 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
   font-weight: 800;
 }
 
-.account-profile {
+.identity-text {
   min-width: 0;
   flex: 1;
 }
 
-.account-profile strong, .account-profile span {
+.identity-text strong, .identity-text span {
   display: block;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
 
-.account-profile strong {
+.identity-text strong {
   font-size: 11px;
 }
 
-.account-profile span {
+.identity-text span {
   margin-top: 3px;
   color: var(--muted);
   font-size: 9px;
@@ -192,7 +192,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
   font-size: 15px;
 }
 
-.sidebar-links {
+.side-links {
   display: flex;
   justify-content: space-between;
   padding: 8px 3px 0;
@@ -234,7 +234,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
   color: #c2cbc5;
 }
 
-.account-area {
+.head-actions {
   display: flex;
   align-items: center;
   gap: 10px;
@@ -270,7 +270,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
   font-size: 9px;
 }
 
-.page-header {
+.pg-header {
   display: flex;
   align-items: flex-end;
   justify-content: space-between;
@@ -286,7 +286,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
   letter-spacing: 1.2px;
 }
 
-.page-heading h1 {
+.pg-heading h1 {
   margin: 0;
   font-family: Manrope, "Segoe UI", sans-serif;
   font-size: clamp(23px, 3vw, 30px);
@@ -295,7 +295,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
   line-height: 1.25;
 }
 
-.page-heading p {
+.pg-heading p {
   margin: 7px 0 0;
   color: var(--muted);
   font-size: 11px;
@@ -307,7 +307,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
   font-size: 20px;
 }
 
-.page-actions {
+.action {
   display: flex;
   flex: 0 0 auto;
   align-items: center;
@@ -353,13 +353,13 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
   background: #fbfdfb;
 }
 
-.summary-grid {
+.stats-grid {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 12px;
 }
 
-.summary-card {
+.stat-card {
   min-width: 0;
   padding: 14px 15px;
   border: 1px solid var(--line);
@@ -367,13 +367,13 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
   background: var(--surface);
 }
 
-.summary-card-balance {
+.stat-card-primary {
   border-color: var(--line);
   background: var(--surface);
   color: var(--ink);
 }
 
-.summary-card-top {
+.stat-card-top {
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -383,7 +383,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
   font-weight: 600;
 }
 
-.summary-icon {
+.stat-icon {
   display: grid;
   width: 29px;
   height: 29px;
@@ -395,22 +395,22 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
   font-size: 14px;
 }
 
-.summary-icon-green {
+.stat-icon-green {
   background: #eaf5ed;
   color: #4c8d61;
 }
 
-.summary-icon-coral {
+.stat-icon-coral {
   background: #fbefec;
   color: var(--coral);
 }
 
-.summary-icon-blue {
+.stat-icon-blue {
   background: #edf3f9;
   color: var(--blue);
 }
 
-.summary-value {
+.stat-value {
   display: block;
   overflow: hidden;
   margin-top: 8px;
@@ -421,7 +421,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
   white-space: nowrap;
 }
 
-.summary-note {
+.stat-note {
   display: flex;
   min-height: 16px;
   align-items: center;
@@ -429,7 +429,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
   margin-top: 7px;
 }
 
-.metric-caption {
+.stat-caption {
   color: #929d96;
   font-size: 9px;
 }
@@ -457,7 +457,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
   background: var(--surface);
 }
 
-.spending-panel, .budget-panel, .recent-panel {
+.spending-panel, .bud-panel, .recent-panel {
   padding: 19px 20px;
 }
 
@@ -508,6 +508,10 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
   width: 7px;
   height: 7px;
   border-radius: 50%;
+  background: #4f8b67;
+}
+
+.legend-dot-income {
   background: #4f8b67;
 }
 
@@ -581,13 +585,13 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
   color: var(--green-deep);
 }
 
-.budget-total {
+.bud-total {
   margin: 24px 0 11px;
   color: #8a968e;
   font-size: 11px;
 }
 
-.budget-total strong {
+.bud-total strong {
   color: var(--ink);
   font-family: Manrope, sans-serif;
   font-size: 22px;
@@ -617,7 +621,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
   background: var(--coral);
 }
 
-.budget-remaining {
+.bud-remaining {
   display: flex;
   justify-content: space-between;
   margin-top: 9px;
@@ -625,12 +629,12 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
   font-size: 9px;
 }
 
-.budget-remaining strong {
+.bud-remaining strong {
   color: #536259;
   font-weight: 700;
 }
 
-.budget-category-list {
+.bud-category-list {
   display: grid;
   gap: 14px;
   margin-top: 20px;
@@ -638,14 +642,14 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
   border-top: 1px solid #eff2ef;
 }
 
-.budget-category-row {
+.bud-category-row {
   display: grid;
   grid-template-columns: minmax(0, 1fr) auto;
   align-items: center;
   gap: 7px 12px;
 }
 
-.budget-category-name {
+.bud-category-name {
   overflow: hidden;
   color: #59675e;
   font-size: 10px;
@@ -653,13 +657,13 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
   white-space: nowrap;
 }
 
-.budget-category-amount {
+.bud-category-amount {
   color: #818d85;
   font-size: 9px;
   white-space: nowrap;
 }
 
-.budget-category-row .progress-track {
+.bud-category-row .progress-track {
   grid-column: 1 / -1;
   height: 4px;
 }
@@ -853,7 +857,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
     padding-right: 28px;
     padding-left: 28px;
   }
-  .summary-grid {
+  .stats-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
   .dashboard-grid {
@@ -891,20 +895,20 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
     width: 29px;
     height: 29px;
   }
-  .sidebar-label, .sidebar-account, .sidebar-links {
+  .role-label, .side-bottom, .side-links {
     display: none;
   }
-  .sidebar-nav {
+  .nav {
     display: flex;
     overflow-x: auto;
     gap: 3px;
     margin: 8px -3px -1px;
     scrollbar-width: none;
   }
-  .sidebar-nav::-webkit-scrollbar {
+  .nav::-webkit-scrollbar {
     display: none;
   }
-  .nav-item {
+  .nav-link {
     min-height: 32px;
     flex: 0 0 auto;
     gap: 5px;
@@ -933,32 +937,32 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
   .date-label{
     display:none;
   }
-  .page-header{
+  .pg-header{
     align-items: flex-start;
     flex-direction: column;
     gap:13px;
     padding: 23px 0 17px;
   }
-  page-actions{
+  .action{
     width: 100%;
   }
-  .page-action .button{
+  .action .button{
     flex:1;
   }
-  .summary-grid{
+  .stats-grid{
     gap:9px;
   }
-  .summary-card{
+  .stat-card{
     padding:13px;
   }
-  .summary-card-top{
+  .stat-card-top{
     font-size:9px;
   }
-  .summary-value{
+  .stat-value{
     margin-top: 10px;
-    font-size: clamp(17px, 5w, 22px);
+    font-size: clamp(17px, 5vw, 22px);
   }
-  .summary-icon{
+  .stat-icon{
     width: 25px;
     height: 25px;
   }
@@ -971,7 +975,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
     grid-column: auto;
     grid-row: auto;
   }
-  .spending-panel,.budget-panel,.recent-panel{
+  .spending-panel,.bud-panel,.recent-panel{
     padding: 16px;
   }
   .insight-panel{
@@ -992,23 +996,23 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
     gap:6px;
     font-size: 10px;
   }
-  .account-area{
+  .head-actions{
     gap:8px;
   }
-  .summary-card{
+  .stat-card{
     padding: 11px;
   }
-  .summary-card-top{
+  .stat-card-top{
     align-items: flex-start;
   }
-  .summary-card-top > span:first-child{
+  .stat-card-top > span:first-child{
     min-height: 24px;
     line-height: 1.35;
   }
-  .summary-note{
+  .stat-note{
     margin-top: 5px;
   }
-  .metric-caption{
+  .stat-caption{
     font-size: 8px;
   }
   .footer{
