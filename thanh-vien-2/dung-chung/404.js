@@ -1,3 +1,5 @@
+// CHÚ THÍCH BỔ SUNG: Tệp này dựng nhiều trang tài khoản dùng chung và trang lỗi theo cấu hình AccountPage.
+// Đọc tham số ?code= trên URL; chỉ chấp nhận 403, còn mọi trường hợp khác hiển thị lỗi 404.
 const errorCode = new URLSearchParams(window.location.search).get("code") === "403" ? "403" : "404";
 window.AccountPage = errorCode === "403"
   ? { "type": "error", "code": errorCode, "title": "Bạn chưa có quyền truy cập", "description": "Tài khoản demo hiện tại không được phép mở nội dung này." }
@@ -6,7 +8,7 @@ window.AccountPage = errorCode === "403"
 (() => {
 
   function init() {
-    "use strict";
+    "use strict"; // bật chế độ nghiêm ngặt của js giúp phát hiện sớm lỗi
     const config = window.AccountPage;
     const root = document.querySelector("[data-account-root]");
     if (!root || !config) return;
@@ -68,6 +70,7 @@ window.AccountPage = errorCode === "403"
       return;
     }
 
+    // Nhánh đăng nhập kiểm tra tài khoản demo, tạo phiên đăng nhập và chuyển theo vai trò.
     if (config.type === "login") {
       const body = `${field("Email", "email", "email", "an.tran@spendwise.demo", true)}${field("Mật khẩu", "password", "password", "spendwise", true)}<div class="field"><label for="role">Vai trò demo</label><select id="role" name="role"><option value="user">Người dùng</option><option value="coach">Huấn luyện viên</option><option value="moderator">Kiểm duyệt viên</option><option value="admin">Quản trị viên</option></select></div><label class="checkbox"><input name="remember" type="checkbox" checked><span>Ghi nhớ phiên đăng nhập trên thiết bị này</span></label>`;
       if (!root.hasAttribute("data-static-account")) root.innerHTML = shell(formShell("Đăng nhập", "Đăng nhập để tiếp tục hành trình tài chính của bạn.", body, "Đăng nhập vào SpendWise") + `<div class="divider"><a href="forgot-password.html">Quên mật khẩu?</a><a href="register.html">Tạo tài khoản</a></div><div class="success" style="margin-top:14px">Tài khoản demo: <b>an.tran@spendwise.demo</b> · Mật khẩu: <b>spendwise</b>. Chọn vai trò để mở các màn hình tương ứng.</div>`);
@@ -96,6 +99,7 @@ window.AccountPage = errorCode === "403"
       return;
     }
 
+    // Nhánh đăng ký xác nhận mật khẩu, tạo tài khoản và đồng bộ hồ sơ/danh sách người dùng demo.
     if (config.type === "register") {
       const body = `${field("Họ và tên", "name", "text", "", true, "Tên hiển thị")}${field("Email", "email", "email", "", true, "ban@example.com")}${field("Mật khẩu", "password", "password", "", true, "Ít nhất 8 ký tự")}${field("Xác nhận mật khẩu", "confirm", "password", "")}<label class="checkbox"><input name="terms" type="checkbox" required><span>Tôi đồng ý với điều khoản sử dụng và chính sách quyền riêng tư.</span></label>`;
       if (!root.hasAttribute("data-static-account")) root.innerHTML = shell(formShell("Tạo tài khoản", "Bắt đầu xây dựng thói quen tài chính lành mạnh.", body, "Tạo tài khoản") + `<div class="divider"><span>Đã có tài khoản?</span><a href="login.html">Đăng nhập</a></div>`);
@@ -125,6 +129,7 @@ window.AccountPage = errorCode === "403"
       return;
     }
 
+    // Nhánh quên mật khẩu cập nhật mật khẩu cục bộ nếu email thuộc tài khoản demo đã lưu.
     if (config.type === "forgot") {
       const body = `${field("Email tài khoản", "email", "email", "", true, "ban@example.com")}${field("Mật khẩu mới", "password", "password")}${field("Xác nhận mật khẩu mới", "confirm", "password")}`;
       if (!root.hasAttribute("data-static-account")) root.innerHTML = shell(formShell("Đặt lại mật khẩu", "Bản demo đổi mật khẩu cục bộ, không gửi email hoặc mã xác nhận.", body, "Cập nhật mật khẩu") + `<div class="divider"><a href="login.html">Quay lại đăng nhập</a></div>`);
@@ -147,6 +152,7 @@ window.AccountPage = errorCode === "403"
       return;
     }
 
+    // Nhánh hồ sơ đọc thông tin hiện có, điền biểu mẫu và lưu dữ liệu mới khi gửi.
     if (config.type === "profile") {
       const profile = read("profile", { name: "Nguyễn An", email: "an.tran@spendwise.demo", phone: "", occupation: "" });
       const body = `${field("Họ và tên", "name", "text", profile.name)}${field("Email", "email", "email", profile.email)}${field("Số điện thoại", "phone", "tel", profile.phone || "", false)}${field("Nghề nghiệp", "occupation", "text", profile.occupation || "", false)}`;
@@ -168,6 +174,7 @@ window.AccountPage = errorCode === "403"
       return;
     }
 
+    // Nhánh cài đặt tải tùy chọn, lưu các thay đổi và cung cấp thao tác đặt lại/đăng xuất.
     if (config.type === "settings") {
       const settings = read("settings", { currency: "VND", timezone: "Asia/Ho_Chi_Minh", notifications: true });
       const body = `<div class="field"><label for="currency">Đơn vị tiền tệ</label><select name="currency" id="currency"><option value="VND" ${settings.currency === "VND" ? "selected" : ""}>VND — Đồng Việt Nam</option><option value="USD" ${settings.currency === "USD" ? "selected" : ""}>USD — Đô la Mỹ</option></select></div><div class="field"><label for="timezone">Múi giờ</label><select name="timezone" id="timezone"><option value="Asia/Ho_Chi_Minh">Việt Nam (UTC+7)</option><option value="UTC">UTC</option></select></div><label class="checkbox"><input name="notifications" type="checkbox" ${settings.notifications ? "checked" : ""}><span>Cho phép thông báo trong bản demo</span></label><div class="field">${field("Mật khẩu mới (tùy chọn)", "password", "password", "", false)}${field("Xác nhận mật khẩu", "confirm", "password", "", false)}</div><button class="button button-secondary" type="button" data-signout>Đăng xuất trên thiết bị này</button><button class="button button-secondary" type="button" data-reset>Đặt lại dữ liệu demo</button>`;
