@@ -1,19 +1,14 @@
-// CHÚ THÍCH BỔ SUNG: Tệp này dựng nhiều trang tài khoản dùng chung và trang lỗi theo cấu hình AccountPage.
-// Đọc tham số ?code= trên URL; chỉ chấp nhận 403, còn mọi trường hợp khác hiển thị lỗi 404.
 const errorCode = new URLSearchParams(window.location.search).get("code") === "403" ? "403" : "404";
 window.AccountPage = errorCode === "403"
   ? { "type": "error", "code": errorCode, "title": "Bạn chưa có quyền truy cập", "description": "Tài khoản demo hiện tại không được phép mở nội dung này." }
   : { "type": "error", "code": errorCode, "title": "Không tìm thấy trang", "description": "Đường dẫn có thể đã thay đổi hoặc trang không tồn tại." };
 
 (() => {
-  // Khởi tạo nội dung trang; mỗi nhánh config.type lắp giao diện và hành vi cho một loại trang.
   function init() {
-    "use strict"; // bật chế độ nghiêm ngặt của js giúp phát hiện sớm lỗi
+    "use strict";
     const config = window.AccountPage;
     const root = document.querySelector("[data-account-root]");
     if (!root || !config) return;
-
-    //đinh nghĩa sẵn ánh xạ
     const roles = { user: "Người dùng", coach: "Huấn luyện viên", moderator: "Kiểm duyệt viên", admin: "Quản trị viên" };
     const roleHome = { user: "../../thanh-vien-1/nguoi-dung/overview.html", coach: "../../thanh-vien-2/huan-luyen-vien/clients.html", moderator: "../../thanh-vien-3/kiem-duyet-vien/resources.html", admin: "../../thanh-vien-3/quan-tri-vien/dashboard.html" };
     const pageLinks = [
@@ -23,18 +18,12 @@ window.AccountPage = errorCode === "403"
       ["Kiểm duyệt viên", [["Duyệt nội dung", "../../thanh-vien-3/kiem-duyet-vien/resources.html"], ["Mẫu AI", "../../thanh-vien-3/kiem-duyet-vien/ai-templates.html"], ["Trung tâm báo cáo", "../../thanh-vien-3/kiem-duyet-vien/feedback.html"]]],
       ["Quản trị viên", [["Tổng quan hệ thống", "../../thanh-vien-3/quan-tri-vien/dashboard.html"], ["Danh mục chi tiêu", "../../thanh-vien-3/quan-tri-vien/categories.html"], ["Tài khoản", "../../thanh-vien-3/quan-tri-vien/users.html"]]]
     ];
-    // Mã hóa dữ liệu động trước khi đưa vào HTML để ký tự nhập vào không bị hiểu thành markup.
     const esc = (value) => String(value ?? "").replace(/[&<>"']/g, (char) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[char]);
-    // Đọc giá trị spendwise.* dạng JSON; dùng fallback khi khóa chưa tồn tại.
-    //read đọc dữ liệu JSON và trả về giá trị mặc định - ko có thì Write chuyển sang JSON
     const read = (key, fallback) => {
       const saved = localStorage.getItem(`spendwise.${key}`);
       return saved === null ? fallback : JSON.parse(saved);
     };
-    // Ghi dữ liệu JSON vào namespace spendwise.* để các trang demo dùng chung một kho.
     const write = (key, value) => localStorage.setItem(`spendwise.${key}`, JSON.stringify(value));
-
-//Khởi tạo dữ liệu mẫu
     const makeId = () => globalThis.crypto?.randomUUID?.() || `sw-${Date.now()}-${Math.random().toString(36).slice(2, 9)}`;
     const demoUsers = [
       { id: "usr-an", name: "Nguyễn An", email: "an.tran@spendwise.demo", role: "Người dùng", status: "Hoạt động", goal: "Quỹ dự phòng", budget: "Đúng kế hoạch", createdAt: "2026-09-01" },
@@ -62,8 +51,6 @@ window.AccountPage = errorCode === "403"
     } catch (error) {
       root.dataset.storageError = `Dữ liệu demo chưa khởi tạo được: ${error.message}`;
     }
-
-    //hàm trả về chuỗi HTML giúp tái sử dụng
     const nav = `<header class="header"><a class="brand" href="../../index.html"><span class="brand-mark">S</span>SpendWise</a><nav class="header-links"><a href="../../index.html">Trang chủ</a><a href="login.html">Đăng nhập</a></nav></header>`;
     const shell = (content) => `<div class="container">${nav}<main class="main">${content}</main><footer class="footer">SpendWise · Bản demo frontend · Dữ liệu chỉ lưu trên trình duyệt</footer></div>`;
     const field = (label, name, type = "text", value = "", required = true, placeholder = "") => `<div class="field"><label for="${name}">${label}${required ? " *" : ""}</label><input id="${name}" name="${name}" type="${type}" value="${esc(value)}" placeholder="${esc(placeholder)}" ${required ? "required" : ""} ${type === "email" ? 'autocomplete="email"' : ""}></div>`;
@@ -73,8 +60,6 @@ window.AccountPage = errorCode === "403"
       if (!root.hasAttribute("data-static-account")) root.innerHTML = shell(`<section class="hero"><div class="kicker">Tiền của bạn, rõ ràng hơn</div><h1>Hiểu dòng tiền.<br>Xây thói quen tốt.</h1><p>SpendWise giúp bạn ghi nhận giao dịch, lập kế hoạch ngân sách và theo dõi mục tiêu tài chính trong một không gian dễ sử dụng.</p><div class="hero-actions"><a class="button" href="login.html">Bắt đầu sử dụng</a><a class="button button-secondary" href="register.html">Tạo tài khoản</a></div><div class="role-grid">${Object.entries(roles).map(([key, label]) => `<a class="role-card" href="${roleHome[key]}"><strong>${esc(label)}</strong><span>Mở bản demo theo vai trò →</span></a>`).join("")}</div></section><div class="directory">${pageLinks.map(([title, links]) => `<section class="group"><h2>${esc(title)}</h2>${links.map(([label, href]) => `<a href="${href}">${esc(label)}<span>→</span></a>`).join("")}</section>`).join("")}</div>`);
       return;
     }
-
-    // Nhánh đăng nhập kiểm tra tài khoản demo, tạo phiên đăng nhập và chuyển theo vai trò.
     if (config.type === "login") {
       const body = `${field("Email", "email", "email", "an.tran@spendwise.demo", true)}${field("Mật khẩu", "password", "password", "spendwise", true)}<div class="field"><label for="role">Vai trò demo</label><select id="role" name="role"><option value="user">Người dùng</option><option value="coach">Huấn luyện viên</option><option value="moderator">Kiểm duyệt viên</option><option value="admin">Quản trị viên</option></select></div><label class="checkbox"><input name="remember" type="checkbox" checked><span>Ghi nhớ phiên đăng nhập trên thiết bị này</span></label>`;
       if (!root.hasAttribute("data-static-account")) root.innerHTML = shell(formShell("Đăng nhập", "Đăng nhập để tiếp tục hành trình tài chính của bạn.", body, "Đăng nhập vào SpendWise") + `<div class="divider"><a href="forgot-password.html">Quên mật khẩu?</a><a href="register.html">Tạo tài khoản</a></div><div class="success" style="margin-top:14px">Tài khoản demo: <b>an.tran@spendwise.demo</b> · Mật khẩu: <b>spendwise</b>. Chọn vai trò để mở các màn hình tương ứng.</div>`);
@@ -102,8 +87,6 @@ window.AccountPage = errorCode === "403"
       });
       return;
     }
-
-    // Nhánh đăng ký xác nhận mật khẩu, tạo tài khoản và đồng bộ hồ sơ/danh sách người dùng demo.
     if (config.type === "register") {
       const body = `${field("Họ và tên", "name", "text", "", true, "Tên hiển thị")}${field("Email", "email", "email", "", true, "ban@example.com")}${field("Mật khẩu", "password", "password", "", true, "Ít nhất 8 ký tự")}${field("Xác nhận mật khẩu", "confirm", "password", "")}<label class="checkbox"><input name="terms" type="checkbox" required><span>Tôi đồng ý với điều khoản sử dụng và chính sách quyền riêng tư.</span></label>`;
       if (!root.hasAttribute("data-static-account")) root.innerHTML = shell(formShell("Tạo tài khoản", "Bắt đầu xây dựng thói quen tài chính lành mạnh.", body, "Tạo tài khoản") + `<div class="divider"><span>Đã có tài khoản?</span><a href="login.html">Đăng nhập</a></div>`);
@@ -132,8 +115,6 @@ window.AccountPage = errorCode === "403"
       });
       return;
     }
-
-    // Nhánh quên mật khẩu cập nhật mật khẩu cục bộ nếu email thuộc tài khoản demo đã lưu.
     if (config.type === "forgot") {
       const body = `${field("Email tài khoản", "email", "email", "", true, "ban@example.com")}${field("Mật khẩu mới", "password", "password")}${field("Xác nhận mật khẩu mới", "confirm", "password")}`;
       if (!root.hasAttribute("data-static-account")) root.innerHTML = shell(formShell("Đặt lại mật khẩu", "Bản demo đổi mật khẩu cục bộ, không gửi email hoặc mã xác nhận.", body, "Cập nhật mật khẩu") + `<div class="divider"><a href="login.html">Quay lại đăng nhập</a></div>`);
@@ -155,8 +136,6 @@ window.AccountPage = errorCode === "403"
       });
       return;
     }
-
-    // Nhánh hồ sơ đọc thông tin hiện có, điền biểu mẫu và lưu dữ liệu mới khi gửi.
     if (config.type === "profile") {
       const profile = read("profile", { name: "Nguyễn An", email: "an.tran@spendwise.demo", phone: "", occupation: "" });
       const body = `${field("Họ và tên", "name", "text", profile.name)}${field("Email", "email", "email", profile.email)}${field("Số điện thoại", "phone", "tel", profile.phone || "", false)}${field("Nghề nghiệp", "occupation", "text", profile.occupation || "", false)}`;
@@ -177,8 +156,6 @@ window.AccountPage = errorCode === "403"
       });
       return;
     }
-
-    // Nhánh cài đặt tải tùy chọn, lưu các thay đổi và cung cấp thao tác đặt lại/đăng xuất.
     if (config.type === "settings") {
       const settings = read("settings", { currency: "VND", timezone: "Asia/Ho_Chi_Minh", notifications: true });
       const body = `<div class="field"><label for="currency">Đơn vị tiền tệ</label><select name="currency" id="currency"><option value="VND" ${settings.currency === "VND" ? "selected" : ""}>VND — Đồng Việt Nam</option><option value="USD" ${settings.currency === "USD" ? "selected" : ""}>USD — Đô la Mỹ</option></select></div><div class="field"><label for="timezone">Múi giờ</label><select name="timezone" id="timezone"><option value="Asia/Ho_Chi_Minh">Việt Nam (UTC+7)</option><option value="UTC">UTC</option></select></div><label class="checkbox"><input name="notifications" type="checkbox" ${settings.notifications ? "checked" : ""}><span>Cho phép thông báo trong bản demo</span></label><div class="field">${field("Mật khẩu mới (tùy chọn)", "password", "password", "", false)}${field("Xác nhận mật khẩu", "confirm", "password", "", false)}</div><button class="button button-secondary" type="button" data-signout>Đăng xuất trên thiết bị này</button><button class="button button-secondary" type="button" data-reset>Đặt lại dữ liệu demo</button>`;
@@ -215,7 +192,6 @@ window.AccountPage = errorCode === "403"
       if (!root.hasAttribute("data-static-account")) root.innerHTML = shell(`<section class="error-view"><div class="error-code">${esc(config.code)}</div><h1>${esc(config.title)}</h1><p>${esc(config.description)}</p><div class="hero-actions"><a class="button" href="../../thanh-vien-1/nguoi-dung/overview.html">Về tổng quan</a><a class="button button-secondary" href="../../index.html">Trang chủ</a></div></section>`);
     }
   }
-  // Chạy init đúng một lần sau khi DOM sẵn sàng; nếu trang đã tải xong thì khởi tạo ngay.
   if (document.readyState !== "complete") document.addEventListener("DOMContentLoaded", init, { once: true });
   else init();
 })();

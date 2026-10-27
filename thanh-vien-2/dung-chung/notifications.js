@@ -1,8 +1,3 @@
-// GHI CHÚ: Tải thông báo đã lưu, dựng danh sách, rồi gắn sự kiện tìm kiếm/lọc và cập nhật trạng thái.
-// ==========================================
-// TRUNG TÂM THÔNG BÁO - SPENDWISE
-// Dành cho sinh viên năm 2 - Dễ hiểu, dễ bảo vệ
-// ==========================================
 
 const DEFAULT_NOTIFICATIONS = [
   {
@@ -33,8 +28,6 @@ const DEFAULT_NOTIFICATIONS = [
 
 const STORAGE_KEY = "spendwise.notifications";
 let notifications = [];
-
-// Đọc danh sách thông báo đã lưu để chuẩn bị cho phần hiển thị và thao tác.
 function loadNotifications() {
   const data = localStorage.getItem(STORAGE_KEY);
   if (data) {
@@ -48,13 +41,9 @@ function loadNotifications() {
     saveNotifications();
   }
 }
-
-// Cập nhật kho localStorage bằng trạng thái mới nhất của các thông báo.
 function saveNotifications() {
   localStorage.setItem(STORAGE_KEY, JSON.stringify(notifications));
 }
-
-// Kết hợp từ khóa và trạng thái lọc, rồi dựng lại các thông báo nhìn thấy được.
 function renderUI() {
   const searchInput = document.querySelector("[data-search]");
   const statusFilter = document.querySelector("[data-status-filter]");
@@ -120,8 +109,6 @@ function renderUI() {
     tableBody.appendChild(tr);
   });
 }
-
-// Nạp thông báo, vẽ giao diện và gắn các sự kiện khi cấu trúc HTML đã sẵn sàng.
 document.addEventListener("DOMContentLoaded", () => {
   loadNotifications();
   renderUI();
@@ -129,7 +116,6 @@ document.addEventListener("DOMContentLoaded", () => {
   const tableBody = document.querySelector("[data-rows]");
   if (tableBody) {
     tableBody.addEventListener("click", (e) => {
-      // Đánh dấu đã đọc
       const toggleBtn = e.target.closest("[data-toggle]");
       if (toggleBtn) {
         const id = toggleBtn.dataset.toggle;
@@ -141,8 +127,6 @@ document.addEventListener("DOMContentLoaded", () => {
         }
         return;
       }
-
-      // Xóa thông báo
       const deleteBtn = e.target.closest("[data-delete]");
       if (deleteBtn) {
         const id = deleteBtn.dataset.delete;

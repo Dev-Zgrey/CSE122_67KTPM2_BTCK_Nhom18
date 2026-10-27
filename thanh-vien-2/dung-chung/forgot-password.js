@@ -1,18 +1,9 @@
-// CHÚ THÍCH BỔ SUNG: Mô phỏng đặt lại mật khẩu cho tài khoản demo ngay trên trình duyệt, không gửi email.
-// ==========================================
-// QUÊN MẬT KHẨU - SPENDWISE
-// Dành cho sinh viên năm 2 - Dễ hiểu, dễ bảo vệ
-// ==========================================
-
-// Chờ cấu trúc trang sẵn sàng trước khi truy cập các phần tử biểu mẫu.
 document.addEventListener("DOMContentLoaded", () => {
   const form = document.querySelector("[data-form]");
   const errorBox = document.querySelector("[data-error]");
   const successBox = document.querySelector("[data-success]");
 
   if (!form) return;
-
-  // Ngăn tải lại trang, xác nhận thông tin tài khoản/mật khẩu rồi lưu mật khẩu mới.
   form.addEventListener("submit", (e) => {
     e.preventDefault();
     errorBox.textContent = "";
@@ -31,8 +22,6 @@ document.addEventListener("DOMContentLoaded", () => {
       errorBox.textContent = "Hai mật khẩu nhập vào chưa khớp nhau.";
       return;
     }
-
-    // Đọc danh sách tài khoản
     let accounts = [];
     try {
       const saved = localStorage.getItem("spendwise.demoAccounts");
@@ -53,7 +42,6 @@ document.addEventListener("DOMContentLoaded", () => {
       account.password = password;
       localStorage.setItem("spendwise.demoAccounts", JSON.stringify(accounts));
     } else {
-      // The built-in demo account is not stored in demoAccounts.
       localStorage.setItem("spendwise.defaultPassword", password);
     }
 

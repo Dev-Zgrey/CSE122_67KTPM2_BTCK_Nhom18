@@ -1,10 +1,3 @@
-// GHI CHÚ: Nạp/lưu tài nguyên, render danh sách, mở form thêm/sửa và cập nhật nội dung theo tìm kiếm/bộ lọc.
-// ==========================================
-// QUẢN LÝ TÀI NGUYÊN GIÁO DỤC - SPENDWISE
-// Dành cho sinh viên năm 2 - Dễ hiểu, dễ bảo vệ
-// ==========================================
-
-// 1. DỮ LIỆU MẪU BAN ĐẦU
 const DEFAULT_RESOURCES = [
   {
     id: "res-1",
@@ -32,8 +25,6 @@ const DEFAULT_RESOURCES = [
 
 const STORAGE_KEY = "spendwise.resources";
 let resources = [];
-
-// Nạp dữ liệu đã lưu; dùng danh sách mặc định khi chưa có dữ liệu hoặc JSON không hợp lệ.
 function loadResources() {
   const data = localStorage.getItem(STORAGE_KEY);
   if (data) {
@@ -47,13 +38,9 @@ function loadResources() {
     saveResources();
   }
 }
-
-// Tuần tự hóa mảng tài nguyên và lưu vào localStorage.
 function saveResources() {
   localStorage.setItem(STORAGE_KEY, JSON.stringify(resources));
 }
-
-// Hiển thị phản hồi ngắn trên giao diện rồi tự gỡ thông báo.
 function showToast(message) {
   const container = document.querySelector("[data-toasts]");
   if (!container) return;
@@ -63,12 +50,6 @@ function showToast(message) {
   container.appendChild(toast);
   setTimeout(() => toast.remove(), 3000);
 }
-
-// ==========================================
-// 2. HIỂN THỊ DỮ LIỆU RA GIAO DIỆN (RENDER)
-// ==========================================
-
-// Áp dụng tìm kiếm/bộ lọc, tính thống kê và dựng lại bảng tài nguyên.
 function renderUI() {
   const searchInput = document.querySelector("[data-search]");
   const statusFilter = document.querySelector("[data-status-filter]");
@@ -139,15 +120,9 @@ function renderUI() {
   });
 }
 
-// ==========================================
-// 3. XỬ LÝ MODAL (THÊM / SỬA)
-// ==========================================
-
 const modal = document.querySelector("[data-modal]");
 const form = document.querySelector("[data-form]");
 const modalTitle = document.querySelector("#modal-title");
-
-// Mở form tạo mới hoặc điền dữ liệu bản ghi hiện tại vào form sửa.
 function openModal(editId = null) {
   if (!modal || !form) return;
   form.reset();
@@ -171,27 +146,15 @@ function openModal(editId = null) {
 
   modal.hidden = false;
 }
-
-// Ẩn hộp thoại mà không tự lưu nội dung chưa gửi.
 function closeModal() {
   if (modal) modal.hidden = true;
 }
-
-// ==========================================
-// 4. KHỞI CHẠY VÀ GẮN SỰ KIỆN
-// ==========================================
-
-// Nạp dữ liệu, dựng giao diện ban đầu và đăng ký các trình xử lý sau khi DOM sẵn sàng.
 document.addEventListener("DOMContentLoaded", () => {
   loadResources();
   renderUI();
-
-  // Mở/Đóng Modal
   document.querySelectorAll("[data-create]").forEach((btn) => btn.addEventListener("click", () => openModal()));
   document.querySelectorAll("[data-close]").forEach((btn) => btn.addEventListener("click", closeModal));
   if (modal) modal.addEventListener("click", (e) => { if (e.target === modal) closeModal(); });
-
-  // Lưu Form
   if (form) {
     form.addEventListener("submit", (e) => {
       e.preventDefault();
@@ -225,8 +188,6 @@ document.addEventListener("DOMContentLoaded", () => {
       renderUI();
     });
   }
-
-  // Bảng sự kiện (Sửa / Xóa)
   const tableBody = document.querySelector("[data-rows]");
   if (tableBody) {
     tableBody.addEventListener("click", (e) => {
@@ -249,8 +210,6 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     });
   }
-
-  // Tìm kiếm & Lọc
   const searchInput = document.querySelector("[data-search]");
   if (searchInput) searchInput.addEventListener("input", renderUI);
 
@@ -265,8 +224,6 @@ document.addEventListener("DOMContentLoaded", () => {
       renderUI();
     });
   }
-
-  // Xuất CSV
   const exportBtn = document.querySelector("[data-export]");
   if (exportBtn) {
     exportBtn.addEventListener("click", () => {
@@ -283,8 +240,6 @@ document.addEventListener("DOMContentLoaded", () => {
       URL.revokeObjectURL(url);
     });
   }
-
-  // Đăng xuất
   const signoutBtn = document.querySelector("[data-signout]");
   if (signoutBtn) {
     signoutBtn.addEventListener("click", () => {

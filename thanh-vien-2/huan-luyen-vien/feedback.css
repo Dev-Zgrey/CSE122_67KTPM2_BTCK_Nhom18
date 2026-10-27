@@ -1,4 +1,4 @@
-/* GHI CHÚ: Định kiểu trang phản hồi, gồm danh sách, trạng thái, hộp thoại và các quy tắc responsive. */
+
 :root {
   color-scheme: light;
   --ink: #192820;
@@ -25,7 +25,7 @@ body {
   color: var(--ink);
 }
 button, input, select, textarea {
-  font: inherit; /*buộc kế thừa*/
+  font: inherit;
 }
 a {
   color: inherit;
@@ -37,7 +37,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
 }
 
 [hidden] {
-  display: none !important; /*bắt buộc theo code bỏ qua các ưu tiên*/
+  display: none !important;
 }
 
 .visually-hidden {
@@ -91,8 +91,8 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
   color: #9aa69f;
   font-size: 10px;
   font-weight: 700;
-  letter-spacing: 1px; /*điều chỉnh chiều ngang của các kí tự*/
-  text-transform: uppercase; /*in hoa*/
+  letter-spacing: 1px;
+  text-transform: uppercase;
 }
 
 .nav {
@@ -163,8 +163,8 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
 .identity-text strong, .identity-text span {
   display: block;
   overflow: hidden;
-  text-overflow: ellipsis; /*dài quá thì hiện dấu ...*/
-  white-space: nowrap; /*ép nằm trên 1 dòng*/
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .identity-text strong {
@@ -356,7 +356,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
 
 .filter-bar {
   display: flex;
-  flex-wrap: wrap; /*tự động xuống dòng khi hết hàng*/
+  flex-wrap: wrap;
   gap: 8px;
   padding: 0 17px 13px;
 }
@@ -382,7 +382,7 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
 
 .table {
   width: 100%;
-  border-collapse: collapse; /*quyết định border đg viền tách rời */
+  border-collapse: collapse;
   text-align: left;
 }
 

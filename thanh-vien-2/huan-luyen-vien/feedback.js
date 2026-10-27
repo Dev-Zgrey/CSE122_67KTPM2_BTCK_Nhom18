@@ -1,10 +1,3 @@
-// GHI CHÚ: Nạp/lưu phản hồi, hiển thị theo bộ lọc và xử lý thao tác thêm, sửa hoặc phản hồi qua modal.
-// ==========================================
-// QUẢN LÝ PHẢN HỒI HỌC VIÊN - SPENDWISE
-// Dành cho sinh viên năm 2 - Dễ hiểu, dễ bảo vệ
-// ==========================================
-
-// 1. DỮ LIỆU MẪU BAN ĐẦU (Dùng khi LocalStorage chưa có dữ liệu)
 const DEFAULT_FEEDBACKS = [
   {
     id: "fb-1",
@@ -29,19 +22,8 @@ const DEFAULT_FEEDBACKS = [
     updatedAt: "2026-10-10"
   }
 ];
-
-// Khóa lưu trong LocalStorage để đồng bộ giữa các trang
 const STORAGE_KEY = "spendwise.feedback";
-
-// Mảng chứa danh sách phản hồi hiện tại
 let feedbacks = [];
-
-// ==========================================
-// 2. CÁC HÀM XỬ LÝ LOCALSTORAGE
-// ==========================================
-
-// Đọc dữ liệu từ LocalStorage
-// Nạp các phản hồi đã lưu và xử lý trường hợp dữ liệu chưa được khởi tạo.
 function loadFeedbacks() {
   const data = localStorage.getItem(STORAGE_KEY);
   if (data) {
@@ -55,15 +37,9 @@ function loadFeedbacks() {
     saveFeedbacks();
   }
 }
-
-// Lưu dữ liệu vào LocalStorage
-// Ghi danh sách phản hồi hiện tại xuống localStorage.
 function saveFeedbacks() {
   localStorage.setItem(STORAGE_KEY, JSON.stringify(feedbacks));
 }
-
-// Hiển thị thông báo nhỏ (Toast)
-// Hiển thị kết quả thao tác (thành công hoặc lỗi) tạm thời trên giao diện.
 function showToast(message, isError = false) {
   const container = document.querySelector("[data-toasts]");
   if (!container) return;
@@ -72,18 +48,10 @@ function showToast(message, isError = false) {
   toast.className = isError ? "toast is-danger" : "toast";
   toast.textContent = message;
   container.appendChild(toast);
-
-  // Tự động xóa sau 3 giây
   setTimeout(() => {
     toast.remove();
   }, 3000);
 }
-
-// ==========================================
-// 3. HIỂN THỊ DỮ LIỆU RA GIAO DIỆN (RENDER)
-// ==========================================
-
-// Lọc phản hồi theo điều kiện, cập nhật số liệu và dựng lại danh sách/bảng hiển thị.
 function renderUI() {
   const searchInput = document.querySelector("[data-search]");
   const statusFilter = document.querySelector("[data-status-filter]");
@@ -94,8 +62,6 @@ function renderUI() {
 
   const keyword = searchInput ? searchInput.value.trim().toLowerCase() : "";
   const selectedStatus = statusFilter ? statusFilter.value : "";
-
-  // Lọc theo từ khóa tìm kiếm và trạng thái
   const filteredList = feedbacks.filter((item) => {
     const matchSearch =
       !keyword ||
@@ -107,13 +73,9 @@ function renderUI() {
 
     return matchSearch && matchStatus;
   });
-
-  // 1. Cập nhật số lượng
   if (countLabel) {
     countLabel.textContent = `${filteredList.length} mục · ${feedbacks.length} tổng cộng`;
   }
-
-  // 2. Cập nhật thẻ thống kê (Stats Grid)
   if (statsContainer) {
     const total = feedbacks.length;
     const displaying = filteredList.length;
@@ -127,8 +89,6 @@ function renderUI() {
       <article class="stat-card"><span>Cần xử lý</span><strong>${pendingCount}</strong></article>
     `;
   }
-
-  // 3. Kiểm tra danh sách rỗng
   if (emptyState) {
     emptyState.hidden = filteredList.length > 0;
   }
@@ -136,13 +96,10 @@ function renderUI() {
   if (tableScroll) {
     tableScroll.hidden = filteredList.length === 0;
   }
-
-  // 4. Render các dòng của bảng
   if (!tableBody) return;
   tableBody.innerHTML = "";
 
   filteredList.forEach((item) => {
-    // Xác định màu nhãn trạng thái
     let badgeClass = "status-badge";
     if (item.status === "Đã đóng") badgeClass += " is-danger";
     else if (item.status === "Chờ phản hồi" || item.status === "Đang xử lý") badgeClass += " is-warning";
@@ -173,23 +130,16 @@ function renderUI() {
   });
 }
 
-// ==========================================
-// 4. XỬ LÝ MODAL (THÊM / SỬA PHẢN HỒI)
-// ==========================================
-
 const modal = document.querySelector("[data-modal]");
 const form = document.querySelector("[data-form]");
 const modalTitle = document.querySelector("#modal-title");
 const errorBox = document.querySelector("[data-error]");
-
-// Mở form phản hồi mới hoặc nạp nội dung phản hồi đã chọn vào các trường chỉnh sửa.
 function openModal(editId = null) {
   if (!modal || !form) return;
   form.reset();
   errorBox.textContent = "";
 
   if (editId) {
-    // Chế độ Sửa
     const record = feedbacks.find((item) => item.id === editId);
     if (!record) return;
 
@@ -203,7 +153,6 @@ function openModal(editId = null) {
     form.elements["message"].value = record.message;
     form.elements["response"].value = record.response || "";
   } else {
-    // Chế độ Thêm mới
     modalTitle.textContent = "Tạo phản hồi";
     form.elements["id"].value = "";
     form.elements["status"].value = "Mới";
@@ -212,40 +161,23 @@ function openModal(editId = null) {
 
   modal.hidden = false;
 }
-
-// Ẩn modal khi hủy hoặc khi lưu xong.
 function closeModal() {
   if (modal) modal.hidden = true;
 }
-
-// ==========================================
-// 5. KHỞI CHẠY VÀ GẮN SỰ KIỆN (EVENT LISTENERS)
-// ==========================================
-
-// Tải dữ liệu ban đầu và gắn sự kiện cho form, thao tác bảng, bộ lọc và xuất CSV.
 document.addEventListener("DOMContentLoaded", () => {
-  // 1. Tải dữ liệu ban đầu
   loadFeedbacks();
   renderUI();
-
-  // 2. Mở Modal khi nhấn nút Thêm mới
   document.querySelectorAll("[data-create]").forEach((btn) => {
     btn.addEventListener("click", () => openModal());
   });
-
-  // 3. Đóng Modal khi nhấn nút Hủy hoặc dấu ×
   document.querySelectorAll("[data-close]").forEach((btn) => {
     btn.addEventListener("click", closeModal);
   });
-
-  // Đóng Modal khi bấm ra vùng xám mờ bên ngoài
   if (modal) {
     modal.addEventListener("click", (e) => {
       if (e.target === modal) closeModal();
     });
   }
-
-  // 4. Lưu Form (Thêm mới hoặc Cập nhật)
   if (form) {
     form.addEventListener("submit", (e) => {
       e.preventDefault();
@@ -258,8 +190,6 @@ document.addEventListener("DOMContentLoaded", () => {
       const status = form.elements["status"].value;
       const message = form.elements["message"].value.trim();
       const response = form.elements["response"].value.trim();
-
-      // Kiểm tra tính hợp lệ cơ bản (Validation)
       if (!sender || !subject || !message) {
         errorBox.textContent = "Vui lòng nhập đầy đủ các thông tin bắt buộc (*).";
         return;
@@ -268,7 +198,6 @@ document.addEventListener("DOMContentLoaded", () => {
       const today = new Date().toISOString().slice(0, 10);
 
       if (id) {
-        // Cập nhật phản hồi cũ
         const index = feedbacks.findIndex((item) => item.id === id);
         if (index !== -1) {
           feedbacks[index] = {
@@ -285,7 +214,6 @@ document.addEventListener("DOMContentLoaded", () => {
           showToast("Đã cập nhật phản hồi thành công.");
         }
       } else {
-        // Thêm phản hồi mới
         const newRecord = {
           id: "fb-" + Date.now(),
           sender,
@@ -306,20 +234,15 @@ document.addEventListener("DOMContentLoaded", () => {
       renderUI();
     });
   }
-
-  // 5. Thao tác trên bảng (Sửa, Xóa, Đổi trạng thái nhanh)
   const tableBody = document.querySelector("[data-rows]");
   if (tableBody) {
     tableBody.addEventListener("click", (e) => {
-      // Nút Sửa
       const editBtn = e.target.closest("[data-edit]");
       if (editBtn) {
         const id = editBtn.dataset.edit;
         openModal(id);
         return;
       }
-
-      // Nút Xóa
       const deleteBtn = e.target.closest("[data-delete]");
       if (deleteBtn) {
         const id = deleteBtn.dataset.delete;
@@ -334,8 +257,6 @@ document.addEventListener("DOMContentLoaded", () => {
         }
       }
     });
-
-    // Bắt sự kiện chọn nhanh dropdown trạng thái trên từng dòng
     tableBody.addEventListener("change", (e) => {
       const select = e.target.closest("[data-change-status]");
       if (select) {
@@ -350,8 +271,6 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     });
   }
-
-  // 6. Tìm kiếm và Bộ lọc
   const searchInput = document.querySelector("[data-search]");
   if (searchInput) {
     searchInput.addEventListener("input", renderUI);
@@ -361,8 +280,6 @@ document.addEventListener("DOMContentLoaded", () => {
   if (statusFilter) {
     statusFilter.addEventListener("change", renderUI);
   }
-
-  // Nút Làm mới bộ lọc
   const clearBtn = document.querySelector("[data-clear]");
   if (clearBtn) {
     clearBtn.addEventListener("click", () => {
@@ -371,8 +288,6 @@ document.addEventListener("DOMContentLoaded", () => {
       renderUI();
     });
   }
-
-  // 7. Xuất file CSV dữ liệu
   const exportBtn = document.querySelector("[data-export]");
   if (exportBtn) {
     exportBtn.addEventListener("click", () => {
@@ -394,8 +309,6 @@ document.addEventListener("DOMContentLoaded", () => {
       URL.revokeObjectURL(url);
     });
   }
-
-  // 8. Nút Đăng xuất
   const signoutBtn = document.querySelector("[data-signout]");
   if (signoutBtn) {
     signoutBtn.addEventListener("click", () => {

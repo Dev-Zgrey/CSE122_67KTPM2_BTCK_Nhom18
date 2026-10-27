@@ -1,10 +1,3 @@
-// GHI CHÚ: Quản lý danh sách đánh giá demo: nạp/lưu dữ liệu, render, mở form thêm/sửa và áp dụng bộ lọc.
-// ==========================================
-// QUẢN LÝ ĐÁNH GIÁ NGÂN SÁCH - SPENDWISE
-// Dành cho sinh viên năm 2 - Dễ hiểu, dễ bảo vệ
-// ==========================================
-
-// 1. DỮ LIỆU MẪU BAN ĐẦU
 const DEFAULT_REVIEWS = [
   {
     id: "rev-1",
@@ -28,8 +21,6 @@ const DEFAULT_REVIEWS = [
 
 const STORAGE_KEY = "spendwise.coachReviews";
 let reviews = [];
-
-// Đọc các lượt đánh giá đã lưu; chuẩn bị dữ liệu mặc định nếu kho chưa có dữ liệu hợp lệ.
 function loadReviews() {
   const data = localStorage.getItem(STORAGE_KEY);
   if (data) {
@@ -43,13 +34,9 @@ function loadReviews() {
     saveReviews();
   }
 }
-
-// Lưu toàn bộ danh sách lượt đánh giá hiện tại vào localStorage.
 function saveReviews() {
   localStorage.setItem(STORAGE_KEY, JSON.stringify(reviews));
 }
-
-// Hiển thị thông báo thao tác tạm thời trong vùng toast.
 function showToast(message) {
   const container = document.querySelector("[data-toasts]");
   if (!container) return;
@@ -59,12 +46,6 @@ function showToast(message) {
   container.appendChild(toast);
   setTimeout(() => toast.remove(), 3000);
 }
-
-// ==========================================
-// 2. HIỂN THỊ DỮ LIỆU RA GIAO DIỆN (RENDER)
-// ==========================================
-
-// Tính kết quả lọc và thống kê, sau đó dựng các dòng dữ liệu đánh giá lên bảng.
 function renderUI() {
   const searchInput = document.querySelector("[data-search]");
   const statusFilter = document.querySelector("[data-status-filter]");
@@ -141,15 +122,9 @@ function renderUI() {
   });
 }
 
-// ==========================================
-// 3. XỬ LÝ MODAL (THÊM / SỬA REVIEW)
-// ==========================================
-
 const modal = document.querySelector("[data-modal]");
 const form = document.querySelector("[data-form]");
 const modalTitle = document.querySelector("#modal-title");
-
-// Mở biểu mẫu đánh giá mới hoặc điền bản ghi đã chọn để chỉnh sửa.
 function openModal(editId = null) {
   if (!modal || !form) return;
   form.reset();
@@ -174,27 +149,15 @@ function openModal(editId = null) {
 
   modal.hidden = false;
 }
-
-// Đóng hộp thoại đánh giá bằng cách ẩn nó khỏi màn hình.
 function closeModal() {
   if (modal) modal.hidden = true;
 }
-
-// ==========================================
-// 4. KHỞI CHẠY VÀ GẮN SỰ KIỆN
-// ==========================================
-
-// Nạp dữ liệu, vẽ trang và gắn sự kiện biểu mẫu, bảng, bộ lọc cùng thao tác xuất.
 document.addEventListener("DOMContentLoaded", () => {
   loadReviews();
   renderUI();
-
-  // Mở modal khi bấm nút "＋ Tạo yêu cầu review"
   document.querySelectorAll("[data-create]").forEach((btn) => btn.addEventListener("click", () => openModal()));
   document.querySelectorAll("[data-close]").forEach((btn) => btn.addEventListener("click", closeModal));
   if (modal) modal.addEventListener("click", (e) => { if (e.target === modal) closeModal(); });
-
-  // Lưu Form Modal
   if (form) {
     form.addEventListener("submit", (e) => {
       e.preventDefault();
@@ -227,8 +190,6 @@ document.addEventListener("DOMContentLoaded", () => {
       renderUI();
     });
   }
-
-  // Thao tác bảng (Sửa, Xóa, Đổi trạng thái)
   const tableBody = document.querySelector("[data-rows]");
   if (tableBody) {
     tableBody.addEventListener("click", (e) => {
@@ -266,8 +227,6 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     });
   }
-
-  // Tìm kiếm & Lọc
   const searchInput = document.querySelector("[data-search]");
   if (searchInput) searchInput.addEventListener("input", renderUI);
 
@@ -282,8 +241,6 @@ document.addEventListener("DOMContentLoaded", () => {
       renderUI();
     });
   }
-
-  // Xuất CSV
   const exportBtn = document.querySelector("[data-export]");
   if (exportBtn) {
     exportBtn.addEventListener("click", () => {
@@ -300,8 +257,6 @@ document.addEventListener("DOMContentLoaded", () => {
       URL.revokeObjectURL(url);
     });
   }
-
-  // Đăng xuất
   const signoutBtn = document.querySelector("[data-signout]");
   if (signoutBtn) {
     signoutBtn.addEventListener("click", () => {

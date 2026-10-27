@@ -1,10 +1,3 @@
-// GHI CHÚ: Nạp học viên từ dữ liệu mẫu/LocalStorage, hiển thị danh sách và xử lý các thao tác lọc/tìm kiếm.
-// ==========================================
-// QUẢN LÝ DANH SÁCH HỌC VIÊN - SPENDWISE
-// Dành cho sinh viên năm 2 - Dễ hiểu, dễ bảo vệ
-// ==========================================
-
-// 1. DỮ LIỆU MẪU BAN ĐẦU
 const DEFAULT_CLIENTS = [
   {
     id: "usr-an",
@@ -37,13 +30,8 @@ const DEFAULT_CLIENTS = [
     createdAt: "2026-10-01"
   }
 ];
-
-// Khóa lưu demoUsers trong LocalStorage (dùng chung với trang Quản trị viên)
 const STORAGE_KEY = "spendwise.demoUsers";
 let clients = [];
-
-// Đọc dữ liệu từ LocalStorage
-// Đọc danh sách học viên demo từ bộ nhớ trình duyệt và nạp dữ liệu dự phòng khi cần.
 function loadClients() {
   const data = localStorage.getItem(STORAGE_KEY);
   if (data) {
@@ -57,12 +45,6 @@ function loadClients() {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(clients));
   }
 }
-
-// ==========================================
-// 2. HIỂN THỊ DỮ LIỆU RA GIAO DIỆN (RENDER)
-// ==========================================
-
-// Áp dụng từ khóa/trạng thái lọc, sau đó cập nhật bảng học viên và trạng thái không có kết quả.
 function renderUI() {
   const searchInput = document.querySelector("[data-search]");
   const statusFilter = document.querySelector("[data-status-filter]");
@@ -73,8 +55,6 @@ function renderUI() {
 
   const keyword = searchInput ? searchInput.value.trim().toLowerCase() : "";
   const selectedStatus = statusFilter ? statusFilter.value : "";
-
-  // Lọc học viên theo từ khóa (tên, email, mục tiêu) và trạng thái
   const filteredList = clients.filter((item) => {
     const matchSearch =
       !keyword ||
@@ -86,13 +66,9 @@ function renderUI() {
 
     return matchSearch && matchStatus;
   });
-
-  // 1. Cập nhật số lượng
   if (countLabel) {
     countLabel.textContent = `${filteredList.length} mục · ${clients.length} tổng cộng`;
   }
-
-  // 2. Cập nhật thẻ thống kê
   if (statsContainer) {
     const total = clients.length;
     const activeCount = clients.filter((x) => x.status === "Hoạt động").length;
@@ -106,8 +82,6 @@ function renderUI() {
       <article class="stat-card"><span>Cần theo dõi</span><strong>${watchCount}</strong></article>
     `;
   }
-
-  // 3. Trạng thái rỗng
   if (emptyState) {
     emptyState.hidden = filteredList.length > 0;
   }
@@ -115,8 +89,6 @@ function renderUI() {
   if (tableScroll) {
     tableScroll.hidden = filteredList.length === 0;
   }
-
-  // 4. Render các dòng của bảng
   if (!tableBody) return;
   tableBody.innerHTML = "";
 
@@ -141,29 +113,17 @@ function renderUI() {
     tableBody.appendChild(tr);
   });
 }
-
-// ==========================================
-// 3. KHỞI CHẠY VÀ GẮN SỰ KIỆN
-// ==========================================
-
-// Nạp và hiển thị danh sách ban đầu, rồi đăng ký các thao tác lọc sau khi DOM sẵn sàng.
 document.addEventListener("DOMContentLoaded", () => {
   loadClients();
   renderUI();
-
-  // Tìm kiếm
   const searchInput = document.querySelector("[data-search]");
   if (searchInput) {
     searchInput.addEventListener("input", renderUI);
   }
-
-  // Bộ lọc trạng thái
   const statusFilter = document.querySelector("[data-status-filter]");
   if (statusFilter) {
     statusFilter.addEventListener("change", renderUI);
   }
-
-  // Nút Làm mới bộ lọc
   const clearBtn = document.querySelector("[data-clear]");
   if (clearBtn) {
     clearBtn.addEventListener("click", () => {
@@ -172,8 +132,6 @@ document.addEventListener("DOMContentLoaded", () => {
       renderUI();
     });
   }
-
-  // Nút Đăng xuất
   const signoutBtn = document.querySelector("[data-signout]");
   if (signoutBtn) {
     signoutBtn.addEventListener("click", () => {
