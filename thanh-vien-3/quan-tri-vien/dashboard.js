@@ -78,7 +78,7 @@ window.WorkspacePage = {
   "exportable": true,
   "secondaryAction": {
     "label": "Mở nhật ký kiểm toán",
-    "href": "dashboard.html?view=audit"
+    "href": "audit.html"
   }
 };
 
