@@ -305,6 +305,33 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
   color: #58665d;
 }
 
+.button-primary {
+  background: var(--green);
+  color: #fff;
+}
+
+.pg-heading h1 {
+  margin: 0;
+  font-size: clamp(23px, 3vw, 30px);
+  letter-spacing: -.8px;
+}
+
+.pg-heading p {
+  margin: 7px 0 0;
+  color: var(--muted);
+  font-size: 11px;
+  line-height: 1.6;
+}
+
+.date-label {
+  color: #7c8881;
+  font-size: 10px;
+}
+
+.breadcrumb-separator {
+  color: #c2cbc5;
+}
+
 .icon-button {
   display: grid;
   width: 27px;
