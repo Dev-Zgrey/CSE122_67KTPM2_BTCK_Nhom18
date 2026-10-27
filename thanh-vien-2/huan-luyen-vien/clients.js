@@ -45,6 +45,18 @@ function loadClients() {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(clients));
   }
 }
+function saveClients() {
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(clients));
+}
+function showToast(message) {
+  const container = document.querySelector("[data-toasts]");
+  if (!container) return;
+  const toast = document.createElement("div");
+  toast.className = "toast";
+  toast.textContent = message;
+  container.appendChild(toast);
+  setTimeout(() => toast.remove(), 3000);
+}
 function renderUI() {
   const searchInput = document.querySelector("[data-search]");
   const statusFilter = document.querySelector("[data-status-filter]");
@@ -107,15 +119,88 @@ function renderUI() {
       <td>
         <div class="row-action">
           <a class="icon-button" style="text-decoration:none" title="Xem đánh giá" href="budget.html">↗</a>
+          <button class="icon-button" type="button" title="Sửa" data-edit="${item.id}">✎</button>
+          <button class="icon-button" type="button" title="Xóa" data-delete="${item.id}">×</button>
         </div>
       </td>
     `;
     tableBody.appendChild(tr);
   });
 }
+const modal = document.querySelector("[data-modal]");
+const form = document.querySelector("[data-form]");
+const modalTitle = document.querySelector("#modal-title");
+const errorBox = document.querySelector("[data-error]");
+function openModal(editId = null) {
+  if (!modal || !form) return;
+  form.reset();
+  errorBox.textContent = "";
+  const record = editId ? clients.find((item) => item.id === editId) : null;
+  if (editId && !record) return;
+  modalTitle.textContent = record ? "Chỉnh sửa học viên" : "Thêm học viên";
+  form.elements["id"].value = record?.id || "";
+  form.elements["name"].value = record?.name || "";
+  form.elements["email"].value = record?.email || "";
+  form.elements["goal"].value = record?.goal || "";
+  form.elements["budget"].value = record?.budget || "";
+  form.elements["status"].value = record?.status || "Hoạt động";
+  modal.hidden = false;
+}
+function closeModal() {
+  if (modal) modal.hidden = true;
+}
 document.addEventListener("DOMContentLoaded", () => {
   loadClients();
   renderUI();
+  document.querySelectorAll("[data-create]").forEach((button) => button.addEventListener("click", () => openModal()));
+  document.querySelectorAll("[data-close]").forEach((button) => button.addEventListener("click", closeModal));
+  if (modal) modal.addEventListener("click", (event) => { if (event.target === modal) closeModal(); });
+  if (form) form.addEventListener("submit", (event) => {
+    event.preventDefault();
+    errorBox.textContent = "";
+    const id = form.elements["id"].value;
+    const client = {
+      id: id || `client-${Date.now()}`,
+      name: form.elements["name"].value.trim(),
+      email: form.elements["email"].value.trim().toLowerCase(),
+      goal: form.elements["goal"].value.trim(),
+      budget: form.elements["budget"].value.trim(),
+      status: form.elements["status"].value,
+      role: "Người dùng",
+      createdAt: new Date().toISOString().slice(0, 10)
+    };
+    if (clients.some((item) => item.email === client.email && item.id !== id)) {
+      errorBox.textContent = "Email này đã có trong danh sách học viên.";
+      return;
+    }
+    if (id) {
+      const index = clients.findIndex((item) => item.id === id);
+      if (index !== -1) clients[index] = { ...clients[index], ...client };
+    } else {
+      clients.unshift(client);
+    }
+    saveClients();
+    closeModal();
+    renderUI();
+    showToast(id ? "Đã cập nhật học viên." : "Đã thêm học viên.");
+  });
+  const tableBody = document.querySelector("[data-rows]");
+  if (tableBody) tableBody.addEventListener("click", (event) => {
+    const editButton = event.target.closest("[data-edit]");
+    if (editButton) {
+      openModal(editButton.dataset.edit);
+      return;
+    }
+    const deleteButton = event.target.closest("[data-delete]");
+    if (deleteButton) {
+      const client = clients.find((item) => item.id === deleteButton.dataset.delete);
+      if (!client || !confirm(`Xóa học viên ${client.name}?`)) return;
+      clients = clients.filter((item) => item.id !== client.id);
+      saveClients();
+      renderUI();
+      showToast("Đã xóa học viên.");
+    }
+  });
   const searchInput = document.querySelector("[data-search]");
   if (searchInput) {
     searchInput.addEventListener("input", renderUI);

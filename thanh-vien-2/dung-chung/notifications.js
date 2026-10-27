@@ -109,9 +109,51 @@ function renderUI() {
     tableBody.appendChild(tr);
   });
 }
+function showToast(message) {
+  const container = document.querySelector("[data-toasts]");
+  if (!container) return;
+  const toast = document.createElement("div");
+  toast.className = "toast";
+  toast.textContent = message;
+  container.appendChild(toast);
+  setTimeout(() => toast.remove(), 3000);
+}
 document.addEventListener("DOMContentLoaded", () => {
   loadNotifications();
   renderUI();
+
+  const modal = document.querySelector("[data-modal]");
+  const form = document.querySelector("[data-form]");
+  const errorBox = document.querySelector("[data-error]");
+  const openModal = () => {
+    if (!modal || !form) return;
+    form.reset();
+    errorBox.textContent = "";
+    form.elements["date"].value = new Date().toISOString().slice(0, 10);
+    form.elements["status"].value = "Chưa đọc";
+    modal.hidden = false;
+  };
+  const closeModal = () => { if (modal) modal.hidden = true; };
+  document.querySelectorAll("[data-create]").forEach((button) => button.addEventListener("click", openModal));
+  document.querySelectorAll("[data-close]").forEach((button) => button.addEventListener("click", closeModal));
+  if (modal) modal.addEventListener("click", (event) => { if (event.target === modal) closeModal(); });
+  if (form) form.addEventListener("submit", (event) => {
+    event.preventDefault();
+    errorBox.textContent = "";
+    const notification = {
+      id: `notif-${Date.now()}`,
+      title: form.elements["title"].value.trim(),
+      type: form.elements["type"].value,
+      message: form.elements["message"].value.trim(),
+      date: form.elements["date"].value,
+      status: form.elements["status"].value
+    };
+    notifications.unshift(notification);
+    saveNotifications();
+    closeModal();
+    renderUI();
+    showToast("Đã tạo thông báo.");
+  });
 
   const tableBody = document.querySelector("[data-rows]");
   if (tableBody) {
@@ -151,6 +193,22 @@ document.addEventListener("DOMContentLoaded", () => {
       renderUI();
     });
   }
+
+  const exportBtn = document.querySelector("[data-export]");
+  if (exportBtn) exportBtn.addEventListener("click", () => {
+    const columns = ["Tiêu đề", "Loại", "Nội dung", "Ngày", "Trạng thái"];
+    const escapeCSV = (value) => `"${String(value ?? "").replace(/"/g, '""')}"`;
+    const rows = notifications.map((item) => [item.title, item.type, item.message, item.date, item.status]);
+    const csv = [columns, ...rows].map((row) => row.map(escapeCSV).join(",")).join("\r\n");
+    const url = URL.createObjectURL(new Blob(["\uFEFF", csv], { type: "text/csv;charset=utf-8" }));
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = "spendwise-notifications.csv";
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
+    setTimeout(() => URL.revokeObjectURL(url), 1000);
+  });
 
   const signoutBtn = document.querySelector("[data-signout]");
   if (signoutBtn) {
