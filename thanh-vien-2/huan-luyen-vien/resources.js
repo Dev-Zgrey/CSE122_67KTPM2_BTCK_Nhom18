@@ -41,6 +41,14 @@ function loadResources() {
 function saveResources() {
   localStorage.setItem(STORAGE_KEY, JSON.stringify(resources));
 }
+function escapeHTML(value) {
+  return String(value ?? "").replace(/[&<>"']/g, (character) => ({
+    "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;"
+  })[character]);
+}
+function escapeCSV(value) {
+  return `"${String(value ?? "").replace(/"/g, '""')}"`;
+}
 function showToast(message) {
   const container = document.querySelector("[data-toasts]");
   if (!container) return;
@@ -65,7 +73,10 @@ function renderUI() {
     const matchSearch =
       !keyword ||
       item.title.toLowerCase().includes(keyword) ||
-      (item.summary && item.summary.toLowerCase().includes(keyword));
+      (item.summary && item.summary.toLowerCase().includes(keyword)) ||
+      (item.tags && item.tags.toLowerCase().includes(keyword)) ||
+      item.type.toLowerCase().includes(keyword) ||
+      item.audience.toLowerCase().includes(keyword);
 
     const matchStatus = !selectedStatus || item.status === selectedStatus;
 
@@ -104,15 +115,15 @@ function renderUI() {
 
     const tr = document.createElement("tr");
     tr.innerHTML = `
-      <td>${item.title}</td>
-      <td>${item.type}</td>
-      <td>${item.audience}</td>
-      <td>${item.updatedAt || "—"}</td>
-      <td><span class="${badgeClass}">${item.status}</span></td>
+      <td>${escapeHTML(item.title)}</td>
+      <td>${escapeHTML(item.type)}</td>
+      <td>${escapeHTML(item.audience || "Tất cả")}</td>
+      <td>${escapeHTML(item.updatedAt || "—")}</td>
+      <td><span class="${badgeClass}">${escapeHTML(item.status)}</span></td>
       <td>
         <div class="row-action">
-          <button class="icon-button" type="button" title="Sửa" data-edit="${item.id}">✎</button>
-          <button class="icon-button" type="button" title="Xóa" data-delete="${item.id}">×</button>
+          <a class="button button-secondary row-edit-link" href="edit-resource.html?id=${encodeURIComponent(item.id)}">Soạn</a>
+          <button class="icon-button" type="button" title="Xóa" aria-label="Xóa ${escapeHTML(item.title)}" data-delete="${escapeHTML(item.id)}">×</button>
         </div>
       </td>
     `;
@@ -120,82 +131,12 @@ function renderUI() {
   });
 }
 
-const modal = document.querySelector("[data-modal]");
-const form = document.querySelector("[data-form]");
-const modalTitle = document.querySelector("#modal-title");
-function openModal(editId = null) {
-  if (!modal || !form) return;
-  form.reset();
-
-  if (editId) {
-    const record = resources.find((x) => x.id === editId);
-    if (!record) return;
-    if (modalTitle) modalTitle.textContent = "Sửa tài nguyên";
-    form.elements["id"].value = record.id;
-    if (form.elements["title"]) form.elements["title"].value = record.title;
-    if (form.elements["type"]) form.elements["type"].value = record.type;
-    if (form.elements["audience"]) form.elements["audience"].value = record.audience;
-    if (form.elements["status"]) form.elements["status"].value = record.status;
-    if (form.elements["summary"]) form.elements["summary"].value = record.summary || "";
-    if (form.elements["content"]) form.elements["content"].value = record.content || "";
-  } else {
-    if (modalTitle) modalTitle.textContent = "Tạo tài nguyên";
-    form.elements["id"].value = "";
-    if (form.elements["status"]) form.elements["status"].value = "Bản nháp";
-  }
-
-  modal.hidden = false;
-}
-function closeModal() {
-  if (modal) modal.hidden = true;
-}
 document.addEventListener("DOMContentLoaded", () => {
   loadResources();
   renderUI();
-  document.querySelectorAll("[data-create]").forEach((btn) => btn.addEventListener("click", () => openModal()));
-  document.querySelectorAll("[data-close]").forEach((btn) => btn.addEventListener("click", closeModal));
-  if (modal) modal.addEventListener("click", (e) => { if (e.target === modal) closeModal(); });
-  if (form) {
-    form.addEventListener("submit", (e) => {
-      e.preventDefault();
-      const id = form.elements["id"].value;
-      const title = form.elements["title"] ? form.elements["title"].value.trim() : "";
-      const type = form.elements["type"] ? form.elements["type"].value : "Bài học";
-      const audience = form.elements["audience"] ? form.elements["audience"].value.trim() : "Tất cả";
-      const status = form.elements["status"] ? form.elements["status"].value : "Bản nháp";
-      const summary = form.elements["summary"] ? form.elements["summary"].value.trim() : "";
-      const content = form.elements["content"] ? form.elements["content"].value.trim() : "";
-      const today = new Date().toISOString().slice(0, 10);
-
-      if (!title) {
-        alert("Vui lòng nhập tiêu đề tài nguyên.");
-        return;
-      }
-
-      if (id) {
-        const index = resources.findIndex((x) => x.id === id);
-        if (index !== -1) {
-          resources[index] = { ...resources[index], title, type, audience, status, summary, content, updatedAt: today };
-          showToast("Đã cập nhật tài nguyên.");
-        }
-      } else {
-        resources.unshift({ id: "res-" + Date.now(), title, type, audience, status, summary, content, updatedAt: today });
-        showToast("Đã tạo tài nguyên mới.");
-      }
-
-      saveResources();
-      closeModal();
-      renderUI();
-    });
-  }
   const tableBody = document.querySelector("[data-rows]");
   if (tableBody) {
     tableBody.addEventListener("click", (e) => {
-      const editBtn = e.target.closest("[data-edit]");
-      if (editBtn) {
-        openModal(editBtn.dataset.edit);
-        return;
-      }
       const deleteBtn = e.target.closest("[data-delete]");
       if (deleteBtn) {
         const id = deleteBtn.dataset.delete;
@@ -227,10 +168,9 @@ document.addEventListener("DOMContentLoaded", () => {
   const exportBtn = document.querySelector("[data-export]");
   if (exportBtn) {
     exportBtn.addEventListener("click", () => {
-      let csv = "\uFEFFTiêu đề,Loại,Đối tượng,Ngày cập nhật,Trạng thái\r\n";
-      resources.forEach((x) => {
-        csv += `"${x.title}","${x.type}","${x.audience}","${x.updatedAt}","${x.status}"\r\n`;
-      });
+      const headings = ["Tiêu đề", "Loại", "Đối tượng", "Thẻ", "Ngày cập nhật", "Trạng thái"];
+      const rows = resources.map((item) => [item.title, item.type, item.audience, item.tags, item.updatedAt, item.status]);
+      const csv = "\uFEFF" + [headings, ...rows].map((row) => row.map(escapeCSV).join(",")).join("\r\n");
       const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
       const url = URL.createObjectURL(blob);
       const a = document.createElement("a");

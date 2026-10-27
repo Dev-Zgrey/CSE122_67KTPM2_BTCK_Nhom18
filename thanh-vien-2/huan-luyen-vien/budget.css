@@ -421,6 +421,12 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
   font-weight: 600;
 }
 
+.table td.budget-amount {
+  color: #205c47;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
 .status-badge {
   display: inline-flex;
   padding: 4px 7px;
@@ -548,6 +554,12 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
   color: #59675e;
   font-size: 10px;
   font-weight: 700;
+}
+
+.field-hint {
+  color: #78867f;
+  font-size: 9px;
+  line-height: 1.4;
 }
 
 .field input, .field select, .field textarea {

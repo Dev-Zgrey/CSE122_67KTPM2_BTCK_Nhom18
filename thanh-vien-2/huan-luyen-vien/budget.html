@@ -107,6 +107,7 @@
                 <tr>
                   <th>Học viên</th>
                   <th>Kỳ ngân sách</th>
+                  <th>Ngân sách đề xuất</th>
                   <th>Ngày gửi</th>
                   <th>Trạng thái</th>
                   <th>Nhận xét</th>
@@ -145,6 +146,11 @@
             <div class="field">
               <label>Kỳ ngân sách *</label>
               <input name="period" type="month" required>
+            </div>
+            <div class="field">
+              <label for="budget-amount">Số tiền ngân sách (VND) *</label>
+              <input id="budget-amount" name="amount" type="number" min="1" step="1000" inputmode="numeric" placeholder="Ví dụ: 5000000" required>
+              <small class="field-hint">Nhập số tiền bằng đồng Việt Nam, không cần dấu phân cách.</small>
             </div>
             <div class="field">
               <label>Ngày gửi *</label>

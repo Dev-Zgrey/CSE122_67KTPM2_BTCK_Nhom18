@@ -3,6 +3,7 @@ const DEFAULT_REVIEWS = [
     id: "rev-1",
     client: "Nguyễn An",
     period: "2026-10",
+    amount: 15000000,
     submitted: "2026-10-05",
     status: "Chờ review",
     comment: "Ngân sách tháng này có bổ sung chi phí khóa học lập trình.",
@@ -12,6 +13,7 @@ const DEFAULT_REVIEWS = [
     id: "rev-2",
     client: "Trần Minh",
     period: "2026-09",
+    amount: 12000000,
     submitted: "2026-09-08",
     status: "Đã duyệt",
     comment: "Kế hoạch phân bổ tài chính rất hợp lý.",
@@ -26,6 +28,12 @@ function loadReviews() {
   if (data) {
     try {
       reviews = JSON.parse(data);
+      reviews = reviews.map((review) => {
+        if (Number.isFinite(Number(review.amount)) && Number(review.amount) > 0) return review;
+        const demoAmounts = { "rev-1": 15000000, "rev-2": 12000000 };
+        return { ...review, amount: demoAmounts[review.id] || null };
+      });
+      saveReviews();
     } catch (e) {
       reviews = DEFAULT_REVIEWS;
     }
@@ -33,6 +41,15 @@ function loadReviews() {
     reviews = DEFAULT_REVIEWS;
     saveReviews();
   }
+}
+function formatBudgetAmount(amount) {
+  const value = Number(amount);
+  if (!Number.isFinite(value) || value <= 0) return "Chưa cập nhật";
+  return new Intl.NumberFormat("vi-VN", {
+    style: "currency",
+    currency: "VND",
+    maximumFractionDigits: 0
+  }).format(value);
 }
 function saveReviews() {
   localStorage.setItem(STORAGE_KEY, JSON.stringify(reviews));
@@ -102,6 +119,7 @@ function renderUI() {
     tr.innerHTML = `
       <td>${item.client}</td>
       <td>${item.period}</td>
+      <td class="budget-amount">${formatBudgetAmount(item.amount)}</td>
       <td>${item.submitted || "—"}</td>
       <td><span class="${badgeClass}">${item.status}</span></td>
       <td>${item.comment || "—"}</td>
@@ -136,6 +154,7 @@ function openModal(editId = null) {
     form.elements["id"].value = record.id;
     if (form.elements["client"]) form.elements["client"].value = record.client;
     if (form.elements["period"]) form.elements["period"].value = record.period;
+    if (form.elements["amount"]) form.elements["amount"].value = record.amount || "";
     if (form.elements["submitted"]) form.elements["submitted"].value = record.submitted;
     if (form.elements["status"]) form.elements["status"].value = record.status;
     if (form.elements["comment"]) form.elements["comment"].value = record.comment || "";
@@ -164,6 +183,7 @@ document.addEventListener("DOMContentLoaded", () => {
       const id = form.elements["id"].value;
       const client = form.elements["client"] ? form.elements["client"].value.trim() : "";
       const period = form.elements["period"] ? form.elements["period"].value : "";
+      const amount = Number(form.elements["amount"]?.value);
       const submitted = form.elements["submitted"] ? form.elements["submitted"].value : new Date().toISOString().slice(0, 10);
       const status = form.elements["status"] ? form.elements["status"].value : "Chờ review";
       const comment = form.elements["comment"] ? form.elements["comment"].value.trim() : "";
@@ -173,15 +193,19 @@ document.addEventListener("DOMContentLoaded", () => {
         alert("Vui lòng nhập tên học viên!");
         return;
       }
+      if (!Number.isFinite(amount) || amount <= 0) {
+        alert("Vui lòng nhập số tiền ngân sách lớn hơn 0 VND.");
+        return;
+      }
 
       if (id) {
         const index = reviews.findIndex((x) => x.id === id);
         if (index !== -1) {
-          reviews[index] = { ...reviews[index], client, period, submitted, status, comment, suggestion };
+          reviews[index] = { ...reviews[index], client, period, amount, submitted, status, comment, suggestion };
           showToast("Đã cập nhật đánh giá ngân sách.");
         }
       } else {
-        reviews.unshift({ id: "rev-" + Date.now(), client, period, submitted, status, comment, suggestion });
+        reviews.unshift({ id: "rev-" + Date.now(), client, period, amount, submitted, status, comment, suggestion });
         showToast("Đã tạo yêu cầu review mới.");
       }
 
@@ -244,9 +268,10 @@ document.addEventListener("DOMContentLoaded", () => {
   const exportBtn = document.querySelector("[data-export]");
   if (exportBtn) {
     exportBtn.addEventListener("click", () => {
-      let csv = "\uFEFFHọc viên,Kỳ ngân sách,Ngày gửi,Trạng thái,Nhận xét\r\n";
+      let csv = "\uFEFFHọc viên,Kỳ ngân sách,Ngân sách đề xuất (VND),Ngày gửi,Trạng thái,Nhận xét\r\n";
       reviews.forEach((x) => {
-        csv += `"${x.client}","${x.period}","${x.submitted}","${x.status}","${x.comment}"\r\n`;
+        const comment = String(x.comment || "").replace(/"/g, '""');
+        csv += `"${x.client}","${x.period}","${x.amount || ""}","${x.submitted}","${x.status}","${comment}"\r\n`;
       });
       const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
       const url = URL.createObjectURL(blob);

@@ -62,15 +62,13 @@
             <div class="eyebrow">
               Huấn luyện viên
             </div>
-            <h1>
-              Quản lý tài nguyên
-            </h1>
+            <h1>Thư viện tài nguyên</h1>
             <p>
-              Tạo, phân loại, lưu trữ và gửi tài liệu đi kiểm duyệt.
+              Theo dõi tài liệu, trạng thái kiểm duyệt và nội dung đã xuất bản.
             </p>
           </div>
           <div class="action">
-            <button class="button" type="button" data-create>＋ Tạo tài nguyên</button><button class="button button-secondary" type="button" data-export>↓ Xuất dữ liệu</button>
+            <a class="button" href="edit-resource.html">＋ Soạn tài nguyên</a><button class="button button-secondary" type="button" data-export>↓ Xuất dữ liệu</button>
           </div>
         </section>
         <section class="stats-grid" data-stats>
@@ -79,12 +77,12 @@
           <div class="panel-header">
             <div>
               <h2>
-                Quản lý tài nguyên
+                Danh mục tài nguyên
               </h2>
               <p data-count>
               </p>
             </div>
-            <a class="button button-secondary" href="edit-resource.html">Mở trình soạn</a>
+            <span class="panel-note">Dùng nút “Soạn” ở một dòng để chỉnh sửa nội dung</span>
           </div>
           <div class="filter-bar">
             <input type="search" data-search placeholder="Tìm kiếm..." aria-label="Tìm kiếm"><select data-status-filter aria-label="Lọc danh sách">
@@ -141,81 +139,13 @@
             <p>
               Thử đổi bộ lọc hoặc thêm một mục mới.
             </p>
-            <button class="button" type="button" data-create>Tạo tài nguyên</button>
+            <a class="button" href="edit-resource.html">Soạn tài nguyên</a>
           </div>
         </section>
       </main>
       <footer class="footer">
         SpendWise · Bản demo frontend · Dữ liệu lưu trên thiết bị này
       </footer>
-      <div class="modal-backdrop" data-modal hidden>
-        <section class="modal" role="dialog" aria-modal="true" aria-labelledby="modal-title">
-          <div class="modal-header">
-            <h2 id="modal-title">
-              Tạo tài nguyên
-            </h2>
-            <button type="button" class="icon-button" aria-label="Đóng" data-close>×</button>
-          </div>
-          <form class="form-grid" data-form>
-            <input type="hidden" name="id">
-            <div class="field ">
-              <label>Tiêu đề *</label><input name="title" type="text" placeholder="" value="" required>
-            </div>
-            <div class="field ">
-              <label>Loại nội dung *</label><select name="type" required>
-              <option>
-                Bài học
-              </option>
-              <option>
-                Hướng dẫn
-              </option>
-              <option>
-                Bài tập
-              </option>
-              <option>
-                Tài liệu
-              </option>
-              </select>
-            </div>
-            <div class="field ">
-              <label>Đối tượng *</label><input name="audience" type="text" placeholder="" value="" required>
-            </div>
-            <div class="field ">
-              <label>Trạng thái *</label><select name="status" required>
-              <option>
-                Bản nháp
-              </option>
-              <option>
-                Chờ duyệt
-              </option>
-              <option>
-                Đã xuất bản
-              </option>
-              <option>
-                Cần chỉnh sửa
-              </option>
-              <option>
-                Đã lưu trữ
-              </option>
-              </select>
-            </div>
-            <div class="field field-full">
-              <label>Tóm tắt</label><textarea name="summary" placeholder="" ></textarea>
-            </div>
-            <div class="field ">
-              <label>Thẻ phân loại</label><input name="tags" type="text" placeholder="" value="" >
-            </div>
-            <div class="field field-full">
-              <label>Nội dung</label><textarea name="content" placeholder="" ></textarea>
-            </div>
-            <div class="field field-full" data-error role="alert">
-            </div>
-            <div class="modal-action field-full">
-              <button class="button button-secondary" type="button" data-close>Hủy</button><button class="button" type="submit">Lưu thay đổi</button>
-            </div>
-          </form>
-        </section>
-      </div>
       <div class="toast-region" data-toasts aria-live="polite">
       </div>
     </div>

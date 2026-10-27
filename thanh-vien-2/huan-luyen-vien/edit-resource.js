@@ -13,6 +13,9 @@ function loadResources(){
 function saveResources(){
   localStorage.setItem(STORAGE_KEY,JSON.stringify(resources));
 }
+function getWorkingResources() {
+  return resources.filter((item) => ["Bản nháp", "Cần chỉnh sửa"].includes(item.status));
+}
 function escapeHTML(value){
   return String(value ?? "").replace(/[&<>"']/g, (character) =>({
         "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;"
@@ -41,7 +44,8 @@ function renderUI() {
   const keyword = searchInput ? searchInput.value.trim().toLowerCase() :"";
   const selectedStatus = statusFilter ? statusFilter.value :"";
 
-  const filteredList = resources.filter((item)=> {
+  const workingResources = getWorkingResources();
+  const filteredList = workingResources.filter((item)=> {
     const matchSearch =
     !keyword ||
     item.title.toLowerCase().includes(keyword) ||
@@ -53,7 +57,7 @@ function renderUI() {
   });
 
   if (countLabel) {
-    countLabel.textContent = `${filteredList.length} mục · ${resources.length} tổng cộng`;
+    countLabel.textContent = `${filteredList.length} mục đang hiển thị · ${workingResources.length} bản nháp/cần chỉnh sửa`;
   }
 
   if (statsContainer) {
@@ -61,12 +65,14 @@ function renderUI() {
     const publishedCount = resources.filter((x) => x.status === "Đã xuất bản").length;
     const pendingCount = resources.filter((x) => x.status === "Chờ duyệt").length;
     const draftCount = resources.filter((x) => x.status === "Bản nháp").length;
+    const revisionCount = resources.filter((x) => x.status === "Cần chỉnh sửa").length;
 
     statsContainer.innerHTML = `
-      <article class="stat-card"><span>Tổng bài soạn</span><strong>${total}</strong></article>
-      <article class="stat-card"><span>Đã xuất bản</span><strong>${publishedCount}</strong></article>
-      <article class="stat-card"><span>Chờ duyệt</span><strong>${pendingCount}</strong></article>
+      <article class="stat-card"><span>Tổng tài nguyên</span><strong>${total}</strong></article>
       <article class="stat-card"><span>Bản nháp</span><strong>${draftCount}</strong></article>
+      <article class="stat-card"><span>Cần chỉnh sửa</span><strong>${revisionCount}</strong></article>
+      <article class="stat-card"><span>Chờ kiểm duyệt</span><strong>${pendingCount}</strong></article>
+      <article class="stat-card"><span>Đã xuất bản</span><strong>${publishedCount}</strong></article>
     `;
   }
  if (emptyState) emptyState.hidden = filteredList.length > 0;
@@ -91,7 +97,6 @@ function renderUI() {
       <td>
         <div class="row-action">
           <button class="icon-button" type="button" title="Sửa bài soạn" data-edit="${escapeHTML(item.id)}">✎</button>
-          <button class="icon-button" type="button" title="Xóa" data-delete="${escapeHTML(item.id)}">×</button>
         </div>
       </td>
     `;
@@ -103,6 +108,7 @@ function renderUI() {
 const modal = document.querySelector("[data-modal]");
 const form = document.querySelector("[data-form]");
 const errorBox = document.querySelector("[data-error]");
+const modalTitle = document.querySelector("#modal-title");
 
 function openModal(editId = null)  {
   if (!modal || !form) return;
@@ -112,15 +118,20 @@ function openModal(editId = null)  {
   if (editId) {
     const record = resources.find((x) => x.id === editId);
     if (!record) return;
+    if (modalTitle) modalTitle.textContent = "Chỉnh sửa tài nguyên";
 
     form.elements["id"].value = record.id;
     if (form.elements["title"]) form.elements["title"].value = record.title;
     if (form.elements["type"]) form.elements["type"].value = record.type;
     if (form.elements["audience"]) form.elements["audience"].value = record.audience;
-    if (form.elements["status"]) form.elements["status"].value = record.status;
+    if (form.elements["status"]) {
+      form.elements["status"].value = ["Bản nháp", "Cần chỉnh sửa"].includes(record.status) ? record.status : "Bản nháp";
+    }
     if (form.elements["summary"]) form.elements["summary"].value = record.summary || "";
+    if (form.elements["tags"]) form.elements["tags"].value = record.tags || "";
     if (form.elements["content"]) form.elements["content"].value = record.content || "";
   } else {
+    if (modalTitle) modalTitle.textContent = "Soạn bản nháp mới";
     form.elements["id"].value = "";
     if (form.elements["status"]) form.elements["status"].value = "Bản nháp";
   }
@@ -151,6 +162,7 @@ document.addEventListener("DOMContentLoaded", () => {
       const audience = form.elements["audience"] ? form.elements["audience"].value.trim() : "Tất cả";
       const status = form.elements["status"] ? form.elements["status"].value : "Bản nháp";
       const summary = form.elements["summary"] ? form.elements["summary"].value.trim() : "";
+      const tags = form.elements["tags"] ? form.elements["tags"].value.trim() : "";
       const content = form.elements["content"] ? form.elements["content"].value.trim() : "";
       const today = new Date().toISOString().slice(0, 10);
 
@@ -168,11 +180,11 @@ document.addEventListener("DOMContentLoaded", () => {
       if (id) {
         const index = resources.findIndex((x) => x.id === id);
         if (index !== -1) {
-          resources[index] = { ...resources[index] , title, type, audience, status, summary, content, updatedAt: today };
+          resources[index] = { ...resources[index] , title, type, audience, status, summary, tags, content, updatedAt: today };
           showToast("Đã cập nhật bài soạn.");
         }
       } else {
-        resources.unshift({ id: "res-" + Date.now(), title, type, audience, status, summary, content, updatedAt: today });
+        resources.unshift({ id: "res-" + Date.now(), title, type, audience, status, summary, tags, content, updatedAt: today });
         showToast("Đã lưu bài soạn mới.");
       }
 
@@ -188,18 +200,6 @@ document.addEventListener("DOMContentLoaded", () => {
       if (editBtn) {
         openModal(editBtn.dataset.edit);
         return;
-      }
-      const deleteBtn = e.target.closest("[data-delete]");
-      if (deleteBtn) {
-        const id = deleteBtn.dataset.delete;
-        const item = resources.find((x) => x.id === id);
-        if (!item) return;
-        if (confirm(`Bạn có chắc muốn xóa bài soạn "${item.title}"?`)) {
-          resources = resources.filter((x) => x.id !== id);
-          saveResources();
-          renderUI();
-          showToast("Đã xóa bài soạn.");
-        }
       }
     });
   }
@@ -222,15 +222,15 @@ document.addEventListener("DOMContentLoaded", () => {
   const exportBtn = document.querySelector("[data-export]");
   if (exportBtn) {
     exportBtn.addEventListener("click", () => {
-      if (resources.length === 0) {
+      if (getWorkingResources().length === 0) {
         showToast("Chưa có bài soạn để xuất.");
         return;
       }
 
-      const headings = ["Tiêu đề", "Loại", "Đối tượng", "Trạng thái", "Tóm tắt", "Nội dung", "Ngày cập nhật"];
-      const rows = resources.map((item) => [
+      const headings = ["Tiêu đề", "Loại", "Đối tượng", "Trạng thái", "Tóm tắt", "Thẻ", "Nội dung", "Ngày cập nhật"];
+      const rows = getWorkingResources().map((item) => [
         item.title, item.type, item.audience, item.status,
-        item.summary, item.content, item.updatedAt
+        item.summary, item.tags, item.content, item.updatedAt
       ]);
       const csv = "\uFEFF" + [headings, ...rows]
         .map((row) => row.map(escapeCSV).join(","))
@@ -255,5 +255,7 @@ document.addEventListener("DOMContentLoaded", () => {
       window.location.href = "../../thanh-vien-2/dung-chung/login.html";
     });
   }
+  const requestedId = new URLSearchParams(window.location.search).get("id");
+  if (requestedId) openModal(requestedId);
 });
 

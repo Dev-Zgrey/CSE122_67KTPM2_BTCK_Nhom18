@@ -359,6 +359,11 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
   font-size: 9px;
 }
 
+.panel-note {
+  color: var(--muted);
+  font-size: 10px;
+}
+
 .filter-bar {
   display: flex;
   flex-wrap: wrap;
@@ -457,6 +462,12 @@ button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible
   justify-content: flex-end;
   gap: 4px;
   white-space: nowrap;
+}
+
+.row-edit-link {
+  min-height: 27px;
+  padding: 0 8px;
+  font-size: 9px;
 }
 
 .icon-button {

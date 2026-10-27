@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Soạn nội dung tài nguyên | SpendWise</title>
+    <title>Soạn tài nguyên | SpendWise</title>
     <link rel="stylesheet" href="edit-resource.css">
     <script src="edit-resource.js" defer></script>
   </head>
@@ -66,15 +66,15 @@
               Huấn luyện viên
             </div>
             <h1>
-              Soạn nội dung tài nguyên
+              Soạn tài nguyên
             </h1>
             <p>
-              Soạn thảo bài học, bài tập hướng dẫn và gửi duyệt.
+              Tạo bản nháp, hoàn thiện nội dung hoặc gửi bài đã sẵn sàng đi kiểm duyệt.
             </p>
           </div>
           <div class="action">
-            <button class="button" type="button" data-create>＋ Soạn bài mới</button>
-            <button class="button button-secondary" type="button" data-export>↓ Xuất dữ liệu</button>
+            <button class="button" type="button" data-create>＋ Soạn bản nháp</button>
+            <button class="button button-secondary" type="button" data-export>↓ Xuất bản nháp</button>
           </div>
         </section>
         <section class="stats-grid" data-stats>
@@ -83,11 +83,12 @@
           <div class="panel-header">
             <div>
               <h2>
-                Quản lý bài soạn
+                Bản nháp và bài cần chỉnh sửa
               </h2>
               <p data-count>
               </p>
             </div>
+            <a class="button button-secondary" href="resources.html">Mở thư viện</a>
           </div>
           <div class="filter-bar">
             <input type="search" data-search placeholder="Tìm kiếm..." aria-label="Tìm kiếm">
@@ -98,17 +99,8 @@
             <option value="Bản nháp">
               Bản nháp
             </option>
-            <option value="Chờ duyệt">
-              Chờ duyệt
-            </option>
-            <option value="Đã xuất bản">
-              Đã xuất bản
-            </option>
             <option value="Cần chỉnh sửa">
               Cần chỉnh sửa
-            </option>
-            <option value="Đã lưu trữ">
-              Đã lưu trữ
             </option>
             </select>
             <button class="button button-quiet" type="button" data-clear>Làm mới bộ lọc</button>
@@ -142,11 +134,11 @@
             </table>
           </div>
           <div class="empty" data-empty hidden>
-            <span aria-hidden="true">✎</span><strong>Chưa có dữ liệu phù hợp</strong>
+            <span aria-hidden="true">✎</span><strong>Chưa có bản nháp cần xử lý</strong>
             <p>
-              Thử đổi bộ lọc hoặc thêm một mục mới.
+              Bắt đầu soạn bản nháp mới hoặc chọn một tài nguyên trong thư viện để chỉnh sửa.
             </p>
-            <button class="button" type="button" data-create>Soạn bài mới</button>
+            <button class="button" type="button" data-create>Soạn bản nháp</button>
           </div>
         </section>
       </main>
@@ -191,22 +183,21 @@
                 Bản nháp
               </option>
               <option>
-                Chờ duyệt
-              </option>
-              <option>
-                Đã xuất bản
-              </option>
-              <option>
                 Cần chỉnh sửa
               </option>
               <option>
-                Đã lưu trữ
+                Chờ duyệt
               </option>
               </select>
+              <small class="field-hint">Chọn “Chờ duyệt” để chuyển bài đã hoàn thiện sang thư viện chờ kiểm duyệt.</small>
             </div>
             <div class="field field-full">
               <label>Tóm tắt</label>
               <textarea name="summary" placeholder="" ></textarea>
+            </div>
+            <div class="field field-full">
+              <label>Thẻ phân loại</label>
+              <input name="tags" type="text" placeholder="Ví dụ: ngân sách, tiết kiệm, thói quen">
             </div>
             <div class="field field-full">
               <label>Nội dung chi tiết *</label>
